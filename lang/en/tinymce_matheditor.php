@@ -14,4 +14,8 @@
  * *************************************************************************
  * ************************************************************************ */
 
+// JS Strings (must be prefixed with 'matheditor:')
+$string['matheditor:description'] = 'Math Editor';
+
+// PHP Strings
 $string['pluginname'] = 'Math Editor';
