@@ -1,5 +1,8 @@
 ### Prerequisites:
 
+NodeJS and Node Package Manager, follow instructions stated here:
+https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager#ubuntu-mint
+
 * NodeJS (node)
     `sudo apt-get install nodejs`
 * NodeJS Package Manager (npm)
