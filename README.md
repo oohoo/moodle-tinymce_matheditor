@@ -1,12 +1,10 @@
 ### Prerequisites:
 
 NodeJS and Node Package Manager, follow instructions stated here:
-https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager#ubuntu-mint
 
-* NodeJS (node)
-    `sudo apt-get install nodejs`
-* NodeJS Package Manager (npm)
-    `sudo apt-get install npm`
+* https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager#ubuntu-mint
+
+**NOTE:** The Ubuntu repositories do not have the latest version of node, using `sudo apt-get` to retrieve these dependencies will not work!
 
 ### Installation instructions:
 
@@ -19,3 +17,9 @@ https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager#ubunt
     `cd vendor/mathquill`
 5. Update the dependencies within the submodule
     `npm install`
+6. Navigate back up to the project root
+    `cd ../../`
+7a. **FOR DEVELOPMENT** Build the project
+    `make`
+7b. **FOR DEPLOYMENT** Run the deployment script
+    `make deploy`
