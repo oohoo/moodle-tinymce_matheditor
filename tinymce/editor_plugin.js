@@ -25,6 +25,7 @@
         init : function(editor, url) {
             lang = tinymce.activeEditor.getParam('language');
 
+            // Event handler for the dialog box opening action
             editor.addCommand('mceMathEditor', function() {
                 editor.windowManager.open({
                     file : editor.getParam("moodle_plugin_base") + 'matheditor/matheditor.php?lang=' + lang,
