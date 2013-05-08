@@ -37,18 +37,18 @@ header('X-UA-Compatible: IE=edge');
     <?php //TODO: Do this in a better way, figure out how to utilize the $PAGE global to retrieve the dependency ?>
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="<?php echo $editor->get_tinymce_base_url(); ?>/tiny_mce_popup.js"></script>
+    <script type="text/javascript" src="<?php echo $plugin->get_tinymce_file_url('js/mathquill.min.js'); ?>"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo $plugin->get_tinymce_file_url('css/mathquill.css'); ?>">
     <script type="text/javascript" src="<?php echo $plugin->get_tinymce_file_url('js/matheditor.js'); ?>"></script>
-    <?php //TODO: Do this in a better way once the Moodle filter is used, no sense hitting the CDN multiple times ?>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-    </script>
 </head>
 <body>
-    When $a \ne 0$, there are two solutions to \(ax^2 + bx + c = 0\) and they are
-    $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
-    <div class="mceActionPanel">
-        <input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+    <div id="editor">
     </div>
+    <script type="text/javascript">
+    (function() {
+        var editor = new MathEditor('#editor');
+        editor.decorate();
+    })();
+    </script>
 </body>
 </html>
