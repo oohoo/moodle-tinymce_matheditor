@@ -19,7 +19,7 @@ NodeJS and Node Package Manager, follow instructions stated here:
     `npm install`
 6. Navigate back up to the project root
     `cd ../../`
-7a. **FOR DEVELOPMENT** Build the project
+7. **FOR DEVELOPMENT** Build the project
     `make`
-7b. **FOR DEPLOYMENT** Run the deployment script
+7. **FOR DEPLOYMENT** Run the deployment script
     `make deploy`
