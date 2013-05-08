@@ -7,7 +7,7 @@ MATHQUILL_BUILD = ./vendor/mathquill/build
 RES = ./tinymce/
 RES_JS = ${RES}/js/mathquill.min.js
 RES_CSS = ${RES}/css/mathquill.css
-RES_FONT = ${RES}/font
+RES_FONT = ${RES}/css/font
 
 all: ${RES_JS} ${RES_CSS} ${RES_FONT}
 
@@ -31,7 +31,7 @@ clean:
 	make -C ${MATHQUILL} clean
 	rm -f ${RES_JS}
 	rm -f ${RES_CSS}
-	rm -f -r ${RES}/font
+	rm -f -r ${RES}/css/font
 
 # TODO
 deploy:
