@@ -1,11 +1,11 @@
-## Prerequisites:
+### Prerequisites:
 
-NodeJS (node)
-`sudo apt-get install nodejs`
-NodeJS Package Manager (npm)
-`sudo apt-get install npm`
+* NodeJS (node)
+    `sudo apt-get install nodejs`
+* NodeJS Package Manager (npm)
+    `sudo apt-get install npm`
 
-## Installation instructions:
+### Installation instructions:
 
 1. Clone the repository
 2. Within the main repository directory, fetch the submodule
