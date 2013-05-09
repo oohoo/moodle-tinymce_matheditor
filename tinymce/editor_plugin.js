@@ -42,7 +42,7 @@
             // can be set in the Moodle TinyMCE general settings page. By
             // default it is hidden.
             editor.addButton('matheditor', {
-                title : 'matheditor.description',
+                title : 'matheditor:description',
                 cmd : 'mceMathEditor',
                 image : url + '/img/icon.gif'
             });

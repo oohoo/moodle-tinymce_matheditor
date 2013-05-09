@@ -39,6 +39,7 @@ header('X-UA-Compatible: IE=edge');
     <script type="text/javascript" src="<?php echo $editor->get_tinymce_base_url(); ?>/tiny_mce_popup.js"></script>
     <script type="text/javascript" src="<?php echo $plugin->get_tinymce_file_url('js/mathquill.min.js'); ?>"></script>
     <link rel="stylesheet" type="text/css" href="<?php echo $plugin->get_tinymce_file_url('css/mathquill.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo $plugin->get_tinymce_file_url('css/matheditor.css'); ?>">
     <script type="text/javascript" src="<?php echo $plugin->get_tinymce_file_url('js/matheditor.js'); ?>"></script>
 </head>
 <body>

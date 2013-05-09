@@ -15,7 +15,13 @@
  * ************************************************************************ */
 
 // JS Strings (must be prefixed with 'matheditor:')
+$string['matheditor:algebra'] = 'Algebra';
+$string['matheditor:calculus'] = 'Calculus';
+$string['matheditor:desc'] = 'Math Editor';
 $string['matheditor:description'] = 'Math Editor';
+$string['matheditor:general'] = 'General';
+$string['matheditor:greek'] = 'Greek';
+$string['matheditor:operators'] = 'Operators';
 
 // PHP Strings
 $string['pluginname'] = 'Math Editor';

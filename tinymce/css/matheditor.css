@@ -1,0 +1,43 @@
+body {
+    font-family: sans-serif;
+    padding:0;
+    margin:0;
+}
+
+.matheditor-tabs {
+    background-color: #C0C0C0;
+}
+
+.matheditor-tabs ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.matheditor-tabs li {
+    display: inline;
+    padding: 0 5px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.matheditor-pane {
+    background-color: #C0C0C0;
+    height: 90px;
+}
+
+.matheditor-pane button {
+    height: 25px;
+    width: 25px;
+}
+
+.matheditor-equation {
+    min-height: 70px;
+    width: 534px;
+    border: 0;
+}
+
+.matheditor-latex {
+    width: 534px;
+    min-height: 70px;
+}
