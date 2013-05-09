@@ -26,15 +26,16 @@ body {
     height: 90px;
 }
 
-.matheditor-pane button {
-    height: 25px;
-    width: 25px;
-}
-
 .matheditor-equation {
     min-height: 70px;
     width: 534px;
     border: 0;
+}
+
+.matheditor-pane button {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
 }
 
 .matheditor-latex {

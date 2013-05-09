@@ -15,7 +15,6 @@
 MathEditor = function(container) {
     this.container = $(container);
     this.editor = tinymce.activeEditor;
-    console.log(this.editor);
     this.initialized = false;
 };
 
@@ -129,7 +128,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.log', 'log', '\\log{}'),
         MathEditor.B('matheditor.logbase', '', '\\log_{}', 'logbase.png'),
         MathEditor.B('matheditor.curly_braces', '{ }', '\\left\\{ \\right\\}'),
-        //MathEditor.B('matheditor.angle_braces', '&#x27E8 &#x27E9', '\\left\\langle \\right\\rangle'), BROKEN
+        MathEditor.B('matheditor.angle_braces', '&#x27E8 &#x27E9', '\\left\\\\langle \\right\\\\rangle'),
         //MathEditor.B('matheditor.doubleabsolute_braces', '|| ||', '\\left\\| \\right\\|') BROKEN
     ]),
     MathEditor.T('matheditor.operators', [
@@ -137,15 +136,15 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.minus', '-', '-'),
         MathEditor.B('matheditor.times', '×', '\\times'),
         MathEditor.B('matheditor.division', '÷', '\\div'),
-        //MathEditor.B('matheditor.dot_product', '&#x22C5', '\\dot'), BROKEN
+        MathEditor.B('matheditor.bullet', '&#x2219', '\\bullet'),
         MathEditor.B('matheditor.plus_minus', '±', '\\pm'),
         MathEditor.B('matheditor.equal', '=', '='),
         MathEditor.B('matheditor.definition', '&#x2255', '≔'),
-        MathEditor.B('matheditor.square_root', '', '\\sqrt{}', 'squareroot.png'),
+        MathEditor.B('matheditor.square_root', '&#x221A', '\\sqrt{}'),
         //MathEditor.B('matheditor.ceiling', '&#x2308 &#x2309', '\\left\\lceil \\right\\rceil'), BROKEN
-        MathEditor.B('matheditor.sum', '', '\\sum', 'sum.png'),
-        MathEditor.B('matheditor.product', '', '\\prod', 'product.png'),
-        MathEditor.B('matheditor.coproduct', '', '\\coprod', 'coproduct.png'),
+        MathEditor.B('matheditor.sum', '&#x2211', '\\sum'),
+        MathEditor.B('matheditor.product', '&#x220F', '\\prod'),
+        MathEditor.B('matheditor.coproduct', '&#x2210', '\\coprod'),
         MathEditor.B('matheditor.less', '<', '<'),
         MathEditor.B('matheditor.less_equal', '&#x2264', '\\le'),
         MathEditor.B('matheditor.greater', '>', '>'),
@@ -158,9 +157,9 @@ MathEditor.prototype.content = [
         //MathEditor.B('matheditor.floor', '&#x230A &#x230B', '\\left\\lfloor \\right\\rfloor'), BROKEN
     ]),
     MathEditor.T('matheditor.calculus', [
-        MathEditor.B('matheditor.limit', '', '\\lim', 'limit.png'),
+        MathEditor.B('matheditor.limit', 'lim', '\\lim'),
         MathEditor.B('matheditor.derivative', '', '\\frac{d}{dx}', 'derivative.png'),
-        MathEditor.B('matheditor.integral', '', '\\int', 'integral.png')
+        MathEditor.B('matheditor.integral', '&#x222B', '\\int')
     ]),
     MathEditor.T('matheditor.greek', [
         // Lower Case
@@ -217,5 +216,22 @@ MathEditor.prototype.content = [
     ]),
     MathEditor.T('matheditor.algebra', [
         MathEditor.B('matheditor.matrix_square', '', '\\begin{array}&\\&\\&', 'matrix_square.png'),
-    ])
+    ]),
+    MathEditor.T('matheditor.miscellaneous', [
+        MathEditor.B('matheditor.infinity', '&#x221E', '\\infty'),
+        MathEditor.B('matheditor.primes', '&#x2119', '\\primes'),
+        MathEditor.B('matheditor.naturals', '&#x2115', '\\naturals'),
+        MathEditor.B('matheditor.integers', '&#x2124', '\\integers'),
+        MathEditor.B('matheditor.irrationals', '&#x1D540', '\\irrationals'),
+        MathEditor.B('matheditor.rationals', '&#x211A', '\\rationals'),
+        MathEditor.B('matheditor.reals', '&#x211D', '\\reals'),
+        MathEditor.B('matheditor.complex', '&#x2102', '\\complex'),
+        MathEditor.B('matheditor.perpendicular', '&#x22A5', '\\perp'),
+        MathEditor.B('matheditor.parallel', '&#x2225', '\\parallel'),
+        MathEditor.B('matheditor.therefore', '&#x2234', '\\therefore'),
+        MathEditor.B('matheditor.because', '&#x2235', '\\because'),
+        MathEditor.B('matheditor.dots_horizontal', '&#x22EF', '\\cdots'),
+        MathEditor.B('matheditor.dots_vertical', '&#x22EE', '\\vdots'),
+        MathEditor.B('matheditor.dots_diagonal', '&#x22F0', '\\ddots'),
+    ]),
 ];
