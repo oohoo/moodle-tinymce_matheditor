@@ -43,7 +43,6 @@ header('X-UA-Compatible: IE=edge');
     <script type="text/javascript" src="<?php echo $plugin->get_tinymce_file_url('js/matheditor.js'); ?>"></script>
 </head>
 <body>
-    <span class="mathquill-embedded-latex">\left\langle\right\rangle</span>
     <div id="editor">
     </div>
     <script type="text/javascript">
