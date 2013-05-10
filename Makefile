@@ -12,8 +12,8 @@ RES_FONT = ${RES}/css/font
 all: ${RES_JS} ${RES_CSS} ${RES_FONT}
 
 # Copy the JS file
-${RES_JS}: ${MATHQUILL_BUILD}/mathquill.min.js
-	cp ${MATHQUILL_BUILD}/mathquill.min.js ${RES_JS}
+${RES_JS}: ${MATHQUILL_BUILD}/mathquill.js
+	cp ${MATHQUILL_BUILD}/mathquill.js ${RES_JS}
 
 # Copy the CSS file
 ${RES_CSS}:  ${MATHQUILL_BUILD}/mathquill.css
@@ -24,7 +24,7 @@ ${RES_FONT}: ${MATHQUILL_BUILD}/font
 	cp -r ${MATHQUILL_BUILD}/font ${RES_FONT}
 
 # Build dependency, watches the src folder for changes
-${MATHQUILL_BUILD}/mathquill.min.js: ${MATHQUILL}/src
+${MATHQUILL_BUILD}/mathquill.js: ${MATHQUILL}/src/*
 	make -C ${MATHQUILL}
 
 clean:

@@ -20,7 +20,7 @@ MathEditor = function(container) {
 
 MathEditor.Button = function(name, display, latex, image) {
     this.name = name;
-    this.display = display
+    this.display = display;
     this.latex = latex;
     this.image = image;
     this.dom = null;
@@ -28,6 +28,12 @@ MathEditor.Button = function(name, display, latex, image) {
 
 MathEditor.B = function(name, display, latex, image) {
     return new MathEditor.Button(name, display, latex, image);
+};
+
+MathEditor.BC = function(name, display, cmd, image) {
+    var button = new MathEditor.Button(name, display, null, image);
+    button.cmd = cmd;
+    return button;
 };
 
 MathEditor.Tab = function(name, buttons) {
@@ -88,7 +94,11 @@ MathEditor.prototype.bindEvents_ = function() {
         });
         $(tab.buttons).each(function(buttonIndex, button) {
             button.dom.click(function() {
-                editor.equation.mathquill('write', button.latex);
+                if (button.cmd != null) {
+                    editor.equation.mathquill('cmd', button.cmd);
+                } else {
+                    editor.equation.mathquill('write', button.latex);
+                }
                 editor.latex.text(editor.equation.mathquill('latex'));
             })
         });
@@ -128,8 +138,9 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.log', 'log', '\\log{}'),
         MathEditor.B('matheditor.logbase', '', '\\log_{}', 'logbase.png'),
         MathEditor.B('matheditor.curly_braces', '{ }', '\\left\\{ \\right\\}'),
-        MathEditor.B('matheditor.angle_braces', '&#x27E8 &#x27E9', '\\left\\\\langle \\right\\\\rangle'),
-        //MathEditor.B('matheditor.doubleabsolute_braces', '|| ||', '\\left\\| \\right\\|') BROKEN
+        // The Latex for doing angle brackets is broken so use the internal command language instead
+        MathEditor.BC('matheditor.angle_braces', '&#x27E8 &#x27E9', '\\langle', null),
+        // MathEditor.B('matheditor.doubleabsolute_braces', '&#x2225 &#x2225', '\\left\\| \\right\\|') BROKEN
     ]),
     MathEditor.T('matheditor.operators', [
         MathEditor.B('matheditor.plus', '+', '+'),
@@ -141,7 +152,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.equal', '=', '='),
         MathEditor.B('matheditor.definition', '&#x2255', '≔'),
         MathEditor.B('matheditor.square_root', '&#x221A', '\\sqrt{}'),
-        //MathEditor.B('matheditor.ceiling', '&#x2308 &#x2309', '\\left\\lceil \\right\\rceil'), BROKEN
+        MathEditor.B('matheditor.ceiling', '&#x2308 &#x2309', '\\left\\lceil \\right\\rceil'),
         MathEditor.B('matheditor.sum', '&#x2211', '\\sum'),
         MathEditor.B('matheditor.product', '&#x220F', '\\prod'),
         MathEditor.B('matheditor.coproduct', '&#x2210', '\\coprod'),
