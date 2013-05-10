@@ -123,20 +123,18 @@ MathEditor.prototype.checkInitialized_ = function() {
 MathEditor.prototype.content = [
     MathEditor.T('matheditor.general', [
         MathEditor.B('matheditor.comma', ',', ','),
-        MathEditor.B('matheditor.subscript', '', '{}_{}','subscript.png'),
-        MathEditor.B('matheditor.superscript', '', '{}^{}','superscript.png'),
-        MathEditor.B('matheditor.subsuperscript','','{}_{}^{}', 'subsuperscript.png'),
+        MathEditor.B('matheditor.subscript', '&#x2610<sub>&#x25A1</sub>', '{}_{}'),
+        MathEditor.B('matheditor.superscript', '&#x2610<sup>&#x25A1</sup>', '{}^{}'),
         MathEditor.B('matheditor.ln', 'ln', '\\ln{}'),
         MathEditor.B('matheditor.exponential', 'e', 'e^{}'),
         MathEditor.B('matheditor.round_braces', '( )', '\\left( \\right)'),
         MathEditor.B('matheditor.square_braces', '[ ]', '\\left[ \\right]'),
         MathEditor.B('matheditor.absolute_braces', '| |', '\\left| \\right|'),
-        MathEditor.B('matheditor.subsuperscript_left','','_{}^{}{ }', 'subsuperscript_left.png'),
-        MathEditor.B('matheditor.fraction', '', '\\frac{}{}', 'fraction.png'),
-        //MathEditor.B('matheditor.vector', '', '\\vec{}', 'vector.png') BROKEN
+        MathEditor.B('matheditor.fraction', '<sup>&#x25A1</sup>/<sub>&#x25A1</sub>', '\\frac{}{}'),
+        MathEditor.B('matheditor.vector', '&#x25A1&#x20D7', '\\vec{}'),
         //MathEditor.B('matheditor.hat', '', '\\hat{}', 'hat.png'), BROKEN
         MathEditor.B('matheditor.log', 'log', '\\log{}'),
-        MathEditor.B('matheditor.logbase', '', '\\log_{}', 'logbase.png'),
+        MathEditor.B('matheditor.logbase', 'log&#x25A1', '\\log_{}'),
         MathEditor.B('matheditor.curly_braces', '{ }', '\\left\\{ \\right\\}'),
         // The Latex for doing angle brackets is broken so use the internal command language instead
         MathEditor.BC('matheditor.angle_braces', '&#x27E8 &#x27E9', '\\langle', null),
@@ -152,7 +150,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.equal', '=', '='),
         MathEditor.B('matheditor.definition', '&#x2255', '≔'),
         MathEditor.B('matheditor.square_root', '&#x221A', '\\sqrt{}'),
-        MathEditor.B('matheditor.ceiling', '&#x2308 &#x2309', '\\left\\lceil \\right\\rceil'),
+        MathEditor.BC('matheditor.ceiling', '&#x2308 &#x2309', '\\lceil'),
         MathEditor.B('matheditor.sum', '&#x2211', '\\sum'),
         MathEditor.B('matheditor.product', '&#x220F', '\\prod'),
         MathEditor.B('matheditor.coproduct', '&#x2210', '\\coprod'),
@@ -164,12 +162,12 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.minus_plus', '&#x2213', '\\mp'),
         MathEditor.B('matheditor.not_equal', '&#x2260', '\\neq'),
         MathEditor.B('matheditor.asymptotically_equal', '&#x2243', '\\simeq'),
-        MathEditor.B('matheditor.square_root_power', '', '\\sqrt[{}]{}', 'squareroot_power.png'),
-        //MathEditor.B('matheditor.floor', '&#x230A &#x230B', '\\left\\lfloor \\right\\rfloor'), BROKEN
+        MathEditor.B('matheditor.square_root_power', '<sup>&#x25A1</sup>&#x221A', '\\sqrt[{}]{}'),
+        MathEditor.BC('matheditor.floor', '&#x230A &#x230B', '\\lfloor'),
     ]),
     MathEditor.T('matheditor.calculus', [
         MathEditor.B('matheditor.limit', 'lim', '\\lim'),
-        MathEditor.B('matheditor.derivative', '', '\\frac{d}{dx}', 'derivative.png'),
+        MathEditor.B('matheditor.derivative', '<sup>d</sup>/<sub>dx</sub>', '\\frac{d}{dx}'),
         MathEditor.B('matheditor.integral', '&#x222B', '\\int')
     ]),
     MathEditor.T('matheditor.greek', [
