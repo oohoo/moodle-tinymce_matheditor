@@ -1,3 +1,6 @@
 [submodule "vendor/mathquill"]
 	path = vendor/mathquill
 	url = git@github.com:mathquill/mathquill.git
+[submodule "vendor/mathquill_custom"]
+	path = vendor/mathquill_custom
+	url = git@github.com:raywainman/mathquill.git
