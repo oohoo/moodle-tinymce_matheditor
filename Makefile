@@ -1,7 +1,7 @@
 # The submodule path
-MATHQUILL = ./vendor/mathquill/
+MATHQUILL = ./vendor/mathquill_custom/
 # All of the built assets are in the build folder
-MATHQUILL_BUILD = ./vendor/mathquill/build
+MATHQUILL_BUILD = ./vendor/mathquill_custom/build
 
 # All of the files that are moved into the main project
 RES = ./tinymce/
