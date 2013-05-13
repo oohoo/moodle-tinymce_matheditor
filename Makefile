@@ -24,7 +24,7 @@ ${RES_FONT}: ${MATHQUILL_BUILD}/font
 	cp -r ${MATHQUILL_BUILD}/font ${RES_FONT}
 
 # Build dependency, watches the src folder for changes
-${MATHQUILL_BUILD}/mathquill.js: ${MATHQUILL}/src/*
+${MATHQUILL_BUILD}/mathquill.js: ${MATHQUILL}/src/css/* ${MATHQUILL}/src/* 
 	make -C ${MATHQUILL}
 
 clean:

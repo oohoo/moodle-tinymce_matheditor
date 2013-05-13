@@ -56,7 +56,7 @@ MathEditor.prototype.decorate = function() {
     this.generateMatrixInput_();
 
     // Equation field
-    this.equation = $('<div class="matheditor-equation mathquill-editable"></div>').appendTo(this.container);
+    this.equation = $('<span class="matheditor-equation mathquill-editable"></span>').appendTo(this.container);
     // Latex Field
     this.latex = $('<br/><textarea class="matheditor-latex"></textarea>').appendTo(this.container);
 
@@ -110,8 +110,9 @@ MathEditor.prototype.generateMatrixInput_ = function() {
 };
 
 MathEditor.prototype.insertMatrix_ = function() {
-    console.log('Matrix inserted');
-    console.log(this.activeMatrix);
+    MathQuill.setMatrixSize(this.form.rows.val(), this.form.cols.val());
+    this.equation.mathquill('cmd', '\\matrix');
+    this.updateLatex_();
 };
 
 MathEditor.prototype.matrixInputReset_ = function() {
@@ -147,14 +148,20 @@ MathEditor.prototype.bindEvents_ = function() {
                     } else {
                         editor.equation.mathquill('write', button.latex);
                     }
-                    editor.latex.text(editor.equation.mathquill('latex'));
+                    editor.updateLatex_();
                 }
             });
         });
     });
-    this.latex.bind('input propertychange', function(e) {
-
+    this.equation.bind('input propertychange keyup', function(e) {
+        console.log('something changed');
+        editor.updateLatex_();
     });
+};
+
+MathEditor.prototype.updateLatex_ = function() {
+    this.latex.text('');
+    this.latex.text(this.equation.mathquill('latex'));
 };
 
 MathEditor.prototype.hidePanes_ = function() {
