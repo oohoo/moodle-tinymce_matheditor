@@ -132,7 +132,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.absolute_braces', '| |', '\\left| \\right|'),
         MathEditor.B('matheditor.fraction', '<sup>&#x25A1</sup>/<sub>&#x25A1</sub>', '\\frac{}{}'),
         MathEditor.B('matheditor.vector', '&#x25A1&#x20D7', '\\vec{}'),
-        //MathEditor.B('matheditor.hat', '', '\\hat{}', 'hat.png'), BROKEN
+        MathEditor.B('matheditor.hat', '&#x25A1&#x0302', '\\hat{}'),
         MathEditor.B('matheditor.log', 'log', '\\log{}'),
         MathEditor.B('matheditor.logbase', 'log&#x25A1', '\\log_{}'),
         MathEditor.B('matheditor.curly_braces', '{ }', '\\left\\{ \\right\\}'),
