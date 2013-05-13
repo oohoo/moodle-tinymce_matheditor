@@ -17,6 +17,7 @@
 // JS Strings (must be prefixed with 'matheditor:')
 $string['matheditor:algebra'] = 'Algebra';
 $string['matheditor:calculus'] = 'Calculus';
+$string['matheditor:create'] = 'Create';
 $string['matheditor:desc'] = 'Math Editor';
 $string['matheditor:description'] = 'Math Editor';
 $string['matheditor:general'] = 'General';

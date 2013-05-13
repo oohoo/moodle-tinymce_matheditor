@@ -18,29 +18,32 @@ MathEditor = function(container) {
     this.initialized = false;
 };
 
-MathEditor.Button = function(name, display, latex, image) {
+MathEditor.Button = function(name, display, latex) {
     this.name = name;
     this.display = display;
     this.latex = latex;
-    this.image = image;
-    this.dom = null;
 };
 
-MathEditor.B = function(name, display, latex, image) {
-    return new MathEditor.Button(name, display, latex, image);
+MathEditor.B = function(name, display, latex) {
+    return new MathEditor.Button(name, display, latex);
 };
 
-MathEditor.BC = function(name, display, cmd, image) {
-    var button = new MathEditor.Button(name, display, null, image);
+MathEditor.BC = function(name, display, cmd) {
+    var button = new MathEditor.Button(name, display, null);
     button.cmd = cmd;
+    return button;
+};
+
+MathEditor.BM = function(name, display, cmd) {
+    var button = new MathEditor.Button(name, display, null);
+    button.cmd = cmd;
+    button.matrix = true;
     return button;
 };
 
 MathEditor.Tab = function(name, buttons) {
     this.name = name;
     this.buttons = buttons;
-    this.dom = null;
-    this.pane = null;
 };
 
 MathEditor.T = function(name, buttons) {
@@ -50,6 +53,7 @@ MathEditor.T = function(name, buttons) {
 MathEditor.prototype.decorate = function() {
     this.generateTabs_();
     this.generatePanes_();
+    this.generateMatrixInput_();
 
     // Equation field
     this.equation = $('<div class="matheditor-equation mathquill-editable"></div>').appendTo(this.container);
@@ -85,22 +89,67 @@ MathEditor.prototype.generatePanes_ = function() {
     this.content[0].pane.show();
 };
 
+MathEditor.prototype.generateMatrixInput_ = function() {
+    this.form = $('<div class="matheditor-form"></div>').appendTo(this.container);
+    this.form.click(function(e) {
+        e.stopPropagation();
+    });
+    this.form.append('Rows: ');
+    this.form.rows = $('<input type="number" min="1" class="matheditor-form-number" value="1">').appendTo(this.form);
+    this.form.append('<br/>Columns: ');
+    this.form.cols = $('<input type="number" min="1" class="matheditor-form-number" value="1">').appendTo(this.form);
+    this.form.append('<br/>');
+    var button = $('<button>' + this.editor.getLang('matheditor.create') + '</button>').appendTo(this.form);
+    var self = this;
+    button.click(function(e) {
+        e.stopPropagation();
+        self.form.hide();
+        self.insertMatrix_();
+    });
+    this.form.hide();
+};
+
+MathEditor.prototype.insertMatrix_ = function() {
+    console.log('Matrix inserted');
+    console.log(this.activeMatrix);
+};
+
+MathEditor.prototype.matrixInputReset_ = function() {
+    this.form.rows.val(1);
+    this.form.cols.val(1);
+};
+
 MathEditor.prototype.bindEvents_ = function() {
     var editor = this;
+    $('html').click(function() {
+        editor.form.hide();
+    });
+
     $(this.content).each(function(index, tab) {
         tab.dom.mouseover(function() {
             editor.hidePanes_();
             tab.pane.show();
         });
         $(tab.buttons).each(function(buttonIndex, button) {
-            button.dom.click(function() {
-                if (button.cmd != null) {
-                    editor.equation.mathquill('cmd', button.cmd);
+            button.dom.click(function(e) {
+                if (button.matrix) {
+                    e.stopPropagation();
+                    editor.activeMatrix = button;
+                    editor.matrixInputReset_();
+                    editor.form.css({
+                        top: button.dom.offset().top + 15,
+                        left: button.dom.offset().left + 15
+                    });
+                    editor.form.toggle();
                 } else {
-                    editor.equation.mathquill('write', button.latex);
+                    if (button.cmd != null) {
+                        editor.equation.mathquill('cmd', button.cmd);
+                    } else {
+                        editor.equation.mathquill('write', button.latex);
+                    }
+                    editor.latex.text(editor.equation.mathquill('latex'));
                 }
-                editor.latex.text(editor.equation.mathquill('latex'));
-            })
+            });
         });
     });
     this.latex.bind('input propertychange', function(e) {
@@ -136,8 +185,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.log', 'log', '\\log{}'),
         MathEditor.B('matheditor.logbase', 'log&#x25A1', '\\log_{}'),
         MathEditor.B('matheditor.curly_braces', '{ }', '\\left\\{ \\right\\}'),
-        // The Latex for doing angle brackets is broken so use the internal command language instead
-        MathEditor.BC('matheditor.angle_braces', '&#x27E8 &#x27E9', '\\langle', null),
+        MathEditor.BC('matheditor.angle_braces', '&#x27E8 &#x27E9', '\\langle'),
         // MathEditor.B('matheditor.doubleabsolute_braces', '&#x2225 &#x2225', '\\left\\| \\right\\|') BROKEN
     ]),
     MathEditor.T('matheditor.operators', [
@@ -224,7 +272,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.omega_uppercase', '&#x03A9', '\\Omega'),
     ]),
     MathEditor.T('matheditor.algebra', [
-        MathEditor.B('matheditor.matrix_square', '', '\\begin{array}&\\&\\&', 'matrix_square.png'),
+        MathEditor.BM('matheditor.matrix_square', 'Matrix', '\\begin{array}&\\&\\&'),
     ]),
     MathEditor.T('matheditor.miscellaneous', [
         MathEditor.B('matheditor.infinity', '&#x221E', '\\infty'),

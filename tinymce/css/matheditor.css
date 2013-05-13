@@ -34,11 +34,27 @@ body {
 
 .matheditor-pane button {
     background-color: transparent;
-    border: 0;
+    border: 1px solid #C0C0C0;
     cursor: pointer;
+    height: 25px;
+    min-width: 25px;
+}
+
+.matheditor-pane button:hover {
+    border: 1px solid black;
 }
 
 .matheditor-latex {
     width: 534px;
     min-height: 70px;
+}
+
+.matheditor-form {
+    position: absolute;
+    background-color: white;
+    font-size: 10px;
+}
+
+.matheditor-form input {
+    width: 40px;
 }
