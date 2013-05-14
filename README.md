@@ -14,11 +14,11 @@ NodeJS and Node Package Manager, follow instructions stated here:
 3. Update the submodule
     `git submodule update`
 4. `cd` into the MathQuill directory
-    `cd vendor/mathquill`
+    `cd vendor/mathquill_custom`
 5. Update the dependencies within the submodule
     `npm install`
 6. Navigate back up to the project root
     `cd ../../`
 7. Build the project
     * **FOR DEVELOPMENT** `make`
-    * **FOR DEPLOYMENT** `make deploy`
+    * **FOR DEPLOYMENT** `make deploy` (NOT WORKING YET)
