@@ -110,6 +110,11 @@ MathEditor.prototype.generateMatrixInput_ = function() {
     this.form.hide();
 };
 
+MathEditor.prototype.generateLatexButton_ = function() {
+    this.latexButton = $('<div class="matheditor-latexbutton"></div>').appendTo(this.container);
+    
+};
+
 MathEditor.prototype.insertMatrix_ = function() {
     MathQuill.setMatrixSize(this.form.rows.val(), this.form.cols.val());
     this.equation.mathquill('cmd', '\\matrix');
