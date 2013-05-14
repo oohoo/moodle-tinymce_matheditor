@@ -156,7 +156,6 @@ MathEditor.prototype.bindEvents_ = function() {
         });
     });
     this.equation.bind('input propertychange keyup', function(e) {
-        console.log('something changed');
         editor.updateLatex_();
     });
 };
