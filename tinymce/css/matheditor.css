@@ -34,7 +34,7 @@ body {
 }
 
 .matheditor-equation {
-    min-height: 70px;
+    min-height: 100px;
     width: 533px;
     border: 0;
     margin-top:10px;
@@ -56,7 +56,14 @@ body {
 
 .matheditor-latex {
     width: 533px;
-    min-height: 70px;
+    height: 40px;
+    resize: none;
+    border: 0;
+    padding-left: 5px;
+    padding-top: 5px;
+    outline: 0;
+    font-size: 12px;
+    border-top: 3px solid #D1D1D1;
 }
 
 .matheditor-form {
