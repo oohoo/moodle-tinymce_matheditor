@@ -87,6 +87,7 @@ MathEditor.prototype.generatePanes_ = function() {
         });
     });
     this.content[0].pane.show();
+    this.content[0].dom.addClass('matheditor-tabs-active');
 };
 
 MathEditor.prototype.generateMatrixInput_ = function() {
@@ -129,6 +130,7 @@ MathEditor.prototype.bindEvents_ = function() {
     $(this.content).each(function(index, tab) {
         tab.dom.mouseover(function() {
             editor.hidePanes_();
+            tab.dom.addClass('matheditor-tabs-active');
             tab.pane.show();
         });
         $(tab.buttons).each(function(buttonIndex, button) {
@@ -166,6 +168,7 @@ MathEditor.prototype.updateLatex_ = function() {
 
 MathEditor.prototype.hidePanes_ = function() {
     $(this.content).each(function(index, tab) {
+        tab.dom.removeClass('matheditor-tabs-active');
         tab.pane.hide();
     });
 };

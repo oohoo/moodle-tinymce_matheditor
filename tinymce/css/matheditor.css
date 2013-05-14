@@ -5,7 +5,7 @@ body {
 }
 
 .matheditor-tabs {
-    background-color: #C0C0C0;
+    background-color: #F2F2F2;
 }
 
 .matheditor-tabs ul {
@@ -17,24 +17,34 @@ body {
 .matheditor-tabs li {
     display: inline;
     padding: 0 5px;
-    color: #FFFFFF;
     cursor: pointer;
+    font-size: 12px;
+}
+
+.matheditor-tabs-active {
+    background-color: #D1D1D1;
 }
 
 .matheditor-pane {
-    background-color: #C0C0C0;
+    background-color: #F2F2F2;
     height: 90px;
+    -webkit-box-shadow: 0px 2px 5px 2px rgba(209, 209, 209, 1);
+    box-shadow: 0px 2px 5px 2px rgba(209, 209, 209, 1);
+    padding: 5px;
 }
 
 .matheditor-equation {
     min-height: 70px;
-    width: 534px;
+    width: 533px;
     border: 0;
+    margin-top:10px;
+    outline: 0;
+    padding-left:5px;
 }
 
 .matheditor-pane button {
     background-color: transparent;
-    border: 1px solid #C0C0C0;
+    border: 1px solid #F2F2F2;
     cursor: pointer;
     height: 25px;
     min-width: 25px;
@@ -45,7 +55,7 @@ body {
 }
 
 .matheditor-latex {
-    width: 534px;
+    width: 533px;
     min-height: 70px;
 }
 
