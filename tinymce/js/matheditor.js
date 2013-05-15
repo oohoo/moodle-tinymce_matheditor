@@ -12,28 +12,71 @@
  * *************************************************************************
  * ************************************************************************ */
 
+/**
+ * Useful MathQuill API documentation: https://github.com/mathquill/mathquill
+ */
+
+/**
+ * Constructor for the {@code MathEditor} widget.
+ *
+ * @param container the container identifier, will append the widget into this container
+ */
 MathEditor = function(container) {
     this.container = $(container);
     this.editor = tinymce.activeEditor;
     this.initialized = false;
+    this.decorate_();
 };
 
+/**
+ * Constructor for the {@code Button} object which are used as different mathematical operators
+ * to be inserted into the equation.
+ *
+ * @param name the name of the button, shown in the form of a tooltip
+ * @param display the icon shown on the button itself
+ * @param latex the latex command corresponding to the button
+ */
 MathEditor.Button = function(name, display, latex) {
     this.name = name;
     this.display = display;
     this.latex = latex;
 };
 
+/**
+ * Factory method to create a generic button with a LaTeX command. Will simply use the
+ * {@code mathquill('write', latex)} API call to MathQuill when inserting the value in the
+ * equation.
+ *
+ * @param name the name of the button, shown in the form of a tooltip
+ * @param display the icon shown on the button itself
+ * @param latex the latex command corresponding to the button
+ */
 MathEditor.B = function(name, display, latex) {
     return new MathEditor.Button(name, display, latex);
 };
 
+/**
+ * Factory method to create a generic button with a MathQuill command. Will simply use the
+ * {@code mathquill('cmd', cmd)} API call to MathQuill when inserting the value in the equation.
+ *
+ * @param name the name of the button, shown in the form of a tooltip
+ * @param display the icon shown on the button itself
+ * @param cmd the MathQuill command corresponding to the button
+ */
 MathEditor.BC = function(name, display, cmd) {
     var button = new MathEditor.Button(name, display, null);
     button.cmd = cmd;
     return button;
 };
 
+/**
+ * Factory method to create a generic button that will prompt the user to specify a matrix size
+ * first before making a call to the MathQuill API.
+ *
+ * @param name the name of the button, shown in the form of a tooltip
+ * @param display the icon shown on the button itself
+ * @param cmd the MathQuill command corresponding to the button
+ */
 MathEditor.BM = function(name, display, cmd) {
     var button = new MathEditor.Button(name, display, null);
     button.cmd = cmd;
@@ -41,33 +84,56 @@ MathEditor.BM = function(name, display, cmd) {
     return button;
 };
 
+/**
+ * Constructor for the {@code Tab} object. This is simply a grouping of buttons that correspond to
+ * a particular category and consequently a tab in the widget.
+ *
+ * @param name the name of the tab, shown at the top of the widget
+ * @param buttons the set of buttons corresponding to this tab
+ */
 MathEditor.Tab = function(name, buttons) {
     this.name = name;
     this.buttons = buttons;
 };
 
+/**
+ * Convenience factory method for the {@code Tab} object.
+ *
+ * @param name the name of the tab, shown at the top of the widget
+ * @param buttons the set of buttons corresponding to this tab
+ */
 MathEditor.T = function(name, buttons) {
     return new MathEditor.Tab(name, buttons);
 };
 
-MathEditor.prototype.decorate = function() {
+/**
+ * Decorates the specified container with the widget. Generates all of the DOM nodes and appends
+ * them to this container.
+ *
+ * @private
+ */
+MathEditor.prototype.decorate_ = function() {
     this.generateTabs_();
     this.generatePanes_();
     this.generateMatrixInput_();
 
     // Equation field
-    this.equation = $('<span class="matheditor-equation mathquill-editable"></span>').appendTo(this.container);
+    this.equation = $('<span class="matheditor-equation mathquill-editable"></span>')
+            .appendTo(this.container);
 
     // Latex Field
     this.latex = $('<textarea class="matheditor-latex"></textarea>').appendTo(this.container);
     this.latex.hide();
-
     this.generateLatexButton_();
 
     this.bindEvents_();
-    this.initialized = true;
 };
 
+/**
+ * Generates the top category tabs across the top of the widget.
+ *
+ * @private
+ */
 MathEditor.prototype.generateTabs_ = function() {
     var editor = this;
     var tabList = $('<div class="matheditor-tabs"><ul></ul></div>').appendTo(this.container);
@@ -76,6 +142,11 @@ MathEditor.prototype.generateTabs_ = function() {
     });
 };
 
+/**
+ * Generates the panes for each category and the buttons within each.
+ *
+ * @private
+ */
 MathEditor.prototype.generatePanes_ = function() {
     var editor = this;
     $(this.content).each(function(index, tab) {
@@ -90,35 +161,124 @@ MathEditor.prototype.generatePanes_ = function() {
             }
         });
     });
+    // Activate the first tab
     this.content[0].pane.show();
     this.content[0].dom.addClass('matheditor-tabs-active');
 };
 
+/**
+ * Generates the matrix parameter input form (rows and columns prompt).
+ *
+ * @private
+ */
 MathEditor.prototype.generateMatrixInput_ = function() {
     this.form = $('<div class="matheditor-form"></div>').appendTo(this.container);
-    this.form.click(function(e) {
-        e.stopPropagation();
-    });
     this.form.append('Rows: ');
-    this.form.rows = $('<input type="number" min="1" class="matheditor-form-number" value="1">').appendTo(this.form);
+    this.form.rows = $('<input type="number" min="1" class="matheditor-form-number" value="1">')
+            .appendTo(this.form);
     this.form.append('<br/>Columns: ');
-    this.form.cols = $('<input type="number" min="1" class="matheditor-form-number" value="1">').appendTo(this.form);
+    this.form.cols = $('<input type="number" min="1" class="matheditor-form-number" value="1">')
+            .appendTo(this.form);
     this.form.append('<br/>');
-    var button = $('<button>' + this.editor.getLang('matheditor.create') + '</button>').appendTo(this.form);
-    var self = this;
-    button.click(function(e) {
-        e.stopPropagation();
-        self.form.hide();
-        self.insertMatrix_();
-    });
+    this.form.button = $('<button>' + this.editor.getLang('matheditor.create') + '</button>')
+            .appendTo(this.form);
     this.form.hide();
 };
 
+/**
+ * Generates the LaTeX toggle button in the bottom right of the widget, this button is used to
+ * toggle the LaTeX text box.
+ *
+ * @private
+ */
 MathEditor.prototype.generateLatexButton_ = function() {
     var self = this;
     var footerDiv = $('<div class="matheditor-latexbutton"></div>').appendTo(this.container);
     this.latexButton = $('<div>' + this.editor.getLang('matheditor.latex')
             + ' <input type="checkbox"></div>').appendTo(footerDiv);
+};
+
+/**
+ * Inserts a matrix into the equation, this is triggered after the user has entered the matrix
+ * parameters.
+ *
+ * @private
+ */
+MathEditor.prototype.insertMatrix_ = function() {
+    // Because of the way MathQuill is built, all the commands are static. Therefore the command
+    // must be redefined everytime the matrix size changes, the following call does this.
+    // See the comments in the publicapi.js file within the submoduled MathQuill project.
+    MathQuill.setMatrixSize(this.form.rows.val(), this.form.cols.val());
+    this.equation.mathquill('cmd', '\\matrix');
+    this.updateLatex_();
+};
+
+/**
+ * Resets the Matrix size input form to the default 2x2 size.
+ *
+ * @private
+ */
+MathEditor.prototype.matrixInputReset_ = function() {
+    this.form.rows.val(2);
+    this.form.cols.val(2);
+};
+
+/**
+ * Binds all of the events for the widget.
+ *
+ * @private
+ */
+MathEditor.prototype.bindEvents_ = function() {
+    var self = this;
+    // Matrix Input Form Events
+    $('html').click(function() {
+        self.form.hide();
+    });
+    this.form.click(function(e) {
+        e.stopPropagation();
+    });
+    this.form.button.click(function(e) {
+        e.stopPropagation();
+        self.form.hide();
+        self.insertMatrix_();
+    });
+
+    // Tabs and button events
+    $(this.content).each(function(index, tab) {
+        tab.dom.mouseover(function() {
+            self.hidePanes_();
+            tab.dom.addClass('matheditor-tabs-active');
+            tab.pane.show();
+        });
+        $(tab.buttons).each(function(buttonIndex, button) {
+            button.dom.click(function(e) {
+                if (button.matrix) {
+                    e.stopPropagation();
+                    self.activeMatrix = button;
+                    self.matrixInputReset_();
+                    self.form.css({
+                        top: button.dom.offset().top + 15,
+                        left: button.dom.offset().left + 15
+                    });
+                    self.form.toggle();
+                } else {
+                    if (button.cmd != null) {
+                        self.equation.mathquill('cmd', button.cmd);
+                    } else {
+                        self.equation.mathquill('write', button.latex);
+                    }
+                    self.updateLatex_();
+                }
+            });
+        });
+    });
+
+    // Equation box events
+    this.equation.bind('input propertychange keyup', function(e) {
+        self.updateLatex_();
+    });
+
+    // LaTeX button events
     this.latexButton.click(function(e) {
         self.latex.toggle();
         var checkbox = self.latexButton.find(':checkbox');
@@ -130,61 +290,22 @@ MathEditor.prototype.generateLatexButton_ = function() {
     });
 };
 
-MathEditor.prototype.insertMatrix_ = function() {
-    MathQuill.setMatrixSize(this.form.rows.val(), this.form.cols.val());
-    this.equation.mathquill('cmd', '\\matrix');
-    this.updateLatex_();
-};
-
-MathEditor.prototype.matrixInputReset_ = function() {
-    this.form.rows.val(1);
-    this.form.cols.val(1);
-};
-
-MathEditor.prototype.bindEvents_ = function() {
-    var editor = this;
-    $('html').click(function() {
-        editor.form.hide();
-    });
-
-    $(this.content).each(function(index, tab) {
-        tab.dom.mouseover(function() {
-            editor.hidePanes_();
-            tab.dom.addClass('matheditor-tabs-active');
-            tab.pane.show();
-        });
-        $(tab.buttons).each(function(buttonIndex, button) {
-            button.dom.click(function(e) {
-                if (button.matrix) {
-                    e.stopPropagation();
-                    editor.activeMatrix = button;
-                    editor.matrixInputReset_();
-                    editor.form.css({
-                        top: button.dom.offset().top + 15,
-                        left: button.dom.offset().left + 15
-                    });
-                    editor.form.toggle();
-                } else {
-                    if (button.cmd != null) {
-                        editor.equation.mathquill('cmd', button.cmd);
-                    } else {
-                        editor.equation.mathquill('write', button.latex);
-                    }
-                    editor.updateLatex_();
-                }
-            });
-        });
-    });
-    this.equation.bind('input propertychange keyup', function(e) {
-        editor.updateLatex_();
-    });
-};
-
+/**
+ * Refreshes the LaTeX textbox with the latest LaTeX code from the equation pane. Uses the
+ * {@code mathquill('latex')} API call.
+ *
+ * @private
+ */
 MathEditor.prototype.updateLatex_ = function() {
     this.latex.text('');
     this.latex.text(this.equation.mathquill('latex'));
 };
 
+/**
+ * Hides all the button panes.
+ *
+ * @private
+ */
 MathEditor.prototype.hidePanes_ = function() {
     $(this.content).each(function(index, tab) {
         tab.dom.removeClass('matheditor-tabs-active');
@@ -192,12 +313,15 @@ MathEditor.prototype.hidePanes_ = function() {
     });
 };
 
-MathEditor.prototype.checkInitialized_ = function() {
-    if(!this.initialized) {
-        throw "decorate() must be called before running this operation"
-    }
-};
-
+/**
+ * Category and button definitions. Change this to add or remove buttons or categories. Refer
+ * to the following factory method definitions for more information:
+ * <ul>
+ * <li>{@code MathEditor.T} - Tab
+ * <li>{@code MathEditor.B} - Generic LaTeX button
+ * <li>{@code MathEditor.BC} - Generic MathQuill button
+ * <li>{@code MathEditor.BM} - Generic Matrix button
+ */
 MathEditor.prototype.content = [
     MathEditor.T('matheditor.general', [
         MathEditor.B('matheditor.comma', ',', ','),
@@ -274,7 +398,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.psi', '&#x03C8', '\\psi'),
         MathEditor.B('matheditor.omega', '&#x03C9', '\\omega'),
 
-        // Lower Case
+        // Upper Case
         MathEditor.B('matheditor.alpha_uppercase', '&#x0391', 'A'),
         MathEditor.B('matheditor.beta_uppercase', '&#x0392', 'B'),
         MathEditor.B('matheditor.gamma_uppercase', '&#x0393', '\\Gamma'),

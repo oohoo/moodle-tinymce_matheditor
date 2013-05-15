@@ -48,7 +48,6 @@ header('X-UA-Compatible: IE=edge');
     <script type="text/javascript">
     (function() {
         var editor = new MathEditor('#editor');
-        editor.decorate();
     })();
     </script>
 </body>
