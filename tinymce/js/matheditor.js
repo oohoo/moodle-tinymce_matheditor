@@ -193,9 +193,13 @@ MathEditor.prototype.generateMatrixInput_ = function() {
  */
 MathEditor.prototype.generateLatexButton_ = function() {
     var self = this;
-    var footerDiv = $('<div class="matheditor-latexbutton"></div>').appendTo(this.container);
-    this.latexButton = $('<div>' + this.editor.getLang('matheditor.latex')
-            + ' <input type="checkbox"></div>').appendTo(footerDiv);
+    var footerDiv = $('<div class="matheditor-buttons"></div>').appendTo(this.container);
+    var footerTable = $('<table></table>').appendTo(footerDiv);
+    var footerRow = $('<tr></tr>').appendTo(footerTable);
+    this.latexButton = $('<td><div class="matheditor-buttons-latex">' + this.editor.getLang('matheditor.latex')
+            + ' <input type="checkbox"></div></td>').appendTo(footerRow);
+    this.insertButton = $('<td><div class="matheditor-buttons-insert"><button>'
+            + this.editor.getLang('matheditor.insert') + '</button></div></td>').appendTo(footerRow);
 };
 
 /**
@@ -287,6 +291,12 @@ MathEditor.prototype.bindEvents_ = function() {
         } else {
             checkbox.prop('checked', false);
         }
+    });
+
+    // Insert TinyMCE content
+    this.insertButton.click(function() {
+        self.editor.execCommand('mathEditorInsert', self.equation.mathquill('latex'));
+        tinyMCEPopup.close();
     });
 };
 

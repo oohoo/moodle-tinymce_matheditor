@@ -12,7 +12,7 @@
  * *************************************************************************
  * ************************************************************************ */
 
-body {
+html, body {
     font-family: sans-serif;
     padding:0;
     margin:0;
@@ -83,27 +83,47 @@ body {
     border-top: 3px solid #D1D1D1;
 }
 
-.matheditor-latexbutton {
+.matheditor-buttons {
     width: 540px;
     font-size: 12px;
     text-align: center;
     position: absolute;
     bottom: 0;
+    vertical-align: bottom;
 }
 
-.matheditor-latexbutton div {
-    float: right;
+.matheditor-buttons table {
+    width: 100%;
+}
+
+.matheditor-buttons td {
+    vertical-align: baseline;
+}
+
+.matheditor-buttons-latex {
+    float: left;
     background-color: #F2F2F2;
     padding-left: 5px;
-    -webkit-border-radius: 5px 0px 0px 0px;
-    border-radius: 5px 0px 0px 0px;
+    -webkit-border-radius: 0px 5px 0px 0px;
+    border-radius: 0px 5px 0px 0px;
     cursor: pointer;
+    margin-left: -3px;
+    margin-bottom: -3px;
 }
 
-.matheditor-latexbutton input {
+.matheditor-buttons-latex input {
     padding: 0;
     margin: 0;
     vertical-align: bottom;
+}
+
+.matheditor-buttons-insert {
+    float: right;
+    background-color: #F2F2F2;
+    -webkit-border-radius: 5px 0px 0px 0px;
+    border-radius: 5px 0px 0px 0px;
+    margin-right: -3px;
+    margin-bottom: -3px;
 }
 
 .matheditor-form {

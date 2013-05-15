@@ -22,6 +22,7 @@ $string['matheditor:desc'] = 'Math Editor';
 $string['matheditor:description'] = 'Math Editor';
 $string['matheditor:general'] = 'General';
 $string['matheditor:greek'] = 'Greek';
+$string['matheditor:insert'] = 'Insert';
 $string['matheditor:latex'] = 'LaTeX';
 $string['matheditor:miscellaneous'] = 'Miscellaneous';
 $string['matheditor:operators'] = 'Operators';

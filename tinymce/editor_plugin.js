@@ -46,6 +46,18 @@
                 cmd : 'mceMathEditor',
                 image : url + '/img/icon.gif'
             });
+
+            // Generate an image from the supplied latex and insert it into the tinyMCE document
+            editor.addCommand('mathEditorInsert', function(latex) {
+                if (!latex) return;
+                //var content = '<img class="rendered-latex" '
+                //    + 'style="vertical-align:middle" '
+                //    + 'src="' + latexImgRendererUrlTempl.replace('*', latex) + '" '
+                //    + 'alt="' + latex + '"/>';
+
+                var content = '$$' + latex + '$$';
+                editor.selection.setContent(content);
+            });
         },
 
         /**
