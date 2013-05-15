@@ -13,6 +13,15 @@
  * ************************************************************************ */
 
 (function() {
+    var updateEventHandlers = function(editor) {
+        // Initialize event-handlers for all math elements
+        Y.one(editor.getDoc()).all('div.matheditor').on('click', function(e) {
+            var latex = this.getHTML().toString().replace(/\$\$/g,''); // Remove $ signs
+            console.log(latex);
+            editor.execCommand('mceMathEditor', latex);
+        });
+    };
+
     tinymce.create('tinymce.plugins.MathEditorPlugin', {
 
         /**
@@ -26,7 +35,7 @@
             lang = tinymce.activeEditor.getParam('language');
 
             // Event handler for the dialog box opening action
-            editor.addCommand('mceMathEditor', function() {
+            editor.addCommand('mceMathEditor', function(latex) {
                 editor.windowManager.open({
                     file : editor.getParam("moodle_plugin_base") + 'matheditor/matheditor.php?lang=' + lang,
                     width : 540,
@@ -55,8 +64,18 @@
                 //    + 'src="' + latexImgRendererUrlTempl.replace('*', latex) + '" '
                 //    + 'alt="' + latex + '"/>';
 
-                var content = '$$' + latex + '$$';
+                var content = '<div class="matheditor">$$' + latex + '$$</div>';
                 editor.selection.setContent(content);
+                
+                updateEventHandlers(editor);
+            });
+
+            // Recognize that a user has clicked on the image, and pop-up the mathquill dialog box
+            editor.onInit.add(function() {
+                updateEventHandlers(editor);
+                //Y.one(editor.getDoc()).on('click', 'span.matheditor', function() {
+                //    editor.execCommand('mceMathquill', 'bla');
+                //});
             });
         },
 
