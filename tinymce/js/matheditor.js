@@ -57,10 +57,12 @@ MathEditor.prototype.decorate = function() {
 
     // Equation field
     this.equation = $('<span class="matheditor-equation mathquill-editable"></span>').appendTo(this.container);
-    this.generateLatexButton_();
 
     // Latex Field
     this.latex = $('<textarea class="matheditor-latex"></textarea>').appendTo(this.container);
+    this.latex.hide();
+
+    this.generateLatexButton_();
 
     this.bindEvents_();
     this.initialized = true;
@@ -114,13 +116,17 @@ MathEditor.prototype.generateMatrixInput_ = function() {
 
 MathEditor.prototype.generateLatexButton_ = function() {
     var self = this;
-    this.latexButton = $('<div class="matheditor-latexbutton">' + this.editor.getLang('matheditor.latex')
-            + '</div>').appendTo(this.container);
-    this.latexButton.click(function() {
+    var footerDiv = $('<div class="matheditor-latexbutton"></div>').appendTo(this.container);
+    this.latexButton = $('<div>' + this.editor.getLang('matheditor.latex')
+            + ' <input type="checkbox"></div>').appendTo(footerDiv);
+    this.latexButton.click(function(e) {
         self.latex.toggle();
-        self.equation.css({
-            height: '130px'
-        })
+        var checkbox = self.latexButton.find(':checkbox');
+        if(self.latex.is(':visible')) {
+            checkbox.prop('checked', true);
+        } else {
+            checkbox.prop('checked', false);
+        }
     });
 };
 
