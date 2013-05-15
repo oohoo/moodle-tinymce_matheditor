@@ -8,7 +8,7 @@ NodeJS and Node Package Manager, follow instructions stated here:
 
 ### Installation instructions:
 
-1. Clone the repository
+1. Clone the repository into the `moodle_root/lib/editors/tinymce/plugins/matheditor` folder
 2. Within the main repository directory, fetch the submodule
     `git submodule init`
 3. Update the submodule
