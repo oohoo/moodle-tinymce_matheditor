@@ -66,13 +66,11 @@
                 //    + 'src="' + latexRenderer + latex + '" '
                 //    + 'alt="' + latex + '"/>';
                 var selection = Y.one(editor.selection.getNode());
-                console.log(selection.get('class'));
                 if(selection.hasClass('matheditor')) {
                     selection.remove();
                 }
 
                 var content = '<div class="matheditor">$$' + latex + '$$</div>';
-                console.log(editor.selection);
                 editor.selection.setContent(content);
                 
                 updateEventHandlers(editor);
