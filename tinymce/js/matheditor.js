@@ -324,6 +324,19 @@ MathEditor.prototype.hidePanes_ = function() {
 };
 
 /**
+ * Sets the active equation to the LaTeX value given.
+ *
+ * @param latex the equation latex string
+ */
+MathEditor.prototype.setLatex = function(latex) {
+    if(latex != '') {
+        console.log(latex);
+        this.equation.mathquill('write', latex);
+        this.updateLatex_();
+    }
+};
+
+/**
  * Category and button definitions. Change this to add or remove buttons or categories. Refer
  * to the following factory method definitions for more information:
  * <ul>

@@ -48,6 +48,10 @@ header('X-UA-Compatible: IE=edge');
     <script type="text/javascript">
     (function() {
         var editor = new MathEditor('#editor');
+        $(document).ready(function() {
+            var latex = tinyMCEPopup.getWindowArg('latex');
+            editor.setLatex(latex);
+        });
     })();
     </script>
 </body>

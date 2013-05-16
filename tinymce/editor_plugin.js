@@ -17,10 +17,11 @@
         // Initialize event-handlers for all math elements
         Y.one(editor.getDoc()).all('div.matheditor').on('click', function(e) {
             var latex = this.getHTML().toString().replace(/\$\$/g,''); // Remove $ signs
-            console.log(latex);
             editor.execCommand('mceMathEditor', latex);
         });
     };
+
+    var latexRenderer = 'http://www.tabuleiro.com/cgi-bin/mathtex.cgi?';
 
     tinymce.create('tinymce.plugins.MathEditorPlugin', {
 
@@ -44,6 +45,7 @@
                     popup_css : false
                 }, {
                     plugin_url : url, // Plugin absolute URL
+                    latex : latex
                 });
             });
 
@@ -59,12 +61,18 @@
             // Generate an image from the supplied latex and insert it into the tinyMCE document
             editor.addCommand('mathEditorInsert', function(latex) {
                 if (!latex) return;
-                //var content = '<img class="rendered-latex" '
+                //var content = '<img class="matheditor" '
                 //    + 'style="vertical-align:middle" '
-                //    + 'src="' + latexImgRendererUrlTempl.replace('*', latex) + '" '
+                //    + 'src="' + latexRenderer + latex + '" '
                 //    + 'alt="' + latex + '"/>';
+                var selection = Y.one(editor.selection.getNode());
+                console.log(selection.get('class'));
+                if(selection.hasClass('matheditor')) {
+                    selection.remove();
+                }
 
                 var content = '<div class="matheditor">$$' + latex + '$$</div>';
+                console.log(editor.selection);
                 editor.selection.setContent(content);
                 
                 updateEventHandlers(editor);
@@ -73,9 +81,6 @@
             // Recognize that a user has clicked on the image, and pop-up the mathquill dialog box
             editor.onInit.add(function() {
                 updateEventHandlers(editor);
-                //Y.one(editor.getDoc()).on('click', 'span.matheditor', function() {
-                //    editor.execCommand('mceMathquill', 'bla');
-                //});
             });
         },
 
