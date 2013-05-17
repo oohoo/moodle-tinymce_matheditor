@@ -361,6 +361,9 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.curly_braces', '{&#x25A1}', '\\left\\{ \\right\\}'),
         MathEditor.B('matheditor.angle_braces', '&#x27E8&#x25A1&#x27E9', '\\left\\langle \\right\\rangle'),
         // MathEditor.B('matheditor.doubleabsolute_braces', '&#x2225 &#x2225', '\\left\\| \\right\\|') BROKEN
+        MathEditor.B('matheditor.sin', 'sin', '\\sin'),
+        MathEditor.B('matheditor.cos', 'cos', '\\cos'),
+        MathEditor.B('matheditor.tan', 'tan', '\\tan'),
     ]),
     MathEditor.T('matheditor.operators', [
         MathEditor.B('matheditor.plus', '+', '+'),
@@ -371,8 +374,14 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.plus_minus', '±', '\\pm'),
         MathEditor.B('matheditor.equal', '=', '='),
         MathEditor.B('matheditor.definition', '&#x2255', '≔'),
+        MathEditor.B('matheditor.factorial', '!', '!'),
+        MathEditor.B('matheditor.minus_plus', '&#x2213', '\\mp'),
+        MathEditor.B('matheditor.not_equal', '&#x2260', '\\neq'),
+        MathEditor.B('matheditor.asymptotically_equal', '&#x2243', '\\simeq'),
         MathEditor.B('matheditor.square_root', '&#x221A', '\\sqrt{}'),
+        MathEditor.B('matheditor.square_root_power', '<sup>&#x25A1</sup>&#x221A', '\\sqrt[{}]{}'),
         MathEditor.B('matheditor.ceiling', '&#x2308&#x25A1&#x2309', '\\left\\lceil \\right\\rceil'),
+        MathEditor.B('matheditor.floor', '&#x230A&#x25A1&#x230B', '\\left\\lfloor \\right\\rfloor'),
         MathEditor.B('matheditor.sum', '&#x2211', '\\sum'),
         MathEditor.B('matheditor.product', '&#x220F', '\\prod'),
         MathEditor.B('matheditor.coproduct', '&#x2210', '\\coprod'),
@@ -380,17 +389,12 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.less_equal', '&#x2264', '\\le'),
         MathEditor.B('matheditor.greater', '>', '>'),
         MathEditor.B('matheditor.greater_equal', '&#x2265', '\\ge'),
-        MathEditor.B('matheditor.factorial', '!', '!'),
-        MathEditor.B('matheditor.minus_plus', '&#x2213', '\\mp'),
-        MathEditor.B('matheditor.not_equal', '&#x2260', '\\neq'),
-        MathEditor.B('matheditor.asymptotically_equal', '&#x2243', '\\simeq'),
-        MathEditor.B('matheditor.square_root_power', '<sup>&#x25A1</sup>&#x221A', '\\sqrt[{}]{}'),
-        MathEditor.B('matheditor.floor', '&#x230A&#x25A1&#x230B', '\\left\\lfloor \\right\\rfloor'),
     ]),
     MathEditor.T('matheditor.calculus', [
         MathEditor.B('matheditor.limit', 'lim', '\\lim'),
         MathEditor.B('matheditor.derivative', '<sup>d</sup>/<sub>dx</sub>', '\\frac{d}{dx}'),
-        MathEditor.B('matheditor.integral', '&#x222B', '\\int')
+        MathEditor.B('matheditor.integral', '&#x222B', '\\int^{}_{}'),
+        MathEditor.B('matheditor.integral_contour', '&#x222E', '\\oint^{}_{}')
     ]),
     MathEditor.T('matheditor.greek', [
         // Lower Case
