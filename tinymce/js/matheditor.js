@@ -61,10 +61,14 @@ MathEditor.B = function(name, display, latex) {
  *
  * @param name the name of the button, shown in the form of a tooltip
  * @param display the icon shown on the button itself
+ * @param prepend the latex command prepend, this will usually be something like '\\left('
+ * @param postpend the latex command postpend, this will usually be something like '\\right)'
  */
-MathEditor.BM = function(name, display) {
+MathEditor.BM = function(name, display, prepend, postpend) {
     var button = new MathEditor.Button(name, display, null);
     button.matrix = true;
+    button.prepend = prepend;
+    button.postpend = postpend;
     return button;
 };
 
@@ -193,7 +197,8 @@ MathEditor.prototype.generateLatexButton_ = function() {
  * @private
  */
 MathEditor.prototype.insertMatrix_ = function() {
-    var latex = '\\begin{matrix}';
+    var latex = this.activeMatrix.prepend;
+    latex += '\\begin{matrix}';
     for(var row = 0; row < this.form.rows.val(); row++) {
         // There are column-1 ampersands (since it is a delimiter)
         for(var col = 0; col < this.form.cols.val() - 1; col++) {
@@ -205,6 +210,7 @@ MathEditor.prototype.insertMatrix_ = function() {
         }
     }
     latex += '\\end{matrix}';
+    latex += this.activeMatrix.postpend;
     this.equation.mathquill('write', latex);
     this.updateLatex_();
 };
@@ -439,8 +445,14 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.psi_uppercase', '&#x03A8', '\\Psi'),
         MathEditor.B('matheditor.omega_uppercase', '&#x03A9', '\\Omega'),
     ]),
-    MathEditor.T('matheditor.algebra', [
-        MathEditor.BM('matheditor.matrix_square', 'Matrix', '\\begin{array}&\\&\\&'),
+    MathEditor.T('matheditor.matrix', [
+        MathEditor.BM('matheditor.matrix', '&#x25A1 &#x25A1<br/>&#x25A1 &#x25A1', '', ''),
+        MathEditor.BM('matheditor.matrix_parenthesis', '&#x239B &#x25A1 &#x25A1 &#x239E<br/>'
+            + '&#x239D &#x25A1 &#x25A1 &#x23A0', '\\left(', '\\right)'),
+        MathEditor.BM('matheditor.matrix_bracket', '&#x23A1 &#x25A1 &#x25A1 &#x23A4<br/>'
+            + '&#x23A3 &#x25A1 &#x25A1 &#x23A6', '\\left[', '\\right]'),
+        MathEditor.BM('matheditor.matrix_bar', '&#x23A2 &#x25A1 &#x25A1 &#x23A5<br/>'
+            + '&#x23A2 &#x25A1 &#x25A1 &#x23A5', '\\left|', '\\right|'),
     ]),
     MathEditor.T('matheditor.miscellaneous', [
         MathEditor.B('matheditor.infinity', '&#x221E', '\\infty'),

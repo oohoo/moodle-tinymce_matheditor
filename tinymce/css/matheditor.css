@@ -63,7 +63,7 @@ html, body {
     background-color: transparent;
     border: 1px solid #F2F2F2;
     cursor: pointer;
-    height: 25px;
+    min-height: 25px;
     min-width: 25px;
 }
 
