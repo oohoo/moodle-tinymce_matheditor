@@ -56,30 +56,14 @@ MathEditor.B = function(name, display, latex) {
 };
 
 /**
- * Factory method to create a generic button with a MathQuill command. Will simply use the
- * {@code mathquill('cmd', cmd)} API call to MathQuill when inserting the value in the equation.
- *
- * @param name the name of the button, shown in the form of a tooltip
- * @param display the icon shown on the button itself
- * @param cmd the MathQuill command corresponding to the button
- */
-MathEditor.BC = function(name, display, cmd) {
-    var button = new MathEditor.Button(name, display, null);
-    button.cmd = cmd;
-    return button;
-};
-
-/**
  * Factory method to create a generic button that will prompt the user to specify a matrix size
  * first before making a call to the MathQuill API.
  *
  * @param name the name of the button, shown in the form of a tooltip
  * @param display the icon shown on the button itself
- * @param cmd the MathQuill command corresponding to the button
  */
-MathEditor.BM = function(name, display, cmd) {
+MathEditor.BM = function(name, display) {
     var button = new MathEditor.Button(name, display, null);
-    button.cmd = cmd;
     button.matrix = true;
     return button;
 };
@@ -209,11 +193,19 @@ MathEditor.prototype.generateLatexButton_ = function() {
  * @private
  */
 MathEditor.prototype.insertMatrix_ = function() {
-    // Because of the way MathQuill is built, all the commands are static. Therefore the command
-    // must be redefined everytime the matrix size changes, the following call does this.
-    // See the comments in the publicapi.js file within the submoduled MathQuill project.
-    MathQuill.setMatrixSize(this.form.rows.val(), this.form.cols.val());
-    this.equation.mathquill('cmd', '\\matrix');
+    var latex = '\\begin{matrix}';
+    for(var row = 0; row < this.form.rows.val(); row++) {
+        // There are column-1 ampersands (since it is a delimiter)
+        for(var col = 0; col < this.form.cols.val() - 1; col++) {
+            latex += '&amp;';
+        }
+        // Same idea as the ampersand, the backslashes are only used as delimiters
+        if(row != (this.form.rows.val() -1)) {
+            latex += '\\\\';
+        }
+    }
+    latex += '\\end{matrix}';
+    this.equation.mathquill('write', latex);
     this.updateLatex_();
 };
 
@@ -361,7 +353,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.log', 'log', '\\log{}'),
         MathEditor.B('matheditor.logbase', 'log&#x25A1', '\\log_{}'),
         MathEditor.B('matheditor.curly_braces', '{ }', '\\left\\{ \\right\\}'),
-        MathEditor.BC('matheditor.angle_braces', '&#x27E8 &#x27E9', '\\langle'),
+        MathEditor.B('matheditor.angle_braces', '&#x27E8 &#x27E9', '\\left\\langle \\right\\rangle'),
         // MathEditor.B('matheditor.doubleabsolute_braces', '&#x2225 &#x2225', '\\left\\| \\right\\|') BROKEN
     ]),
     MathEditor.T('matheditor.operators', [
@@ -374,7 +366,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.equal', '=', '='),
         MathEditor.B('matheditor.definition', '&#x2255', '≔'),
         MathEditor.B('matheditor.square_root', '&#x221A', '\\sqrt{}'),
-        MathEditor.BC('matheditor.ceiling', '&#x2308 &#x2309', '\\lceil'),
+        MathEditor.B('matheditor.ceiling', '&#x2308 &#x2309', '\\left\\lceil \\right\\rceil'),
         MathEditor.B('matheditor.sum', '&#x2211', '\\sum'),
         MathEditor.B('matheditor.product', '&#x220F', '\\prod'),
         MathEditor.B('matheditor.coproduct', '&#x2210', '\\coprod'),
@@ -387,7 +379,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.not_equal', '&#x2260', '\\neq'),
         MathEditor.B('matheditor.asymptotically_equal', '&#x2243', '\\simeq'),
         MathEditor.B('matheditor.square_root_power', '<sup>&#x25A1</sup>&#x221A', '\\sqrt[{}]{}'),
-        MathEditor.BC('matheditor.floor', '&#x230A &#x230B', '\\lfloor'),
+        MathEditor.B('matheditor.floor', '&#x230A &#x230B', '\\left\\lfloor \\right\\rfloor'),
     ]),
     MathEditor.T('matheditor.calculus', [
         MathEditor.B('matheditor.limit', 'lim', '\\lim'),
