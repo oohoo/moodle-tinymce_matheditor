@@ -474,5 +474,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.dots_horizontal', '&#x22EF', '\\cdots'),
         MathEditor.B('matheditor.dots_vertical', '&#x22EE', '\\vdots'),
         MathEditor.B('matheditor.dots_diagonal', '&#x22F0', '\\ddots'),
+        MathEditor.B('matheditor.arrow_left', '&#x2190', '\\longleftarrow'),
+        MathEditor.B('matheditor.arrow_right', '&#x2192', '\\longrightarrow'),
     ]),
 ];
