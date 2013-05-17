@@ -184,10 +184,12 @@ MathEditor.prototype.generateLatexButton_ = function() {
     var footerDiv = $('<div class="matheditor-buttons"></div>').appendTo(this.container);
     var footerTable = $('<table></table>').appendTo(footerDiv);
     var footerRow = $('<tr></tr>').appendTo(footerTable);
-    this.latexButton = $('<td><div class="matheditor-buttons-latex">' + this.editor.getLang('matheditor.latex')
+    this.latexButton = $('<td><div class="matheditor-buttons-latex">' 
+            + this.editor.getLang('matheditor.latex')
             + ' <input type="checkbox"></div></td>').appendTo(footerRow);
     this.insertButton = $('<td><div class="matheditor-buttons-insert"><button>'
-            + this.editor.getLang('matheditor.insert') + '</button></div></td>').appendTo(footerRow);
+            + this.editor.getLang('matheditor.insert') + '</button></div></td>')
+        .appendTo(footerRow);
 };
 
 /**
@@ -202,7 +204,7 @@ MathEditor.prototype.insertMatrix_ = function() {
     for(var row = 0; row < this.form.rows.val(); row++) {
         // There are column-1 ampersands (since it is a delimiter)
         for(var col = 0; col < this.form.cols.val() - 1; col++) {
-            latex += '&amp;';
+            latex += '&';
         }
         // Same idea as the ampersand, the backslashes are only used as delimiters
         if(row != (this.form.rows.val() -1)) {

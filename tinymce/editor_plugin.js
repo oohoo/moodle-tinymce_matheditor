@@ -15,13 +15,30 @@
 (function() {
     var updateEventHandlers = function(editor) {
         // Initialize event-handlers for all math elements
-        Y.one(editor.getDoc()).all('div.matheditor').on('click', function(e) {
-            var latex = this.getHTML().toString().replace(/\$\$/g,''); // Remove $ signs
+        Y.one(editor.getDoc()).all('.matheditor').on('click', function(e) {
+            var latex = this.getAttribute('alt')[0];//.toString().replace(/\$\$/g,''); // Remove $ signs
             editor.execCommand('mceMathEditor', latex);
         });
     };
 
     var latexRenderer = 'http://www.tabuleiro.com/cgi-bin/mathtex.cgi?';
+
+    var imageUrl = function(latex) {
+        return '<img class="matheditor" '
+            + 'style="vertical-align:middle" '
+            + 'src="' + latexRenderer + latex + '" '
+            + 'alt="' + latex + '"/>';
+    };
+
+    var convertLatexToImage = function(editor, o) {
+        var equations = editor.dom.select('span.matheditor', o.node);
+        for(var i = 0; i < equations.length; i++) {
+            var equation = Y.one(equations[i]);
+            var latex = equation.getHTML().replace(/\$\$/g, '');
+            console.log(latex);
+            equation.replace(imageUrl(latex));
+        }
+    };
 
     tinymce.create('tinymce.plugins.MathEditorPlugin', {
 
@@ -61,19 +78,33 @@
             // Generate an image from the supplied latex and insert it into the tinyMCE document
             editor.addCommand('mathEditorInsert', function(latex) {
                 if (!latex) return;
-                //var content = '<img class="matheditor" '
-                //    + 'style="vertical-align:middle" '
-                //    + 'src="' + latexRenderer + latex + '" '
-                //    + 'alt="' + latex + '"/>';
+                var content = imageUrl(latex);
                 var selection = Y.one(editor.selection.getNode());
                 if(selection.hasClass('matheditor')) {
                     selection.remove();
                 }
 
-                var content = '<div class="matheditor">$$' + latex + '$$</div>';
+                //var content = '<div class="matheditor">$$' + latex + '$$</div>';
                 editor.selection.setContent(content);
                 
                 updateEventHandlers(editor);
+            });
+
+            // Replace LaTeX code with an image on editor load
+            editor.onLoadContent.add(convertLatexToImage);
+            editor.onSetContent.add(convertLatexToImage);
+
+            // Use mathquill-rendered-latex when getting the contents of the document
+            editor.onPreProcess.add(function(ed, o) {
+                if (o.get) {
+                    var equations = ed.dom.select('.matheditor', o.node);
+                    for(var i = 0; i < equations.length; i++) {
+                        var equation = Y.one(equations[i]);
+                        var latex = equation.getAttribute('alt');
+                        var content = '<span class="matheditor">$$' + latex + '$$</span>'
+                        equation.replace(content);
+                    }
+                }
             });
 
             // Recognize that a user has clicked on the image, and pop-up the mathquill dialog box
