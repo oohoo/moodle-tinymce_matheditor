@@ -9,6 +9,9 @@ RES_JS = ${RES}/js/mathquill.min.js
 RES_CSS = ${RES}/css/mathquill.css
 RES_FONT = ${RES}/css/font
 
+# Deploy file name
+DEPLOY_NAME = matheditor.zip
+
 all: ${RES_JS} ${RES_CSS} ${RES_FONT}
 
 # Copy the JS file
@@ -27,11 +30,15 @@ ${RES_FONT}: ${MATHQUILL_BUILD}/font
 ${MATHQUILL_BUILD}/mathquill.js: ${MATHQUILL}/src/css/* ${MATHQUILL}/src/* 
 	make -C ${MATHQUILL}
 
+# Creates a zip file ready for deployment
+deploy:
+	make clean
+	make all
+	zip -r ${DEPLOY_NAME} lang/* pix/* tinymce/* lib.php matheditor.php version.php
+
 clean:
 	make -C ${MATHQUILL} clean
 	rm -f ${RES_JS}
 	rm -f ${RES_CSS}
 	rm -f -r ${RES}/css/font
-
-# TODO
-deploy:
+	rm -f ${DEPLOY_NAME}
