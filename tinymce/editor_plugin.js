@@ -16,7 +16,7 @@
     var updateEventHandlers = function(editor) {
         // Initialize event-handlers for all math elements
         Y.one(editor.getDoc()).all('.matheditor').on('click', function(e) {
-            var latex = this.getAttribute('alt')[0];//.toString().replace(/\$\$/g,''); // Remove $ signs
+            var latex = this.getAttribute('alt')[0];
             editor.execCommand('mceMathEditor', latex);
         });
     };
@@ -34,7 +34,7 @@
         var equations = editor.dom.select('span.matheditor', o.node);
         for(var i = 0; i < equations.length; i++) {
             var equation = Y.one(equations[i]);
-            var latex = equation.getHTML().replace(/\$\$/g, '');
+            var latex = equation.getHTML().replace(/\\\(|\\\)/g, '');
             console.log(latex);
             equation.replace(imageUrl(latex));
         }
@@ -101,7 +101,7 @@
                     for(var i = 0; i < equations.length; i++) {
                         var equation = Y.one(equations[i]);
                         var latex = equation.getAttribute('alt');
-                        var content = '<span class="matheditor">$$' + latex + '$$</span>'
+                        var content = '<span class="matheditor">\\(' + latex + '\\)</span>'
                         equation.replace(content);
                     }
                 }
