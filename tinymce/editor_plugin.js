@@ -72,7 +72,7 @@
             editor.addButton('matheditor', {
                 title : 'matheditor:description',
                 cmd : 'mceMathEditor',
-                image : url + '/img/icon.gif'
+                image : url + '/img/icon.png'
             });
 
             // Generate an image from the supplied latex and insert it into the tinyMCE document
