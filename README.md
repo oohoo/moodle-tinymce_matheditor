@@ -67,3 +67,7 @@ For more details on how this is done, see the `editor_plugin.js` file.
 
 Another TinyMCE plugin which uses MathQuill:
 * https://github.com/laughinghan/tinymce_mathquill_plugin
+
+### Known Issues
+* Equations cannot be edited once they have been inserted into the TinyMCE text area on mobile devices. Unfortunately
+as far as I know, this is not something that can be fixed. Other plugins also have this same problem (images, links).
