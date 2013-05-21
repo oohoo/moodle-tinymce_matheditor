@@ -1,3 +1,8 @@
+# MathEditor
+For [Moodle](https://moodle.org) and [TinyMCE](http://www.tinymce.com/)
+
+![MathEditor](/image1.jpg "MathEditor")
+
 ### Prerequisites:
 
 NodeJS and Node Package Manager, follow instructions stated here:
@@ -5,6 +10,9 @@ NodeJS and Node Package Manager, follow instructions stated here:
 * https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager#ubuntu-mint
 
 **NOTE:** The Ubuntu repositories do not have the latest version of node, using `sudo apt-get` to retrieve these dependencies will not work!
+
+Moodle 2.5+
+* https://moodle.org
 
 ### Installation Instructions (FOR DEVELOPMENT):
 
