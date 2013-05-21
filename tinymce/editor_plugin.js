@@ -16,18 +16,27 @@
     var updateEventHandlers = function(editor) {
         // Initialize event-handlers for all math elements
         Y.one(editor.getDoc()).all('.matheditor').on('click', function(e) {
-            var latex = this.getAttribute('data')[0];
+            var latex = this.getAttribute('alt')[0];
             editor.execCommand('mceMathEditor', latex);
         });
     };
 
-    var convertLatexToMathJax = function(editor, o) {
+    var latexRenderer = 'http://www.tabuleiro.com/cgi-bin/mathtex.cgi?';
+
+    var imageUrl = function(latex) {
+        return '<img class="matheditor" '
+            + 'style="vertical-align:middle" '
+            + 'src="' + latexRenderer + latex + '" '
+            + 'alt="' + latex + '"/>';
+    };
+
+    var convertLatexToImage = function(editor, o) {
         var equations = editor.dom.select('span.matheditor', o.node);
         for(var i = 0; i < equations.length; i++) {
             var equation = Y.one(equations[i]);
-            var latex = equation.get('text').replace(/\\\(|\\\)/g, '');
-            equation.setAttribute('data', latex);
-            MathJax.Hub.Queue(['Typeset', MathJax.Hub, equations[i]]);
+            var latex = equation.getHTML().replace(/\\\(|\\\)/g, '');
+            console.log(latex);
+            equation.replace(imageUrl(latex));
         }
     };
 
@@ -66,40 +75,32 @@
                 image : url + '/img/icon.gif'
             });
 
-            // After insert hook
+            // Generate an image from the supplied latex and insert it into the tinyMCE document
             editor.addCommand('mathEditorInsert', function(latex) {
                 if (!latex) return;
-                var content = '<span class="matheditor" data="' + latex + '">\\(' + latex + '\\)</span>';
-
+                var content = imageUrl(latex);
                 var selection = Y.one(editor.selection.getNode());
-
                 if(selection.hasClass('matheditor')) {
                     selection.remove();
-                } else {
-                    var parent = selection.ancestor('.matheditor');
-                    if(parent != null) {
-                        parent.remove();
-                    }
                 }
 
+                //var content = '<div class="matheditor">$$' + latex + '$$</div>';
                 editor.selection.setContent(content);
-                MathJax.Hub.Queue(['Typeset', MathJax.Hub, editor.selection.getNode()]);
                 
                 updateEventHandlers(editor);
             });
 
-            // Post-load hooks
-            editor.onLoadContent.add(convertLatexToMathJax);
-            //editor.onSetContent.add(convertLatexToMathJax);
+            // Replace LaTeX code with an image on editor load
+            editor.onLoadContent.add(convertLatexToImage);
+            editor.onSetContent.add(convertLatexToImage);
 
-            // Pre-save hook
-            // Convert MathJax generated elements to simple LaTeX code for DB
+            // Use mathquill-rendered-latex when getting the contents of the document
             editor.onPreProcess.add(function(ed, o) {
                 if (o.get) {
                     var equations = ed.dom.select('.matheditor', o.node);
                     for(var i = 0; i < equations.length; i++) {
                         var equation = Y.one(equations[i]);
-                        var latex = equation.getAttribute('data');
+                        var latex = equation.getAttribute('alt');
                         var content = '<span class="matheditor">\\(' + latex + '\\)</span>'
                         equation.replace(content);
                     }
