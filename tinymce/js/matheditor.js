@@ -110,7 +110,8 @@ MathEditor.prototype.decorate_ = function() {
             .appendTo(this.container);
 
     // Latex Field
-    this.latex = $('<textarea class="matheditor-latex"></textarea>').appendTo(this.container);
+    this.latex = $('<textarea readonly class="matheditor-latex"></textarea>')
+            .appendTo(this.container);
     this.latex.hide();
     this.generateLatexButton_();
 
@@ -136,14 +137,16 @@ MathEditor.prototype.generateTabs_ = function() {
  * @private
  */
 MathEditor.prototype.generatePanes_ = function() {
-    var editor = this;
+    var self = this;
     $(this.content).each(function(index, tab) {
-        tab.pane = $('<div class="matheditor-pane"></div>').appendTo(editor.container);
+        tab.pane = $('<div class="matheditor-pane"></div>').appendTo(self.container);
         tab.pane.hide();
         $(tab.buttons).each(function(index, button) {
-            button.dom = $('<button title="'+ button.name +'"></button>').appendTo(tab.pane);
+            button.dom = $('<button title="'+ self.editor.getLang(button.name) +'"></button>')
+                    .appendTo(tab.pane);
             if(button.image != null) {
                 button.dom.append('<img src="tinymce/img/' + button.image + '"/>');
+
             } else {
                 button.dom.html(button.display);
             }
@@ -350,19 +353,18 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.comma', ',', ','),
         MathEditor.B('matheditor.subscript', '&#x2610<sub>&#x25A1</sub>', '{}_{}'),
         MathEditor.B('matheditor.superscript', '&#x2610<sup>&#x25A1</sup>', '{}^{}'),
-        MathEditor.B('matheditor.ln', 'ln', '\\ln{}'),
+        MathEditor.B('matheditor.natural_log', 'ln', '\\ln{}'),
         MathEditor.B('matheditor.exponential', 'e<sup>&#x25A1</sup>', 'e^{}'),
         MathEditor.B('matheditor.round_braces', '(&#x25A1)', '\\left( \\right)'),
         MathEditor.B('matheditor.square_braces', '[&#x25A1]', '\\left[ \\right]'),
         MathEditor.B('matheditor.absolute_braces', '|&#x25A1|', '\\left| \\right|'),
+        MathEditor.B('matheditor.curly_braces', '{&#x25A1}', '\\left\\{ \\right\\}'),
+        MathEditor.B('matheditor.angle_braces', '&#x27E8&#x25A1&#x27E9', '\\left\\langle \\right\\rangle'),
         MathEditor.B('matheditor.fraction', '<sup>&#x25A1</sup>/<sub>&#x25A1</sub>', '\\frac{}{}'),
         MathEditor.B('matheditor.vector', '&#x25A1&#x20D7', '\\vec{}'),
         MathEditor.B('matheditor.hat', '&#x25A1&#x0302', '\\hat{}'),
         MathEditor.B('matheditor.log', 'log', '\\log{}'),
         MathEditor.B('matheditor.logbase', 'log&#x25A1', '\\log_{}'),
-        MathEditor.B('matheditor.curly_braces', '{&#x25A1}', '\\left\\{ \\right\\}'),
-        MathEditor.B('matheditor.angle_braces', '&#x27E8&#x25A1&#x27E9', '\\left\\langle \\right\\rangle'),
-        // MathEditor.B('matheditor.doubleabsolute_braces', '&#x2225 &#x2225', '\\left\\| \\right\\|') BROKEN
         MathEditor.B('matheditor.sin', 'sin', '\\sin'),
         MathEditor.B('matheditor.cos', 'cos', '\\cos'),
         MathEditor.B('matheditor.tan', 'tan', '\\tan'),
