@@ -16,7 +16,7 @@ all: ${RES_JS} ${RES_CSS} ${RES_FONT}
 
 # Copy the JS file
 ${RES_JS}: ${MATHQUILL_BUILD}/mathquill.js
-	cp ${MATHQUILL_BUILD}/mathquill.js ${RES_JS}
+	cp ${MATHQUILL_BUILD}/mathquill.min.js ${RES_JS}
 
 # Copy the CSS file
 ${RES_CSS}:  ${MATHQUILL_BUILD}/mathquill.css
