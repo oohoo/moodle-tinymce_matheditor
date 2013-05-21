@@ -1,7 +1,7 @@
 # MathEditor
 For [Moodle](https://moodle.org) and [TinyMCE](http://www.tinymce.com/)
 
-![MathEditor](https://github.com/oohoo/moodle-tinymce_matheditor/image1.jpg "MathEditor")
+![MathEditor](https://github.com/oohoo/moodle-tinymce_matheditor/blob/master/image1.png?raw=true "MathEditor")
 
 ### Prerequisites:
 
