@@ -14,7 +14,7 @@ NodeJS and Node Package Manager, follow instructions stated here:
 
 **NOTE:** The Ubuntu repositories do not have the latest version of node, using `sudo apt-get` to retrieve these dependencies will not work!
 
-Moodle 2.5+
+Moodle 2.5+ (probably works in lower versions too, no testing has been done)
 * https://moodle.org
 
 ### Installation Instructions (FOR DEVELOPMENT):
