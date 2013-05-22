@@ -3,7 +3,8 @@ For [Moodle](https://moodle.org) and [TinyMCE](http://www.tinymce.com/)
 
 ![MathEditor](https://github.com/oohoo/moodle-tinymce_matheditor/blob/master/image1.png?raw=true "MathEditor")
 
-**Works best when paired with the [Moodle MathJax Filter](https://github.com/oohoo/moodle-filter_mathjax)**
+#### Works best when paired with the [Moodle MathJax Filter](https://github.com/oohoo/moodle-filter_mathjax)
+===
 
 ### Prerequisites:
 
