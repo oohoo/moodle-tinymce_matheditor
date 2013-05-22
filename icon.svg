@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="New document 1">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="158.47585"
+     inkscape:cy="597.10198"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1855"
+     inkscape:window-height="1056"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ffffff;stroke-width:9.89999961999999911;stroke-miterlimit:4;stroke-dasharray:none;opacity:0"
+       id="rect3763"
+       width="165.66502"
+       height="165.66502"
+       x="50.507629"
+       y="338.18433"
+       inkscape:export-filename="/home/rwainman/Pictures/icon.png"
+       inkscape:export-xdpi="16.299999"
+       inkscape:export-ydpi="16.299999" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:15.29646015;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 71.138581,432.81213 8.938989,-0.98494 18.666808,25.42318 -7.468532,-67.78211 102.156844,-11.2561"
+       id="path2985"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/rwainman/Pictures/icon.png"
+       inkscape:export-xdpi="16.299999"
+       inkscape:export-ydpi="16.299999" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="143.94675"
+       y="435.15897"
+       id="text3755"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3757"
+         x="143.94675"
+         y="435.15897"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Monospace;-inkscape-font-specification:Monospace" /></text>
+    <g
+       transform="matrix(0.80352776,-0.09679251,0.09679251,0.80352776,29.924429,81.137735)"
+       style="font-size:97.49369812px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       id="text3759"
+       inkscape:export-filename="/home/rwainman/Pictures/icon.png"
+       inkscape:export-xdpi="16.299999"
+       inkscape:export-ydpi="16.299999">
+      <path
+         d="m 126.91797,428.09943 -19.27976,25.94437 20.27945,27.37249 -10.33015,0 -15.51901,-20.94591 -15.519023,20.94591 -10.330143,0 20.70789,-27.89614 -18.946529,-25.42072 10.330143,0 14.138492,18.99413 14.13849,-18.99413 10.33015,0"
+         style="stroke:#000000;stroke-width:6.9000001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="path3785"
+         inkscape:connector-curvature="0" />
+    </g>
+  </g>
+</svg>
