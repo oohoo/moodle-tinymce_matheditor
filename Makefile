@@ -34,7 +34,15 @@ ${MATHQUILL_BUILD}/mathquill.js: ${MATHQUILL}/src/css/* ${MATHQUILL}/src/*
 deploy:
 	make clean
 	make all
-	zip -r ${DEPLOY_NAME} lang/* pix/* tinymce/* lib.php matheditor.php version.php
+	mkdir matheditor
+	cp -r lang matheditor
+	cp -r pix matheditor
+	cp -r tinymce matheditor
+	cp -r lib.php matheditor
+	cp -r matheditor.php matheditor
+	cp -r version.php matheditor
+	zip -r ${DEPLOY_NAME} matheditor
+	rm -f -r matheditor
 
 clean:
 	make -C ${MATHQUILL} clean
@@ -42,3 +50,4 @@ clean:
 	rm -f ${RES_CSS}
 	rm -f -r ${RES}/css/font
 	rm -f ${DEPLOY_NAME}
+	rm -f -r temp
