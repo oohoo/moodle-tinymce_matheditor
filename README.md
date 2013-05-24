@@ -6,7 +6,21 @@ For [Moodle](https://moodle.org) and [TinyMCE](http://www.tinymce.com/)
 #### Works best when paired with the [Moodle MathJax Filter](https://github.com/oohoo/moodle-filter_mathjax)
 ===
 
-### Prerequisites:
+# Installation
+
+1. Get the zip file `matheditor.zip`
+2. To install this file, upload the zip file in your Moodle plugin installation page as a **TinyMCE Plugin Type**
+    `http://moodle_root/admin/tool/installaddon/index.php`
+3. Navigate to the TinyMCE options within moodle (Site Administration->Plugins->Text Editors->
+   TinyMCE HTML Editor->General Settings)
+   `http://moodle_root/admin/settings.php?section=editorsettingstinymce`
+4. Ensure the MathEditor Plugin is enabled
+5. Add the MathEditor button to the editor by pasting the `matheditor` keyword within the "Editor Toolbar"
+   field. Ensure buttons are separated by commas and groups separated by `|`s.
+6. The MathEditor button should now have appeared within the editor and is ready to use.
+
+===
+### Prerequisites (FOR DEVELOPMENT):
 
 NodeJS and Node Package Manager, follow instructions stated here:
 
@@ -58,15 +72,6 @@ Moodle 2.5+ (probably works in lower versions too, no testing has been done)
 7. Deploy the project
     `make deploy`
 8. A zip file called `matheditor.zip` is created and is ready for distribution
-9. To install this file, upload the zip file in your Moodle plugin installation page as a **TinyMCE Plugin Type**
-    `http://moodle_root/admin/tool/installaddon/index.php`
-10. Navigate to the TinyMCE options within moodle (Site Administration->Plugins->Text Editors->
-   TinyMCE HTML Editor->General Settings)
-   `http://moodle_root/admin/settings.php?section=editorsettingstinymce`
-11. Ensure the MathEditor Plugin is enabled
-12. Add the MathEditor button to the editor by pasting the `matheditor` keyword within the "Editor Toolbar"
-   field. Ensure buttons are separated by commas and groups separated by `|`s.
-13. The MathEditor button should now have appeared within the editor and is ready to use.
 
 ### MathQuill
 
