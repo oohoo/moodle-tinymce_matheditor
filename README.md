@@ -3,8 +3,22 @@ For [Moodle](https://moodle.org) and [TinyMCE](http://www.tinymce.com/)
 
 ![MathEditor](https://github.com/oohoo/moodle-tinymce_matheditor/blob/master/image1.png?raw=true "MathEditor")
 
+## Installation
+
+1. Get the zip file `matheditor.zip` ([DOWNLOAD](http://dl.bintray.com/raywainman/generic/matheditor.zip?direct))
+2. To install this file, upload the zip file in your Moodle plugin installation page as a **TinyMCE Plugin Type**
+    `http://moodle_root/admin/tool/installaddon/index.php`
+3. Navigate to the TinyMCE options within moodle (Site Administration->Plugins->Text Editors->
+   TinyMCE HTML Editor->General Settings)
+   `http://moodle_root/admin/settings.php?section=editorsettingstinymce`
+4. Ensure the MathEditor Plugin is enabled
+5. Add the MathEditor button to the editor by pasting the `matheditor` keyword within the "Editor Toolbar"
+   field. Ensure buttons are separated by commas and groups separated by `|`s.
+6. The MathEditor button should now have appeared within the editor and is ready to use.
+
 #### Works best when paired with the [Moodle MathJax Filter](https://github.com/oohoo/moodle-filter_mathjax)
-===
+
+## Development
 
 ### Prerequisites:
 
@@ -17,7 +31,7 @@ NodeJS and Node Package Manager, follow instructions stated here:
 Moodle 2.5+ (probably works in lower versions too, no testing has been done)
 * https://moodle.org
 
-### Installation Instructions (FOR DEVELOPMENT):
+### Development Instructions:
 
 1. Clone the repository into the `moodle_root/lib/editors/tinymce/plugins/matheditor` folder
 2. Within the main repository directory, fetch the submodule
@@ -41,32 +55,8 @@ Moodle 2.5+ (probably works in lower versions too, no testing has been done)
 11. Add the MathEditor button to the editor by pasting the `matheditor` keyword within the "Editor Toolbar"
    field. Ensure buttons are separated by commas and groups separated by `|`s.
 12. The MathEditor button should now have appeared within the editor and is ready to use.
-
-### Installation Instructions (FOR DEPLOYMENT):
-
-1. Clone the repository (preferably somewhere outside your moodle installation)
-2. Within the main repository directory, fetch the submodule
-    `git submodule init`
-3. Update the submodule
-    `git submodule update`
-4. `cd` into the MathQuill directory
-    `cd vendor/mathquill_custom`
-5. Update the dependencies within the submodule
-    `npm install`
-6. Navigate back up to the project root
-    `cd ../../`
-7. Deploy the project
-    `make deploy`
-8. A zip file called `matheditor.zip` is created and is ready for distribution
-9. To install this file, upload the zip file in your Moodle plugin installation page as a **TinyMCE Plugin Type**
-    `http://moodle_root/admin/tool/installaddon/index.php`
-10. Navigate to the TinyMCE options within moodle (Site Administration->Plugins->Text Editors->
-   TinyMCE HTML Editor->General Settings)
-   `http://moodle_root/admin/settings.php?section=editorsettingstinymce`
-11. Ensure the MathEditor Plugin is enabled
-12. Add the MathEditor button to the editor by pasting the `matheditor` keyword within the "Editor Toolbar"
-   field. Ensure buttons are separated by commas and groups separated by `|`s.
-13. The MathEditor button should now have appeared within the editor and is ready to use.
+13. **To Deploy**:
+    `make deploy` and a zip file called `matheditor.zip` is created and ready for distribution
 
 ### MathQuill
 
@@ -78,7 +68,7 @@ A summary of the changes can be seen by visiting the latest commits on the forke
 * Added vector and hat notatoin (thanks to https://github.com/mathquill/mathquill/pull/185)
 * Added support for matrices (including being able to parse and render them from LaTeX code)
 
-### Development Notes
+### Notes
 
 * At this point in time, once a user is finished writing an equation, the LaTeX code is passed to TinyMCE and then
 converted to an image to be rendered within the editor. This image holds the raw LaTeX within its `alt` tag. Upon
