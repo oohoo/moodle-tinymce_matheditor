@@ -5,7 +5,7 @@ For [Moodle](https://moodle.org) and [TinyMCE](http://www.tinymce.com/)
 
 ## Installation
 
-1. Get the zip file `matheditor.zip` (TODO: DOWNLOAD LINK)
+1. Get the zip file `matheditor.zip` ([DOWNLOAD](http://dl.bintray.com/raywainman/generic/matheditor.zip?direct))
 2. To install this file, upload the zip file in your Moodle plugin installation page as a **TinyMCE Plugin Type**
     `http://moodle_root/admin/tool/installaddon/index.php`
 3. Navigate to the TinyMCE options within moodle (Site Administration->Plugins->Text Editors->
