@@ -110,7 +110,7 @@ MathEditor.prototype.decorate_ = function() {
             .appendTo(this.container);
 
     // Latex Field
-    this.latex = $('<textarea readonly class="matheditor-latex"></textarea>')
+    this.latex = $('<textarea class="matheditor-latex"></textarea>')
             .appendTo(this.container);
     this.latex.hide();
     this.generateLatexButton_();
@@ -285,6 +285,11 @@ MathEditor.prototype.bindEvents_ = function() {
         self.updateLatex_();
     });
 
+    // LaTeX text event
+    this.latex.bind('input propertychange', function() {
+        self.updateEquation_();
+    });
+
     // LaTeX button events
     this.latexButton.click(function(e) {
         self.latex.toggle();
@@ -298,7 +303,7 @@ MathEditor.prototype.bindEvents_ = function() {
 
     // Insert TinyMCE content
     this.insertButton.click(function() {
-        self.editor.execCommand('mathEditorInsert', self.equation.mathquill('latex'));
+        self.editor.execCommand('mathEditorInsert', self.latex.val());
         tinyMCEPopup.close();
     });
 };
@@ -310,8 +315,19 @@ MathEditor.prototype.bindEvents_ = function() {
  * @private
  */
 MathEditor.prototype.updateLatex_ = function() {
-    this.latex.text('');
-    this.latex.text(this.equation.mathquill('latex'));
+    this.latex.val('');
+    this.latex.val(this.equation.mathquill('latex'));
+};
+
+/**
+ * Refreshes the MathQuill equation box with the latest LaTeX code from the LaTeX text box.
+ *
+ * @private
+ */
+MathEditor.prototype.updateEquation_ = function() {
+    this.equation.mathquill('revert');
+    this.equation.mathquill('editable');
+    this.equation.mathquill('write', this.latex.val());
 };
 
 /**
