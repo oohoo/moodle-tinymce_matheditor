@@ -411,7 +411,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.greater_equal', '&#x2265', '\\ge'),
     ]),
     MathEditor.T('matheditor.calculus', [
-        MathEditor.B('matheditor.limit', 'lim', '\\lim'),
+        MathEditor.B('matheditor.limit', 'lim', '\\lim_{}'),
         MathEditor.B('matheditor.derivative', '<sup>d</sup>/<sub>dx</sub>', '\\frac{d}{dx}'),
         MathEditor.B('matheditor.integral', '&#x222B', '\\int^{}_{}'),
         MathEditor.B('matheditor.integral_contour', '&#x222E', '\\oint^{}_{}')
