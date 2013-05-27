@@ -63,8 +63,14 @@ html, body {
     background-color: transparent;
     border: 1px solid #F2F2F2;
     cursor: pointer;
-    min-height: 25px;
     min-width: 25px;
+}
+
+.matheditor-pane-button {
+    height: 25px;
+}
+
+.matheditor-pane button img {
 }
 
 .matheditor-pane button:hover {

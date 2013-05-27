@@ -95,6 +95,13 @@ MathEditor.T = function(name, buttons) {
 };
 
 /**
+ * Sentinel object to indicate a new line within the editor tab.
+ */
+MathEditor.Break = function() {
+    // Empty
+};
+
+/**
  * Decorates the specified container with the widget. Generates all of the DOM nodes and appends
  * them to this container.
  *
@@ -142,12 +149,16 @@ MathEditor.prototype.generatePanes_ = function() {
         tab.pane = $('<div class="matheditor-pane"></div>').appendTo(self.container);
         tab.pane.hide();
         $(tab.buttons).each(function(index, button) {
-            button.dom = $('<button title="'+ self.editor.getLang(button.name) +'"></button>')
-                    .appendTo(tab.pane);
-            if(button.image != null) {
-                button.dom.append('<img src="tinymce/img/' + button.image + '"/>');
-
+            if(button instanceof MathEditor.Break) {
+                tab.pane.append('<br/>');
             } else {
+                var classValue = '';
+                if(!button.matrix) {
+                    var classValue = 'class="matheditor-pane-button"';
+                }
+
+                button.dom = $('<button ' + classValue + ' title="' +
+                        self.editor.getLang(button.name) +'"></button>').appendTo(tab.pane);
                 button.dom.html(button.display);
             }
         });
@@ -258,6 +269,9 @@ MathEditor.prototype.bindEvents_ = function() {
             tab.pane.show();
         });
         $(tab.buttons).each(function(buttonIndex, button) {
+            if(button instanceof MathEditor.Break) {
+                return;
+            }
             button.dom.click(function(e) {
                 if (button.matrix) {
                     e.stopPropagation();
@@ -369,6 +383,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.comma', ',', ','),
         MathEditor.B('matheditor.subscript', '&#x2610<sub>&#x25A1</sub>', '{}_{}'),
         MathEditor.B('matheditor.superscript', '&#x2610<sup>&#x25A1</sup>', '{}^{}'),
+        MathEditor.B('matheditor.fraction', '<sup>&#x25A1</sup>/<sub>&#x25A1</sub>', '\\frac{}{}'),
         MathEditor.B('matheditor.natural_log', 'ln', '\\ln{}'),
         MathEditor.B('matheditor.exponential', 'e<sup>&#x25A1</sup>', 'e^{}'),
         MathEditor.B('matheditor.round_braces', '(&#x25A1)', '\\left( \\right)'),
@@ -376,14 +391,14 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.absolute_braces', '|&#x25A1|', '\\left| \\right|'),
         MathEditor.B('matheditor.curly_braces', '{&#x25A1}', '\\left\\{ \\right\\}'),
         MathEditor.B('matheditor.angle_braces', '&#x27E8&#x25A1&#x27E9', '\\left\\langle \\right\\rangle'),
-        MathEditor.B('matheditor.fraction', '<sup>&#x25A1</sup>/<sub>&#x25A1</sub>', '\\frac{}{}'),
         MathEditor.B('matheditor.vector', '&#x25A1&#x20D7', '\\vec{}'),
         MathEditor.B('matheditor.hat', '&#x25A1&#x0302', '\\hat{}'),
+        new MathEditor.Break(),
         MathEditor.B('matheditor.log', 'log', '\\log{}'),
         MathEditor.B('matheditor.logbase', 'log&#x25A1', '\\log_{}'),
         MathEditor.B('matheditor.sin', 'sin', '\\sin'),
         MathEditor.B('matheditor.cos', 'cos', '\\cos'),
-        MathEditor.B('matheditor.tan', 'tan', '\\tan'),
+        MathEditor.B('matheditor.tan', 'tan', '\\tan')
     ]),
     MathEditor.T('matheditor.operators', [
         MathEditor.B('matheditor.plus', '+', '+'),
@@ -402,19 +417,24 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.square_root_power', '<sup>&#x25A1</sup>&#x221A', '\\sqrt[{}]{}'),
         MathEditor.B('matheditor.ceiling', '&#x2308&#x25A1&#x2309', '\\left\\lceil \\right\\rceil'),
         MathEditor.B('matheditor.floor', '&#x230A&#x25A1&#x230B', '\\left\\lfloor \\right\\rfloor'),
-        MathEditor.B('matheditor.sum', '&#x2211', '\\sum_{}^{}'),
-        MathEditor.B('matheditor.product', '&#x220F', '\\prod_{}^{}'),
-        MathEditor.B('matheditor.coproduct', '&#x2210', '\\coprod_{}^{}'),
+        new MathEditor.Break(),
+        MathEditor.B('matheditor.sum_limits', '&#x2211<sup>&#x25A1</sup>', '\\sum_{}^{}'),
+        MathEditor.B('matheditor.sum', '&#x2211', '\\sum'),
+        MathEditor.B('matheditor.product_limits', '&#x220F<sup>&#x25A1</sup>', '\\prod_{}^{}'),
+        MathEditor.B('matheditor.product', '&#x220F', '\\prod'),
+        MathEditor.B('matheditor.coproduct_limits', '&#x2210<sup>&#x25A1</sup>', '\\coprod_{}^{}'),
+        MathEditor.B('matheditor.coproduct', '&#x2210', '\\coprod'),
         MathEditor.B('matheditor.less', '<', '<'),
         MathEditor.B('matheditor.less_equal', '&#x2264', '\\le'),
         MathEditor.B('matheditor.greater', '>', '>'),
-        MathEditor.B('matheditor.greater_equal', '&#x2265', '\\ge'),
+        MathEditor.B('matheditor.greater_equal', '&#x2265', '\\ge')
     ]),
     MathEditor.T('matheditor.calculus', [
         MathEditor.B('matheditor.limit', 'lim', '\\lim_{}'),
-        MathEditor.B('matheditor.derivative', '<sup>d</sup>/<sub>dx</sub>', '\\frac{d}{dx}'),
-        MathEditor.B('matheditor.integral', '&#x222B', '\\int^{}_{}'),
-        MathEditor.B('matheditor.integral_contour', '&#x222E', '\\oint^{}_{}')
+        MathEditor.B('matheditor.integral_limits', '&#x222B<sup>&#x25A1</sup>', '\\int^{}_{}'),
+        MathEditor.B('matheditor.integral', '&#x222B', '\\int'),
+        MathEditor.B('matheditor.integral_contour_limits', '&#x222E<sup>&#x25A1</sup>', '\\oint^{}_{}'),
+        MathEditor.B('matheditor.integral_contour', '&#x222E', '\\oint')
     ]),
     MathEditor.T('matheditor.greek', [
         // Lower Case
@@ -467,7 +487,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.phi_uppercase', '&#x03A6', '\\Phi'),
         MathEditor.B('matheditor.chi_uppercase', '&#x03A7', 'X'),
         MathEditor.B('matheditor.psi_uppercase', '&#x03A8', '\\Psi'),
-        MathEditor.B('matheditor.omega_uppercase', '&#x03A9', '\\Omega'),
+        MathEditor.B('matheditor.omega_uppercase', '&#x03A9', '\\Omega')
     ]),
     MathEditor.T('matheditor.matrix', [
         MathEditor.BM('matheditor.matrix', '&#x25A1 &#x25A1<br/>&#x25A1 &#x25A1', '', ''),
@@ -476,7 +496,7 @@ MathEditor.prototype.content = [
         MathEditor.BM('matheditor.matrix_bracket', '&#x23A1 &#x25A1 &#x25A1 &#x23A4<br/>'
             + '&#x23A3 &#x25A1 &#x25A1 &#x23A6', '\\left[', '\\right]'),
         MathEditor.BM('matheditor.matrix_bar', '&#x23A2 &#x25A1 &#x25A1 &#x23A5<br/>'
-            + '&#x23A2 &#x25A1 &#x25A1 &#x23A5', '\\left|', '\\right|'),
+            + '&#x23A2 &#x25A1 &#x25A1 &#x23A5', '\\left|', '\\right|')
     ]),
     MathEditor.T('matheditor.miscellaneous', [
         MathEditor.B('matheditor.infinity', '&#x221E', '\\infty'),
@@ -495,6 +515,6 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.dots_vertical', '&#x22EE', '\\vdots'),
         MathEditor.B('matheditor.dots_diagonal', '&#x22F0', '\\ddots'),
         MathEditor.B('matheditor.arrow_left', '&#x2190', '\\longleftarrow'),
-        MathEditor.B('matheditor.arrow_right', '&#x2192', '\\longrightarrow'),
-    ]),
+        MathEditor.B('matheditor.arrow_right', '&#x2192', '\\longrightarrow')
+    ])
 ];
