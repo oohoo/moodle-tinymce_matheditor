@@ -16,7 +16,9 @@
     var updateEventHandlers = function(editor) {
         // Initialize event-handlers for all math elements
         Y.one(editor.getDoc()).all('.matheditor').on('click', function(e) {
-            var latex = this.getAttribute('alt')[0];
+            var latex = e.target.getAttribute('alt');
+            console.log(e.target);
+            console.log(latex);
             editor.execCommand('mceMathEditor', latex);
         });
     };
