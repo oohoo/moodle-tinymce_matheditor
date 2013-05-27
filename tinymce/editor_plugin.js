@@ -17,8 +17,6 @@
         // Initialize event-handlers for all math elements
         Y.one(editor.getDoc()).all('.matheditor').on('click', function(e) {
             var latex = e.target.getAttribute('alt');
-            console.log(e.target);
-            console.log(latex);
             editor.execCommand('mceMathEditor', latex);
         });
     };
@@ -37,7 +35,6 @@
         for(var i = 0; i < equations.length; i++) {
             var equation = Y.one(equations[i]);
             var latex = equation.getHTML().replace(/\\\(|\\\)/g, '');
-            console.log(latex);
             equation.replace(imageUrl(latex));
         }
     };
