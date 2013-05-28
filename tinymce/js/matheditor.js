@@ -434,7 +434,8 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.integral_limits', '&#x222B<sup>&#x25A1</sup>', '\\int^{}_{}'),
         MathEditor.B('matheditor.integral', '&#x222B', '\\int'),
         MathEditor.B('matheditor.integral_contour_limits', '&#x222E<sup>&#x25A1</sup>', '\\oint^{}_{}'),
-        MathEditor.B('matheditor.integral_contour', '&#x222E', '\\oint')
+        MathEditor.B('matheditor.integral_contour', '&#x222E', '\\oint'),
+        MathEditor.B('matheditor.partial', '&#x2202', '\\partial')
     ]),
     MathEditor.T('matheditor.greek', [
         // Lower Case
@@ -498,6 +499,34 @@ MathEditor.prototype.content = [
         MathEditor.BM('matheditor.matrix_bar', '&#x23A2 &#x25A1 &#x25A1 &#x23A5<br/>'
             + '&#x23A2 &#x25A1 &#x25A1 &#x23A5', '\\left|', '\\right|')
     ]),
+    MathEditor.T('matheditor.logicsets', [
+        MathEditor.B('matheditor.implication', '&#x21D2', '\\Rightarrow'),
+        MathEditor.B('matheditor.equivalence', '&#x21D4', '\\Leftrightarrow'),
+        MathEditor.B('matheditor.negation', '&#x00AC', '\\not'),
+        MathEditor.B('matheditor.negation_tilde', '&#x223C', '\\sim'),
+        MathEditor.B('matheditor.conjunction', '&#x2227', '\\land'),
+        MathEditor.B('matheditor.disjunction', '&#x2228', '\\lor'),
+        MathEditor.B('matheditor.forall', '&#x2200', '\\forall'),
+        MathEditor.B('matheditor.exists', '&#x2203', '\\exists'),
+        MathEditor.B('matheditor.not_exists', '&#x2204', '\\nexists'),
+        MathEditor.B('matheditor.set_minus', '\\', '\\setminus'),
+        new MathEditor.Break(),
+        MathEditor.B('matheditor.empty_set', '&#x2205', '\\varnothing'),
+        MathEditor.B('matheditor.union', '&#x222A', '\\cup'),
+        MathEditor.B('matheditor.intersection', '&#x2229', '\\cap'),
+        MathEditor.B('matheditor.subset_equal', '&#x2286','\\subseteq'),
+        MathEditor.B('matheditor.not_subset_equal', '&#x2288','\\notsubseteq'),
+        MathEditor.B('matheditor.subset', '&#x2282','\\subset'),
+        MathEditor.B('matheditor.not_subset', '&#x2284','\\notsubset'),
+        MathEditor.B('matheditor.superset_equal', '&#x2287','\\supseteq'),
+        MathEditor.B('matheditor.not_superset_equal', '&#x2289','\\notsupseteq'),
+        MathEditor.B('matheditor.superset', '&#x2283','\\supset'),
+        MathEditor.B('matheditor.not_superset', '&#x2285','\\notsupset'),
+        MathEditor.B('matheditor.in', '&#x2208', '\\in'),
+        MathEditor.B('matheditor.not_in', '&#x2209', '\\notin'),
+        MathEditor.B('matheditor.contains', '&#x220B', ''),
+        MathEditor.B('matheditor.not_contains', '&#x220C', '')
+    ]),
     MathEditor.T('matheditor.miscellaneous', [
         MathEditor.B('matheditor.infinity', '&#x221E', '\\infty'),
         MathEditor.B('matheditor.primes', '&#x2119', '\\primes'),
@@ -515,6 +544,7 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.dots_vertical', '&#x22EE', '\\vdots'),
         MathEditor.B('matheditor.dots_diagonal', '&#x22F0', '\\ddots'),
         MathEditor.B('matheditor.arrow_left', '&#x2190', '\\longleftarrow'),
-        MathEditor.B('matheditor.arrow_right', '&#x2192', '\\longrightarrow')
+        MathEditor.B('matheditor.arrow_right', '&#x2192', '\\longrightarrow'),
+        MathEditor.B('matheditor.angle', '&#x2220', '\\angle')
     ])
 ];
