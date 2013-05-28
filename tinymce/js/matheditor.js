@@ -20,11 +20,18 @@
  * Constructor for the {@code MathEditor} widget.
  *
  * @param container the container identifier, will append the widget into this container
+ * @param editor the active editor object, this object must implement the {@code getLang(ident)}
+ *          method which simply retrieves a localized string
+ * @param insertHander a callback which accepts one argument that is the value to be inserted, that
+ *          is {@code function(latex) { do something with returned value }}, this function is
+ *          triggered when the user clicks the insert button, if this is {@code undefined} then the
+ *          insert button is NOT shown, in which case one can access the user input via the
+ *          {@code Matheditor.prototype.getLatex()} method
  */
-MathEditor = function(container) {
+MathEditor = function(container, editor, insertHandler) {
     this.container = $(container);
-    this.editor = tinymce.activeEditor;
-    this.initialized = false;
+    this.editor = editor;
+    this.insertHandler = insertHandler;
     this.decorate_();
 };
 
@@ -131,10 +138,10 @@ MathEditor.prototype.decorate_ = function() {
  * @private
  */
 MathEditor.prototype.generateTabs_ = function() {
-    var editor = this;
+    var self = this;
     var tabList = $('<div class="matheditor-tabs"><ul></ul></div>').appendTo(this.container);
     $(this.content).each(function(index, tab) {
-        tab.dom = $('<li>' + editor.editor.getLang(tab.name) + '</li>').appendTo(tabList);
+        tab.dom = $('<li>' + self.editor.getLang(tab.name) + '</li>').appendTo(tabList);
     });
 };
 
@@ -154,7 +161,7 @@ MathEditor.prototype.generatePanes_ = function() {
             } else {
                 var classValue = '';
                 if(!button.matrix) {
-                    var classValue = 'class="matheditor-pane-button"';
+                    classValue = 'class="matheditor-pane-button"';
                 }
 
                 button.dom = $('<button ' + classValue + ' title="' +
@@ -194,16 +201,17 @@ MathEditor.prototype.generateMatrixInput_ = function() {
  * @private
  */
 MathEditor.prototype.generateLatexButton_ = function() {
-    var self = this;
     var footerDiv = $('<div class="matheditor-buttons"></div>').appendTo(this.container);
     var footerTable = $('<table></table>').appendTo(footerDiv);
     var footerRow = $('<tr></tr>').appendTo(footerTable);
-    this.latexButton = $('<td><div class="matheditor-buttons-latex">' 
+    this.latexButton = $('<td><div class="matheditor-buttons-latex">'
             + this.editor.getLang('matheditor.latex')
             + ' <input type="checkbox"></div></td>').appendTo(footerRow);
-    this.insertButton = $('<td><div class="matheditor-buttons-insert"><button>'
-            + this.editor.getLang('matheditor.insert') + '</button></div></td>')
-        .appendTo(footerRow);
+    if(this.insertHandler) {
+        this.insertButton = $('<td><div class="matheditor-buttons-insert"><button>'
+                + this.editor.getLang('matheditor.insert') + '</button></div></td>')
+            .appendTo(footerRow);
+    }
 };
 
 /**
@@ -295,7 +303,7 @@ MathEditor.prototype.bindEvents_ = function() {
     });
 
     // Equation box events
-    this.equation.bind('input propertychange keyup', function(e) {
+    this.equation.bind('input propertychange keyup', function() {
         self.updateLatex_();
     });
 
@@ -305,7 +313,7 @@ MathEditor.prototype.bindEvents_ = function() {
     });
 
     // LaTeX button events
-    this.latexButton.click(function(e) {
+    this.latexButton.click(function() {
         self.latex.toggle();
         var checkbox = self.latexButton.find(':checkbox');
         if(self.latex.is(':visible')) {
@@ -316,10 +324,11 @@ MathEditor.prototype.bindEvents_ = function() {
     });
 
     // Insert TinyMCE content
-    this.insertButton.click(function() {
-        self.editor.execCommand('mathEditorInsert', self.latex.val());
-        tinyMCEPopup.close();
-    });
+    if(this.insertHandler) {
+        this.insertButton.click(function() {
+            self.insertHandler(self.latex.val());
+        });
+    }
 };
 
 /**
@@ -368,6 +377,14 @@ MathEditor.prototype.setLatex = function(latex) {
     }
 };
 
+/**
+ * Gets the LaTeX of the current user input equation.
+ *
+ * @return string the latex for the current equation
+ */
+MathEditor.prototype.getLatex = function() {
+    return this.latex.val();
+};
 
 /**
  * Category and button definitions. Change this to add or remove buttons or categories. Refer
