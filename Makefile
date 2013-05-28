@@ -40,6 +40,8 @@ deploy:
 	cp -r tinymce matheditor
 	cp -r lib.php matheditor
 	cp -r matheditor.php matheditor
+	cp -r matheditor_standalone.php matheditor
+	cp -r all_strings.php matheditor
 	cp -r version.php matheditor
 	zip -r ${DEPLOY_NAME} matheditor
 	rm -f -r matheditor
