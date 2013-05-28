@@ -16,6 +16,12 @@ For [Moodle](https://moodle.org) and [TinyMCE](http://www.tinymce.com/)
    field. Ensure buttons are separated by commas and groups separated by `|`s.
 6. The MathEditor button should now have appeared within the editor and is ready to use.
 
+#### Customisation
+
+To define your own LaTeX rendering server (used to render the equation preview image within the TinyMCE editor
+itself) go to the Moodle settings page for TinyMCE and in the `Custom Configuration` field, add the following
+JSON code: `{"matheditor_latexserver" : "<your server>"}`.
+
 #### Works best when paired with the [Moodle MathJax Filter](https://github.com/oohoo/moodle-filter_mathjax)
 
 ## Development
