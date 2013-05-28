@@ -14,29 +14,6 @@
 
  (function() {
     tinymce.create('tinymce.plugins.MathEditorPlugin', {
-        updateEventHandlers : function(editor) {
-            // Initialize event-handlers for all math elements
-            Y.one(editor.getDoc()).all('.matheditor').on('click', function(e) {
-                var latex = e.target.getAttribute('alt');
-                editor.execCommand('mceMathEditor', latex);
-            });
-        },
-
-        imageUrl : function(latex) {
-            return '<img class="matheditor" '
-            + 'style="vertical-align:middle" '
-            + 'src="' + this.latexRenderer + latex + '" '
-            + 'alt="' + latex + '"/>';
-        },
-
-        convertLatexToImage : function(editor, o) {
-            var equations = editor.dom.select('span.matheditor', o.node);
-            for(var i = 0; i < equations.length; i++) {
-                var equation = Y.one(equations[i]);
-                var latex = equation.getHTML().replace(/\\\(|\\\)/g, '');
-                equation.replace(imageUrl(latex));
-            }
-        },
 
         /**
          * Initializes the plugin. Called after the plugin is created. All
@@ -46,12 +23,27 @@
          * @param {string} url Absolute URL of the plugin location
          */
          init : function(editor, url) {
-            var self = this;
             lang = tinymce.activeEditor.getParam('language');
             if(editor.getParam('matheditor_latexserver'))
-                this.latexRenderer = editor.getParam('tinymce_matheditor/latexserver');
+                var latexRenderer = editor.getParam('tinymce_matheditor/latexserver');
             else
-                this.latexRenderer = 'http://www.tabuleiro.com/cgi-bin/mathtex.cgi?';
+                var latexRenderer = 'http://www.tabuleiro.com/cgi-bin/mathtex.cgi?';
+
+            var imageUrl = function(latex) {
+                return '<img class="matheditor" '
+                + 'style="vertical-align:middle" '
+                + 'src="' + latexRenderer + latex + '" '
+                + 'alt="' + latex + '"/>';
+            };
+
+            // Recognize that a user has clicked on the image, and pop-up the mathquill dialog box
+            var updateEventHandlers = function(editor) {
+                // Initialize event-handlers for all math elements
+                Y.one(editor.getDoc()).all('.matheditor').on('click', function(e) {
+                    var latex = e.target.getAttribute('alt');
+                    editor.execCommand('mceMathEditor', latex);
+                });
+            };
 
             // Event handler for the dialog box opening action
             editor.addCommand('mceMathEditor', function(latex) {
@@ -79,7 +71,7 @@
             // Generate an image from the supplied latex and insert it into the tinyMCE document
             editor.addCommand('mathEditorInsert', function(latex) {
                 if (!latex) return;
-                var content = self.imageUrl(latex);
+                var content = imageUrl(latex);
                 var selection = Y.one(editor.selection.getNode());
                 if(selection.hasClass('matheditor')) {
                     selection.remove();
@@ -87,12 +79,20 @@
 
                 //var content = '<div class="matheditor">$$' + latex + '$$</div>';
                 editor.selection.setContent(content);
-                self.updateEventHandlers(editor);
+                updateEventHandlers(editor);
             });
 
             // Replace LaTeX code with an image on editor load
-            editor.onLoadContent.add(this.convertLatexToImage);
-            editor.onSetContent.add(this.convertLatexToImage);
+            var convertLatexToImage = function(editor, o) {
+                var equations = editor.dom.select('span.matheditor', o.node);
+                for(var i = 0; i < equations.length; i++) {
+                    var equation = Y.one(equations[i]);
+                    var latex = equation.getHTML().replace(/\\\(|\\\)/g, '');
+                    equation.replace(imageUrl(latex));
+                }
+            };
+            editor.onLoadContent.add(convertLatexToImage);
+            editor.onSetContent.add(convertLatexToImage);
 
             // Use mathquill-rendered-latex when getting the contents of the document
             editor.onPreProcess.add(function(ed, o) {
@@ -107,9 +107,8 @@
                 }
             });
 
-            // Recognize that a user has clicked on the image, and pop-up the mathquill dialog box
             editor.onInit.add(function() {
-                self.updateEventHandlers(editor);
+                updateEventHandlers(editor);
             });
         },
 
@@ -127,7 +126,7 @@
                 version : '1.0'
             };
         }
-});
+    });
 
 tinymce.PluginManager.add('matheditor', tinymce.plugins.MathEditorPlugin);
 })();
