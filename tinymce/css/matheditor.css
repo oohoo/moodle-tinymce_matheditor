@@ -18,6 +18,12 @@ html, body {
     margin:0;
 }
 
+.matheditor-container {
+    width: 540px;
+    background-color: #FFFFFF;
+    position: relative;
+}
+
 .matheditor-tabs {
     background-color: #F2F2F2;
 }
@@ -51,12 +57,13 @@ html, body {
 
 .matheditor-equation {
     min-height: 100px;
-    width: 533px;
     border: 0;
     margin-top:10px;
     outline: 0;
     padding-left:5px;
-    height: 100%;
+    background-color: #FFFFFF;
+    width: 533px;
+    font-size: 18px;
 }
 
 .matheditor-pane button {
@@ -70,16 +77,13 @@ html, body {
     height: 25px;
 }
 
-.matheditor-pane button img {
-}
-
 .matheditor-pane button:hover {
     border: 1px solid black;
 }
 
 .matheditor-latex {
     width: 533px;
-    height: 40px;
+    height: 45px;
     resize: none;
     border: 0;
     padding-left: 5px;
@@ -87,34 +91,24 @@ html, body {
     outline: 0;
     font-size: 12px;
     border-top: 3px solid #D1D1D1;
+    bottom: 0;
 }
 
 .matheditor-buttons {
     width: 540px;
+    height: 15px;
     font-size: 12px;
     text-align: center;
-    position: absolute;
-    bottom: 0;
     vertical-align: bottom;
-}
-
-.matheditor-buttons table {
-    width: 100%;
-}
-
-.matheditor-buttons td {
-    vertical-align: baseline;
 }
 
 .matheditor-buttons-latex {
     float: left;
-    background-color: #F2F2F2;
+    background-color: #D1D1D1;
     padding-left: 5px;
     -webkit-border-radius: 0px 5px 0px 0px;
     border-radius: 0px 5px 0px 0px;
     cursor: pointer;
-    margin-left: -3px;
-    margin-bottom: -3px;
 }
 
 .matheditor-buttons-latex input {
@@ -125,11 +119,12 @@ html, body {
 
 .matheditor-buttons-insert {
     float: right;
-    background-color: #F2F2F2;
+    background-color: #D1D1D1;
     -webkit-border-radius: 5px 0px 0px 0px;
     border-radius: 5px 0px 0px 0px;
-    margin-right: -3px;
-    margin-bottom: -3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
 }
 
 .matheditor-form {

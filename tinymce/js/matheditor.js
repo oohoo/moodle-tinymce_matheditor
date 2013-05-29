@@ -115,18 +115,22 @@ MathEditor.Break = function() {
  * @private
  */
 MathEditor.prototype.decorate_ = function() {
+    this.container = $('<div class="matheditor-container"></div>')
+            .appendTo(this.container);
+
     this.generateTabs_();
     this.generatePanes_();
     this.generateMatrixInput_();
 
     // Equation field
-    this.equation = $('<span class="matheditor-equation mathquill-editable"></span>')
+    this.equation = $('<div class="matheditor-equation"></span>')
             .appendTo(this.container);
+    this.equation.mathquill('editable');
 
     // Latex Field
     this.latex = $('<textarea class="matheditor-latex"></textarea>')
             .appendTo(this.container);
-    this.latex.hide();
+    this.latex.css('visibility', 'hidden');
     this.generateLatexButton_();
 
     this.bindEvents_();
@@ -202,15 +206,13 @@ MathEditor.prototype.generateMatrixInput_ = function() {
  */
 MathEditor.prototype.generateLatexButton_ = function() {
     var footerDiv = $('<div class="matheditor-buttons"></div>').appendTo(this.container);
-    var footerTable = $('<table></table>').appendTo(footerDiv);
-    var footerRow = $('<tr></tr>').appendTo(footerTable);
-    this.latexButton = $('<td><div class="matheditor-buttons-latex">'
+    this.latexButton = $('<div class="matheditor-buttons-latex">'
             + this.editor.getLang('matheditor.latex')
-            + ' <input type="checkbox"></div></td>').appendTo(footerRow);
+            + ' <input type="checkbox"></div>').appendTo(footerDiv);
     if(this.insertHandler) {
-        this.insertButton = $('<td><div class="matheditor-buttons-insert"><button>'
-                + this.editor.getLang('matheditor.insert') + '</button></div></td>')
-            .appendTo(footerRow);
+        this.insertButton = $('<div class="matheditor-buttons-insert">'
+                + this.editor.getLang('matheditor.insert') + ' &#x25B6</div>')
+            .appendTo(footerDiv);
     }
 };
 
@@ -267,6 +269,7 @@ MathEditor.prototype.bindEvents_ = function() {
         e.stopPropagation();
         self.form.hide();
         self.insertMatrix_();
+        e.preventDefault();
     });
 
     // Tabs and button events
@@ -298,6 +301,7 @@ MathEditor.prototype.bindEvents_ = function() {
                     }
                     self.updateLatex_();
                 }
+                e.preventDefault();
             });
         });
     });
@@ -314,12 +318,13 @@ MathEditor.prototype.bindEvents_ = function() {
 
     // LaTeX button events
     this.latexButton.click(function() {
-        self.latex.toggle();
         var checkbox = self.latexButton.find(':checkbox');
-        if(self.latex.is(':visible')) {
-            checkbox.prop('checked', true);
-        } else {
+        if(self.latex.css('visibility') == 'visible') {
+            self.latex.css('visibility', 'hidden');
             checkbox.prop('checked', false);
+        } else {
+            self.latex.css('visibility', 'visible');
+            checkbox.prop('checked', true);
         }
     });
 
@@ -338,8 +343,12 @@ MathEditor.prototype.bindEvents_ = function() {
  * @private
  */
 MathEditor.prototype.updateLatex_ = function() {
+    var latex = this.equation.mathquill('latex');
     this.latex.val('');
-    this.latex.val(this.equation.mathquill('latex'));
+    this.latex.val(latex);
+    if(this.callback) {
+        this.callback(latex);
+    }
 };
 
 /**
@@ -348,9 +357,13 @@ MathEditor.prototype.updateLatex_ = function() {
  * @private
  */
 MathEditor.prototype.updateEquation_ = function() {
+    var latex = this.latex.val();
     this.equation.mathquill('revert');
     this.equation.mathquill('editable');
-    this.equation.mathquill('write', this.latex.val());
+    this.equation.mathquill('write', latex);
+    if(this.callback) {
+        this.callback(latex);
+    }
 };
 
 /**
@@ -384,6 +397,15 @@ MathEditor.prototype.setLatex = function(latex) {
  */
 MathEditor.prototype.getLatex = function() {
     return this.latex.val();
+};
+
+/**
+ * Set an onchange callback event which is fired every time the user modifies the equation.
+ *
+ * @param callback function with one argument which is the new latex code
+ */
+MathEditor.prototype.onChange = function(callback) {
+    this.callback = callback;
 };
 
 /**
