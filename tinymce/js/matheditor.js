@@ -27,11 +27,22 @@
  *          triggered when the user clicks the insert button, if this is {@code undefined} then the
  *          insert button is NOT shown, in which case one can access the user input via the
  *          {@code Matheditor.prototype.getLatex()} method
+ * @param buttonList a list of the buttons to show within the editor, this is simply a comma
+ *          delimited list of button identifiers (see the content[] array defined at the bottom of
+ *          this file for all the button names), a simple example would be "alpha,plus,cos"
  */
-MathEditor = function(container, editor, insertHandler) {
-    this.container = $(container);
+MathEditor = function(container, editor, insertHandler, buttonList) {
+    this.top_container = $(container);
     this.editor = editor;
     this.insertHandler = insertHandler;
+    if(buttonList) {
+        buttonList = buttonList.split(',');
+        this.buttonMap = [];
+        var buttonMap = this.buttonMap;
+        $(buttonList).each(function(index, name) {
+            buttonMap['matheditor.' + name.trim()] = true;
+        });
+    }
     this.decorate_();
 };
 
@@ -116,7 +127,7 @@ MathEditor.Break = function() {
  */
 MathEditor.prototype.decorate_ = function() {
     this.container = $('<div class="matheditor-container"></div>')
-            .appendTo(this.container);
+            .appendTo(this.top_container);
 
     this.generateTabs_();
     this.generatePanes_();
@@ -134,6 +145,15 @@ MathEditor.prototype.decorate_ = function() {
     this.generateLatexButton_();
 
     this.bindEvents_();
+};
+
+/**
+ * Removes the editor from the specified container (given in the constructor).
+ *
+ * @private
+ */
+MathEditor.prototype.undecorate_ = function() {
+    this.top_container.empty();
 };
 
 /**
@@ -157,9 +177,15 @@ MathEditor.prototype.generateTabs_ = function() {
 MathEditor.prototype.generatePanes_ = function() {
     var self = this;
     $(this.content).each(function(index, tab) {
+        var tabHasContent = false;
         tab.pane = $('<div class="matheditor-pane"></div>').appendTo(self.container);
         tab.pane.hide();
         $(tab.buttons).each(function(index, button) {
+            // Filter out buttons that the user doesn't want
+            if(self.buttonMap && !self.buttonMap[button.name]) {
+                return;
+            }
+            tabHasContent = true;
             if(button instanceof MathEditor.Break) {
                 tab.pane.append('<br/>');
             } else {
@@ -173,6 +199,9 @@ MathEditor.prototype.generatePanes_ = function() {
                 button.dom.html(button.display);
             }
         });
+        if(!tabHasContent) {
+            tab.dom.hide();
+        }
     });
     // Activate the first tab
     this.content[0].pane.show();
@@ -281,6 +310,9 @@ MathEditor.prototype.bindEvents_ = function() {
         });
         $(tab.buttons).each(function(buttonIndex, button) {
             if(button instanceof MathEditor.Break) {
+                return;
+            }
+            if(self.buttonMap && !self.buttonMap[button.name]) {
                 return;
             }
             button.dom.click(function(e) {
@@ -406,6 +438,24 @@ MathEditor.prototype.getLatex = function() {
  */
 MathEditor.prototype.onChange = function(callback) {
     this.callback = callback;
+};
+
+/**
+ * Retrieves a comma delimited list of all the possible buttons that can appear within the editor.
+ *
+ * @returns a comma delimited list of button names
+ */
+MathEditor.prototype.getButtonList = function() {
+    var allButtons = [];
+    $(this.content).each(function(tabIndex, tab) {
+        $(tab.buttons).each(function(buttonIndex, button) {
+            if(button instanceof MathEditor.Break) {
+                return;
+            }
+            allButtons.push(button.name.substring(11));
+        });
+    });
+    return allButtons.join(',');
 };
 
 /**
