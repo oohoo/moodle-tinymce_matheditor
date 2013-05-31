@@ -36,12 +36,7 @@ MathEditor = function(container, editor, insertHandler, buttonList) {
     this.editor = editor;
     this.insertHandler = insertHandler;
     if(buttonList) {
-        buttonList = buttonList.split(',');
-        this.buttonMap = [];
-        var buttonMap = this.buttonMap;
-        $(buttonList).each(function(index, name) {
-            buttonMap['matheditor.' + name.trim()] = true;
-        });
+        this.setButtonList(buttonList, false);
     }
     this.decorate_();
 };
@@ -203,9 +198,15 @@ MathEditor.prototype.generatePanes_ = function() {
             tab.dom.hide();
         }
     });
-    // Activate the first tab
-    this.content[0].pane.show();
-    this.content[0].dom.addClass('matheditor-tabs-active');
+    // Activate the first SHOWN tab
+    var oneActive = false;
+    $(this.content).each(function(index, tab) {
+        if(tab.dom.is(':visible') && !oneActive) {
+            oneActive = true;
+            tab.pane.show();
+            tab.dom.addClass('matheditor-tabs-active');
+        }
+    });
 };
 
 /**
@@ -438,6 +439,29 @@ MathEditor.prototype.getLatex = function() {
  */
 MathEditor.prototype.onChange = function(callback) {
     this.callback = callback;
+};
+
+/**
+ * Sets the buttons shown in the editor.
+ *
+ * @param buttonList a list of the buttons to show within the editor, this is simply a comma
+ *          delimited list of button identifiers (see the content[] array defined at the bottom of
+ *          this file for all the button names), a simple example would be "alpha,plus,cos"
+ * @param redocorate the editor (true/false)
+ */
+MathEditor.prototype.setButtonList = function(buttonList, redecorate) {
+    buttonList = buttonList.split(',');
+    this.buttonMap = [];
+    var buttonMap = this.buttonMap;
+    $(buttonList).each(function(index, name) {
+        buttonMap['matheditor.' + name.trim()] = true;
+    });
+    if(redecorate) {
+        var latex = this.getLatex();
+        this.undecorate_();
+        this.decorate_(); // Redraw the editor
+        this.setLatex(latex);
+    }
 };
 
 /**
