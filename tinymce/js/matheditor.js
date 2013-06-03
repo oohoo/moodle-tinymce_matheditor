@@ -637,8 +637,8 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.not_superset', '&#x2285','\\notsupset'),
         MathEditor.B('matheditor.in', '&#x2208', '\\in'),
         MathEditor.B('matheditor.not_in', '&#x2209', '\\notin'),
-        MathEditor.B('matheditor.contains', '&#x220B', ''),
-        MathEditor.B('matheditor.not_contains', '&#x220C', '')
+        MathEditor.B('matheditor.contains', '&#x220B', '\\ni'),
+        MathEditor.B('matheditor.not_contains', '&#x220C', '\\notni')
     ]),
     MathEditor.T('matheditor.miscellaneous', [
         MathEditor.B('matheditor.infinity', '&#x221E', '\\infty'),
