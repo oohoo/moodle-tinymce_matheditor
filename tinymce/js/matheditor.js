@@ -196,12 +196,15 @@ MathEditor.prototype.generatePanes_ = function() {
         });
         if(!tabHasContent) {
             tab.dom.hide();
+            tab.hasContent = false;
+        } else {
+            tab.hasContent = true;
         }
     });
     // Activate the first SHOWN tab
     var oneActive = false;
     $(this.content).each(function(index, tab) {
-        if(tab.dom.is(':visible') && !oneActive) {
+        if(tab.hasContent && !oneActive) {
             oneActive = true;
             tab.pane.show();
             tab.dom.addClass('matheditor-tabs-active');
