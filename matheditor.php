@@ -20,33 +20,30 @@ require(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/confi
 
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url('/lib/editor/tinymce/plugins/matheditor/matheditor.php');
-$PAGE->requires->jquery(); // TODO: Get this working
+$PAGE->requires->jquery();
+$PAGE->set_title(get_string('matheditor:desc', 'tinymce_matheditor'));
+$PAGE->set_pagelayout('popup');
 
 $editor = get_texteditor('tinymce');
 $plugin = $editor->get_plugin('matheditor');
 
-$htmllang = get_html_lang();
+$PAGE->requires->js(new moodle_url($editor->get_tinymce_base_url().'/tiny_mce_popup.js'));
+$PAGE->requires->js(new moodle_url($plugin->get_tinymce_file_url('js/mathquill.min.js')));
 
-header('Content-Type: text/html; charset=utf-8');
-header('X-UA-Compatible: IE=edge');
+$PAGE->requires->css(new moodle_url($plugin->get_tinymce_file_url('css/mathquill.css')));
+$PAGE->requires->css(new moodle_url($plugin->get_tinymce_file_url('css/matheditor.css')));
+$PAGE->requires->css(new moodle_url($plugin->get_tinymce_file_url('css/matheditor_tinymce.css')));
+
+$PAGE->requires->js(new moodle_url($plugin->get_tinymce_file_url('js/matheditor.js')));
+
+echo $OUTPUT->header();
+
 ?>
-<!DOCTYPE html>
-<html <?php echo $htmllang ?>
-<head>
-    <title><?php print_string('matheditor:desc', 'tinymce_matheditor'); ?></title>
-    <?php //TODO: Do this in a better way, figure out how to utilize the $PAGE global to retrieve the dependency ?>
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="<?php echo $editor->get_tinymce_base_url(); ?>/tiny_mce_popup.js"></script>
-    <script type="text/javascript" src="<?php echo $plugin->get_tinymce_file_url('js/mathquill.min.js'); ?>"></script>
-    <link rel="stylesheet" type="text/css" href="<?php echo $plugin->get_tinymce_file_url('css/mathquill.css'); ?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo $plugin->get_tinymce_file_url('css/matheditor.css'); ?>">
-    <script type="text/javascript" src="<?php echo $plugin->get_tinymce_file_url('js/matheditor.js'); ?>"></script>
-</head>
-<body>
-    <div id="editor">
-    </div>
-    <script type="text/javascript">
-    (function() {
+<div id="editor">
+</div>
+<script type="text/javascript">
+(function() {
+    $(document).ready(function() {
         var tinyMceEditor = tinymce.activeEditor;
 
         // Callback function when the user clicks the insert button
@@ -56,11 +53,11 @@ header('X-UA-Compatible: IE=edge');
         };
 
         var editor = new MathEditor('#editor', tinyMceEditor, insertHandler);
-        $(document).ready(function() {
-            var latex = tinyMCEPopup.getWindowArg('latex');
-            editor.setLatex(latex);
-        });
-    })();
-    </script>
-</body>
-</html>
+        var latex = tinyMCEPopup.getWindowArg('latex');
+        editor.setLatex(latex);
+    });
+})();
+</script>
+<?php
+echo $OUTPUT->footer();
+?>
