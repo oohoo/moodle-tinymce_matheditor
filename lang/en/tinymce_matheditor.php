@@ -32,6 +32,7 @@ $string['matheditor:calculus'] = 'Calculus';
 $string['matheditor:ceiling'] = 'Ceiling';
 $string['matheditor:chi'] = 'Chi';
 $string['matheditor:chi_uppercase'] = 'Uppercase Chi';
+$string['matheditor:colours'] = 'Colours';
 $string['matheditor:comma'] = 'Comma';
 $string['matheditor:complex'] = 'Complex Numbers';
 $string['matheditor:contains'] = 'Contains';

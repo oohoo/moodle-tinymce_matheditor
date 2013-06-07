@@ -114,6 +114,16 @@ MathEditor.Break = function() {
     // Empty
 };
 
+MathEditor.Color = function(name, display, color) {
+    var button = new MathEditor.Button(name, display, color);
+    button.color = true;
+    return button;
+};
+
+MathEditor.C = function(name, display, color) {
+    return new MathEditor.Color(name, display, color);
+};
+
 /**
  * Decorates the specified container with the widget. Generates all of the DOM nodes and appends
  * them to this container.
@@ -329,6 +339,9 @@ MathEditor.prototype.bindEvents_ = function() {
                         left: button.dom.offset().left + 15
                     });
                     self.form.toggle();
+                } else if(button.color) {
+                    self.equation.mathquill('color', button.latex);
+                    self.updateLatex_();
                 } else {
                     if (button.cmd != null) {
                         self.equation.mathquill('cmd', button.cmd);
@@ -662,5 +675,21 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.arrow_left', '&#x2190', '\\longleftarrow'),
         MathEditor.B('matheditor.arrow_right', '&#x2192', '\\longrightarrow'),
         MathEditor.B('matheditor.angle', '&#x2220', '\\angle')
+    ]),
+    MathEditor.T('matheditor.colours', [
+        MathEditor.C('matheditor.black', '<div class="matheditor-colour matheditor-colour-black"></div>',
+                'black'),
+        MathEditor.C('matheditor.red', '<div class="matheditor-colour matheditor-colour-red"></div>',
+                'red'),
+        MathEditor.C('matheditor.blue', '<div class="matheditor-colour matheditor-colour-blue"></div>',
+                'blue'),
+        MathEditor.C('matheditor.magenta', '<div class="matheditor-colour matheditor-colour-magenta"></div>',
+                'magenta'),
+        MathEditor.C('matheditor.green', '<div class="matheditor-colour matheditor-colour-green"></div>',
+                'green'),
+        MathEditor.C('matheditor.purple', '<div class="matheditor-colour matheditor-colour-purple"></div>',
+                'purple'),
+        MathEditor.C('matheditor.orange', '<div class="matheditor-colour matheditor-colour-orange"></div>',
+                'orange')
     ])
 ];
