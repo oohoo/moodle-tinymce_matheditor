@@ -19,3 +19,7 @@ html, body {
 #page-content .region-content {
     padding:0;
 }
+
+.matheditor-container {
+    border: 0;
+}
