@@ -114,14 +114,13 @@ MathEditor.Break = function() {
     // Empty
 };
 
-MathEditor.Color = function(name, display, color) {
-    var button = new MathEditor.Button(name, display, color);
-    button.color = true;
-    return button;
+MathEditor.Colour = function(name, colour) {
+    this.name = name;
+    this.colour = colour;
 };
 
-MathEditor.C = function(name, display, color) {
-    return new MathEditor.Color(name, display, color);
+MathEditor.C = function(name, colour) {
+    return new MathEditor.Colour(name, colour);
 };
 
 /**
@@ -181,9 +180,10 @@ MathEditor.prototype.generateTabs_ = function() {
  */
 MathEditor.prototype.generatePanes_ = function() {
     var self = this;
+    var paneContainer = $('<div class="matheditor-panes"></div>').appendTo(self.container);
     $(this.content).each(function(index, tab) {
         var tabHasContent = false;
-        tab.pane = $('<div class="matheditor-pane"></div>').appendTo(self.container);
+        tab.pane = $('<div class="matheditor-pane"></div>').appendTo(paneContainer);
         tab.pane.hide();
         $(tab.buttons).each(function(index, button) {
             // Filter out buttons that the user doesn't want
@@ -220,6 +220,33 @@ MathEditor.prototype.generatePanes_ = function() {
             tab.dom.addClass('matheditor-tabs-active');
         }
     });
+
+    this.generateSideBar_(paneContainer);
+};
+
+MathEditor.prototype.generateSideBar_ = function(element) {
+    var self = this;
+    var sidebar = $('<div class="matheditor-sidebar"></div>').appendTo(element);
+    this.colourDropdown = $('<button><div class="matheditor-colour matheditor-colour-black" '
+        + 'title="' + self.editor.getLang('matheditor.font_color') + '"></div></button>')
+        .appendTo(sidebar);
+    this.generateColourPicker_(sidebar);
+    this.bold = $('<button class="matheditor-bold" title="' + self.editor.getLang('matheditor.bold')
+        + '">B</button>').appendTo(sidebar);
+    this.italic = $('<button class="matheditor-italic" title="' + self.editor.getLang('matheditor.italic')
+        + '">I</button>')
+        .appendTo(sidebar);
+};
+
+MathEditor.prototype.generateColourPicker_ = function(element) {
+    var self = this;
+    this.colourPicker = $('<div class="matheditor-form"></div>').appendTo(element);
+    $(this.colours).each(function(index, colour) {
+        colour.dom = $('<div class="matheditor-colour matheditor-colour-' + colour.colour + '" '
+            + 'title="' + self.editor.getLang(colour.name) + '"></div>')
+            .appendTo(self.colourPicker);
+    });
+    this.colourPicker.hide();
 };
 
 /**
@@ -304,6 +331,7 @@ MathEditor.prototype.bindEvents_ = function() {
     // Matrix Input Form Events
     $('html').click(function() {
         self.form.hide();
+        self.colourPicker.hide();
     });
     this.form.click(function(e) {
         e.stopPropagation();
@@ -339,9 +367,6 @@ MathEditor.prototype.bindEvents_ = function() {
                         left: button.dom.offset().left + 15
                     });
                     self.form.toggle();
-                } else if(button.color) {
-                    self.equation.mathquill('color', button.latex);
-                    self.updateLatex_();
                 } else {
                     if (button.cmd != null) {
                         self.equation.mathquill('cmd', button.cmd);
@@ -383,6 +408,30 @@ MathEditor.prototype.bindEvents_ = function() {
             self.insertHandler(self.latex.val());
         });
     }
+
+    // Colour picker events
+    this.colourDropdown.click(function(e) {
+        e.stopPropagation();
+        self.colourPicker.toggle();
+    });
+
+    $(this.colours).each(function(index, colour) {
+        colour.dom.click(function(e) {
+            self.colourPicker.hide();
+            self.equation.mathquill('color', colour.colour);
+            self.updateLatex_();
+        });
+    });
+
+    // Bold and Italic buttons
+    this.bold.click(function() {
+        self.equation.mathquill('bold');
+        self.updateLatex_();
+    });
+    this.italic.click(function() {
+        self.equation.mathquill('italic');
+        self.updateLatex_();
+    });
 };
 
 /**
@@ -675,21 +724,15 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.arrow_left', '&#x2190', '\\longleftarrow'),
         MathEditor.B('matheditor.arrow_right', '&#x2192', '\\longrightarrow'),
         MathEditor.B('matheditor.angle', '&#x2220', '\\angle')
-    ]),
-    MathEditor.T('matheditor.colours', [
-        MathEditor.C('matheditor.black', '<div class="matheditor-colour matheditor-colour-black"></div>',
-                'black'),
-        MathEditor.C('matheditor.red', '<div class="matheditor-colour matheditor-colour-red"></div>',
-                'red'),
-        MathEditor.C('matheditor.blue', '<div class="matheditor-colour matheditor-colour-blue"></div>',
-                'blue'),
-        MathEditor.C('matheditor.magenta', '<div class="matheditor-colour matheditor-colour-magenta"></div>',
-                'magenta'),
-        MathEditor.C('matheditor.green', '<div class="matheditor-colour matheditor-colour-green"></div>',
-                'green'),
-        MathEditor.C('matheditor.purple', '<div class="matheditor-colour matheditor-colour-purple"></div>',
-                'purple'),
-        MathEditor.C('matheditor.orange', '<div class="matheditor-colour matheditor-colour-orange"></div>',
-                'orange')
     ])
+];
+
+MathEditor.prototype.colours = [
+    MathEditor.C('matheditor.black', 'black'),
+    MathEditor.C('matheditor.red', 'red'),
+    MathEditor.C('matheditor.blue', 'blue'),
+    MathEditor.C('matheditor.magenta', 'magenta'),
+    MathEditor.C('matheditor.green', 'green'),
+    MathEditor.C('matheditor.purple', 'purple'),
+    MathEditor.C('matheditor.orange', 'orange')
 ];
