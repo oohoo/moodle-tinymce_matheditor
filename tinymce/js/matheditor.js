@@ -220,8 +220,9 @@ MathEditor.prototype.generatePanes_ = function() {
             tab.dom.addClass('matheditor-tabs-active');
         }
     });
-
-    this.generateSideBar_(paneContainer);
+    if(!self.buttonMap) {
+        this.generateSideBar_(paneContainer);
+    }
 };
 
 MathEditor.prototype.generateSideBar_ = function(element) {
