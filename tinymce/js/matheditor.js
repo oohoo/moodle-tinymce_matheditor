@@ -410,29 +410,31 @@ MathEditor.prototype.bindEvents_ = function() {
         });
     }
 
-    // Colour picker events
-    this.colourDropdown.click(function(e) {
-        e.stopPropagation();
-        self.colourPicker.toggle();
-    });
+    if(!this.buttonMap) {
+        // Colour picker events
+        this.colourDropdown.click(function(e) {
+            e.stopPropagation();
+            self.colourPicker.toggle();
+        });
 
-    $(this.colours).each(function(index, colour) {
-        colour.dom.click(function(e) {
-            self.colourPicker.hide();
-            self.equation.mathquill('color', colour.colour);
+        $(this.colours).each(function(index, colour) {
+            colour.dom.click(function() {
+                self.colourPicker.hide();
+                self.equation.mathquill('color', colour.colour);
+                self.updateLatex_();
+            });
+        });
+
+        // Bold and Italic buttons
+        this.bold.click(function() {
+            self.equation.mathquill('bold');
             self.updateLatex_();
         });
-    });
-
-    // Bold and Italic buttons
-    this.bold.click(function() {
-        self.equation.mathquill('bold');
-        self.updateLatex_();
-    });
-    this.italic.click(function() {
-        self.equation.mathquill('italic');
-        self.updateLatex_();
-    });
+        this.italic.click(function() {
+            self.equation.mathquill('italic');
+            self.updateLatex_();
+        });
+    }
 };
 
 /**
