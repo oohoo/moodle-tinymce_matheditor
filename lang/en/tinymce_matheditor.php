@@ -76,6 +76,7 @@ $string['matheditor:greater'] = 'Greater than';
 $string['matheditor:greater_equal'] = 'Greater than or equal';
 $string['matheditor:greek'] = 'Greek';
 $string['matheditor:hat'] = 'Hat';
+$string['matheditor:hbar'] = 'H Bar';
 $string['matheditor:implication'] = 'Implication';
 $string['matheditor:in'] = 'In';
 $string['matheditor:infinity'] = 'Infinity';

@@ -726,7 +726,8 @@ MathEditor.prototype.content = [
         MathEditor.B('matheditor.dots_diagonal', '&#x22F0', '\\ddots'),
         MathEditor.B('matheditor.arrow_left', '&#x2190', '\\longleftarrow'),
         MathEditor.B('matheditor.arrow_right', '&#x2192', '\\longrightarrow'),
-        MathEditor.B('matheditor.angle', '&#x2220', '\\angle')
+        MathEditor.B('matheditor.angle', '&#x2220', '\\angle'),
+        MathEditor.B('matheditor.hbar', '&#x210f', '\\hbar')
     ])
 ];
 
