@@ -16,6 +16,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2013061001;
+$plugin->version = 2013061100;
 $plugin->requires = 2013042600;
 $plugin->component = 'tinymce_matheditor';
