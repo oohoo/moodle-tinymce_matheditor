@@ -38,6 +38,8 @@ MathEditor = function(container, editor, insertHandler, buttonList) {
     if(buttonList) {
         this.setButtonList(buttonList, false);
     }
+    this.content = this.getContent_();
+    this.colours = this.getColours_();
     this.decorate_();
 };
 
@@ -413,6 +415,7 @@ MathEditor.prototype.bindEvents_ = function() {
     if(!this.buttonMap) {
         // Colour picker events
         this.colourDropdown.click(function(e) {
+            e.preventDefault();
             e.stopPropagation();
             self.colourPicker.toggle();
         });
@@ -551,15 +554,12 @@ MathEditor.prototype.getButtonList = function() {
 };
 
 /**
- * Category and button definitions. Change this to add or remove buttons or categories. Refer
- * to the following factory method definitions for more information:
- * <ul>
- * <li>{@code MathEditor.T} - Tab
- * <li>{@code MathEditor.B} - Generic LaTeX button
- * <li>{@code MathEditor.BC} - Generic MathQuill button
- * <li>{@code MathEditor.BM} - Generic Matrix button
+ * Generates all of the content for the math editor.
+ *
+ * @private
  */
-MathEditor.prototype.content = [
+MathEditor.prototype.getContent_ = function() {
+    return [
     MathEditor.T('matheditor.general', [
         MathEditor.B('matheditor.comma', ',', ','),
         MathEditor.B('matheditor.subscript', '&#x2610<sub>&#x25A1</sub>', '{}_{}'),
@@ -731,12 +731,21 @@ MathEditor.prototype.content = [
     ])
 ];
 
-MathEditor.prototype.colours = [
-    MathEditor.C('matheditor.black', 'black'),
-    MathEditor.C('matheditor.red', 'red'),
-    MathEditor.C('matheditor.blue', 'blue'),
-    MathEditor.C('matheditor.magenta', 'magenta'),
-    MathEditor.C('matheditor.green', 'green'),
-    MathEditor.C('matheditor.purple', 'purple'),
-    MathEditor.C('matheditor.orange', 'orange')
-];
+};
+
+/**
+ * Generates the colour objects for the editor.
+ *
+ * @private
+ */
+MathEditor.prototype.getColours_ = function() {
+    return [
+        MathEditor.C('matheditor.black', 'black'),
+        MathEditor.C('matheditor.red', 'red'),
+        MathEditor.C('matheditor.blue', 'blue'),
+        MathEditor.C('matheditor.magenta', 'magenta'),
+        MathEditor.C('matheditor.green', 'green'),
+        MathEditor.C('matheditor.purple', 'purple'),
+        MathEditor.C('matheditor.orange', 'orange')
+    ];
+};
