@@ -189,7 +189,7 @@ MathEditor.prototype.generatePanes_ = function() {
         tab.pane.hide();
         $(tab.buttons).each(function(index, button) {
             // Filter out buttons that the user doesn't want
-            if(self.buttonMap && !self.buttonMap[button.name]) {
+            if(self.buttonMap && !self.buttonMap[button.name] && tab.name !== 'matheditor.variables') {
                 return;
             }
             tabHasContent = true;
@@ -357,10 +357,12 @@ MathEditor.prototype.bindEvents_ = function() {
             if(button instanceof MathEditor.Break) {
                 return;
             }
-            if(self.buttonMap && !self.buttonMap[button.name]) {
+            if(self.buttonMap && !self.buttonMap[button.name]
+                    && tab.name !== 'matheditor.variables') {
                 return;
             }
             button.dom.click(function(e) {
+                console.log(button);
                 if (button.matrix) {
                     e.stopPropagation();
                     self.activeMatrix = button;
@@ -554,6 +556,23 @@ MathEditor.prototype.getButtonList = function() {
 };
 
 /**
+ * Adds a new tab labelled variables to the editor with the specified buttons.
+ *
+ * @param variables a 
+ */
+MathEditor.prototype.setVariables = function(variables) {
+    var variableTab = new MathEditor.T('matheditor.variables', []);
+    $(variables).each(function() {
+        variableTab.buttons.push(new MathEditor.B('', '\\(' + this + '\\)', this));
+    });
+    this.content.push(variableTab);
+    var latex = this.getLatex();
+    this.undecorate_();
+    this.decorate_(); // Redraw the editor
+    this.setLatex(latex);
+};
+
+/**
  * Generates all of the content for the math editor.
  *
  * @private
@@ -616,7 +635,8 @@ MathEditor.prototype.getContent_ = function() {
         MathEditor.B('matheditor.integral', '&#x222B', '\\int'),
         MathEditor.B('matheditor.integral_contour_limits', '&#x222E<sup>&#x25A1</sup>', '\\oint^{}_{}'),
         MathEditor.B('matheditor.integral_contour', '&#x222E', '\\oint'),
-        MathEditor.B('matheditor.partial', '&#x2202', '\\partial')
+        MathEditor.B('matheditor.partial', '&#x2202', '\\partial'),
+        MathEditor.B('matheditor.nabla', '&#x2207;', '\\nabla')
     ]),
     MathEditor.T('matheditor.greek', [
         // Lower Case
