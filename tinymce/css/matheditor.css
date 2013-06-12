@@ -49,7 +49,7 @@ html, body {
 
 .matheditor-panes {
     background-color: #F2F2F2;
-    height: 90px;
+    min-height: 90px;
     -webkit-box-shadow: 0px 4px 8px -2px rgba(209, 209, 209, 1);
     box-shadow: 0px 4px 8px -2px rgba(209, 209, 209, 1);
     padding: 5px;
@@ -58,13 +58,14 @@ html, body {
 .matheditor-pane {
     width: 490px;
     float: left;
+    display: inline-block;
 }
 
 .matheditor-sidebar {
     width: 38px;
     text-align: center;
     border-left: 1px solid #D1D1D1;
-    height: 90px;
+    min-height: 90px;
     float: right;
 }
 
@@ -81,6 +82,10 @@ html, body {
 
 .matheditor-sidebar button:hover {
     border: 1px solid black;
+}
+
+.matheditor-clear {
+    clear: both;
 }
 
 .matheditor-bold {

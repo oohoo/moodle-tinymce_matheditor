@@ -179,6 +179,7 @@ MathEditor.C = function(name, colour) {
     if(!self.buttonMap) {
         this.generateSideBar_(paneContainer);
     }
+    $('<div class="matheditor-clear"></div>').appendTo(paneContainer);
 };
 
 /**
@@ -229,7 +230,7 @@ MathEditor.C = function(name, colour) {
     $(this.content).each(function(index, tab) {
         if(tab.hasContent && !oneActive) {
             oneActive = true;
-            tab.pane.show();
+            tab.pane.css('display', 'inline-block');
             tab.dom.addClass('matheditor-tabs-active');
         }
     });
@@ -363,7 +364,7 @@ MathEditor.prototype.generateColourPicker_ = function(element) {
         tab.dom.mouseover(function() {
             self.hidePanes_();
             tab.dom.addClass('matheditor-tabs-active');
-            tab.pane.show();
+            tab.pane.css('display', 'inline-block');
         });
         $(tab.buttons).each(function(buttonIndex, button) {
             if(button instanceof MathEditor.Break) {
