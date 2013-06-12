@@ -610,6 +610,8 @@ MathEditor.prototype.generateColourPicker_ = function(element) {
         MathEditor.B('matheditor.angle_braces', '&#x27E8&#x25A1&#x27E9', '\\left\\langle \\right\\rangle'),
         MathEditor.B('matheditor.vector', '&#x25A1&#x20D7', '\\vec{}'),
         MathEditor.B('matheditor.hat', '&#x25A1&#x0302', '\\hat{}'),
+        MathEditor.B('matheditor.overline', '&#x25A1&#x0305', '\\overline{}'),
+        MathEditor.B('matheditor.bar', '&#x25A1&#x0304', '\\bar{}'),
         new MathEditor.Break(),
         MathEditor.B('matheditor.log', 'log', '\\log{}'),
         MathEditor.B('matheditor.logbase', 'log&#x25A1', '\\log_{}'),
