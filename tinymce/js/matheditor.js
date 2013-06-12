@@ -30,7 +30,7 @@
  * @param buttonList a list of the buttons to show within the editor, this is simply a comma
  *          delimited list of button identifiers (see the content[] array defined at the bottom of
  *          this file for all the button names), a simple example would be "alpha,plus,cos"
- */
+*/
 MathEditor = function(container, editor, insertHandler, buttonList) {
     this.top_container = $(container);
     this.editor = editor;
@@ -51,7 +51,7 @@ MathEditor = function(container, editor, insertHandler, buttonList) {
  * @param display the icon shown on the button itself
  * @param latex the latex command corresponding to the button
  */
-MathEditor.Button = function(name, display, latex) {
+ MathEditor.Button = function(name, display, latex) {
     this.name = name;
     this.display = display;
     this.latex = latex;
@@ -66,7 +66,7 @@ MathEditor.Button = function(name, display, latex) {
  * @param display the icon shown on the button itself
  * @param latex the latex command corresponding to the button
  */
-MathEditor.B = function(name, display, latex) {
+ MathEditor.B = function(name, display, latex) {
     return new MathEditor.Button(name, display, latex);
 };
 
@@ -78,7 +78,7 @@ MathEditor.B = function(name, display, latex) {
  * @param display the icon shown on the button itself
  * @param prepend the latex command prepend, this will usually be something like '\\left('
  * @param postpend the latex command postpend, this will usually be something like '\\right)'
- */
+*/
 MathEditor.BM = function(name, display, prepend, postpend) {
     var button = new MathEditor.Button(name, display, null);
     button.matrix = true;
@@ -94,7 +94,7 @@ MathEditor.BM = function(name, display, prepend, postpend) {
  * @param name the name of the tab, shown at the top of the widget
  * @param buttons the set of buttons corresponding to this tab
  */
-MathEditor.Tab = function(name, buttons) {
+ MathEditor.Tab = function(name, buttons) {
     this.name = name;
     this.buttons = buttons;
 };
@@ -105,14 +105,14 @@ MathEditor.Tab = function(name, buttons) {
  * @param name the name of the tab, shown at the top of the widget
  * @param buttons the set of buttons corresponding to this tab
  */
-MathEditor.T = function(name, buttons) {
+ MathEditor.T = function(name, buttons) {
     return new MathEditor.Tab(name, buttons);
 };
 
 /**
  * Sentinel object to indicate a new line within the editor tab.
  */
-MathEditor.Break = function() {
+ MathEditor.Break = function() {
     // Empty
 };
 
@@ -131,9 +131,9 @@ MathEditor.C = function(name, colour) {
  *
  * @private
  */
-MathEditor.prototype.decorate_ = function() {
+ MathEditor.prototype.decorate_ = function() {
     this.container = $('<div class="matheditor-container"></div>')
-            .appendTo(this.top_container);
+    .appendTo(this.top_container);
 
     this.generateTabs_();
     this.generatePanes_();
@@ -141,12 +141,12 @@ MathEditor.prototype.decorate_ = function() {
 
     // Equation field
     this.equation = $('<div class="matheditor-equation"></span>')
-            .appendTo(this.container);
+    .appendTo(this.container);
     this.equation.mathquill('editable');
 
     // Latex Field
     this.latex = $('<textarea class="matheditor-latex"></textarea>')
-            .appendTo(this.container);
+    .appendTo(this.container);
     this.latex.css('visibility', 'hidden');
     this.generateLatexButton_();
 
@@ -158,7 +158,7 @@ MathEditor.prototype.decorate_ = function() {
  *
  * @private
  */
-MathEditor.prototype.undecorate_ = function() {
+ MathEditor.prototype.undecorate_ = function() {
     this.top_container.empty();
 };
 
@@ -167,12 +167,18 @@ MathEditor.prototype.undecorate_ = function() {
  *
  * @private
  */
-MathEditor.prototype.generateTabs_ = function() {
+ MathEditor.prototype.generateTabs_ = function() {
     var self = this;
     var tabList = $('<div class="matheditor-tabs"><ul></ul></div>').appendTo(this.container);
+    var paneContainer = $('<div class="matheditor-panes"></div>').appendTo(self.container);
     $(this.content).each(function(index, tab) {
         tab.dom = $('<li>' + self.editor.getLang(tab.name) + '</li>').appendTo(tabList);
+        tab.pane = $('<div class="matheditor-pane"></div>').appendTo(paneContainer);
+        tab.pane.hide();
     });
+    if(!self.buttonMap) {
+        this.generateSideBar_(paneContainer);
+    }
 };
 
 /**
@@ -180,19 +186,15 @@ MathEditor.prototype.generateTabs_ = function() {
  *
  * @private
  */
-MathEditor.prototype.generatePanes_ = function() {
+ MathEditor.prototype.generatePanes_ = function() {
     var self = this;
-    var paneContainer = $('<div class="matheditor-panes"></div>').appendTo(self.container);
     $(this.content).each(function(index, tab) {
         var tabHasContent = false;
-        tab.pane = $('<div class="matheditor-pane"></div>').appendTo(paneContainer);
-        tab.pane.hide();
         $(tab.buttons).each(function(index, button) {
             // Filter out buttons that the user doesn't want
             if(self.buttonMap && !self.buttonMap[button.name] && tab.name !== 'matheditor.variables') {
                 return;
             }
-            tabHasContent = true;
             if(button instanceof MathEditor.Break) {
                 tab.pane.append('<br/>');
             } else {
@@ -201,8 +203,15 @@ MathEditor.prototype.generatePanes_ = function() {
                     classValue = 'class="matheditor-pane-button"';
                 }
 
+                if(self.buttonMap && self.singleTab) {
+                    var targetTab = self.content[self.content.length - 1].pane;
+                } else {
+                    tabHasContent = true;
+                    var targetTab = tab.pane;
+                }
+
                 button.dom = $('<button ' + classValue + ' title="' +
-                        self.editor.getLang(button.name) +'"></button>').appendTo(tab.pane);
+                    self.editor.getLang(button.name) +'"></button>').appendTo(targetTab);
                 button.dom.html(button.display);
             }
         });
@@ -213,8 +222,10 @@ MathEditor.prototype.generatePanes_ = function() {
             tab.hasContent = true;
         }
     });
+
     // Activate the first SHOWN tab
     var oneActive = false;
+    console.log(this.content);
     $(this.content).each(function(index, tab) {
         if(tab.hasContent && !oneActive) {
             oneActive = true;
@@ -222,8 +233,9 @@ MathEditor.prototype.generatePanes_ = function() {
             tab.dom.addClass('matheditor-tabs-active');
         }
     });
-    if(!self.buttonMap) {
-        this.generateSideBar_(paneContainer);
+    if(this.buttonMap) {
+        this.content[this.content.length - 1].pane.show();
+        this.content[this.content.length - 1].dom.addClass('matheditor-tabs-active');
     }
 };
 
@@ -232,13 +244,13 @@ MathEditor.prototype.generateSideBar_ = function(element) {
     var sidebar = $('<div class="matheditor-sidebar"></div>').appendTo(element);
     this.colourDropdown = $('<button><div class="matheditor-colour matheditor-colour-black" '
         + 'title="' + self.editor.getLang('matheditor.font_color') + '"></div></button>')
-        .appendTo(sidebar);
+    .appendTo(sidebar);
     this.generateColourPicker_(sidebar);
     this.bold = $('<button class="matheditor-bold" title="' + self.editor.getLang('matheditor.bold')
         + '">B</button>').appendTo(sidebar);
     this.italic = $('<button class="matheditor-italic" title="' + self.editor.getLang('matheditor.italic')
         + '">I</button>')
-        .appendTo(sidebar);
+    .appendTo(sidebar);
 };
 
 MathEditor.prototype.generateColourPicker_ = function(element) {
@@ -247,7 +259,7 @@ MathEditor.prototype.generateColourPicker_ = function(element) {
     $(this.colours).each(function(index, colour) {
         colour.dom = $('<div class="matheditor-colour matheditor-colour-' + colour.colour + '" '
             + 'title="' + self.editor.getLang(colour.name) + '"></div>')
-            .appendTo(self.colourPicker);
+        .appendTo(self.colourPicker);
     });
     this.colourPicker.hide();
 };
@@ -257,17 +269,17 @@ MathEditor.prototype.generateColourPicker_ = function(element) {
  *
  * @private
  */
-MathEditor.prototype.generateMatrixInput_ = function() {
+ MathEditor.prototype.generateMatrixInput_ = function() {
     this.form = $('<div class="matheditor-form"></div>').appendTo(this.container);
     this.form.append('Rows: ');
     this.form.rows = $('<input type="number" min="1" class="matheditor-form-number" value="1">')
-            .appendTo(this.form);
+    .appendTo(this.form);
     this.form.append('<br/>Columns: ');
     this.form.cols = $('<input type="number" min="1" class="matheditor-form-number" value="1">')
-            .appendTo(this.form);
+    .appendTo(this.form);
     this.form.append('<br/>');
     this.form.button = $('<button>' + this.editor.getLang('matheditor.create') + '</button>')
-            .appendTo(this.form);
+    .appendTo(this.form);
     this.form.hide();
 };
 
@@ -277,15 +289,15 @@ MathEditor.prototype.generateMatrixInput_ = function() {
  *
  * @private
  */
-MathEditor.prototype.generateLatexButton_ = function() {
+ MathEditor.prototype.generateLatexButton_ = function() {
     var footerDiv = $('<div class="matheditor-buttons"></div>').appendTo(this.container);
     this.latexButton = $('<div class="matheditor-buttons-latex">'
-            + this.editor.getLang('matheditor.latex')
-            + ' <input type="checkbox"></div>').appendTo(footerDiv);
+        + this.editor.getLang('matheditor.latex')
+        + ' <input type="checkbox"></div>').appendTo(footerDiv);
     if(this.insertHandler) {
         this.insertButton = $('<div class="matheditor-buttons-insert">'
-                + this.editor.getLang('matheditor.insert') + ' &#x25B6</div>')
-            .appendTo(footerDiv);
+            + this.editor.getLang('matheditor.insert') + ' &#x25B6</div>')
+        .appendTo(footerDiv);
     }
 };
 
@@ -295,7 +307,7 @@ MathEditor.prototype.generateLatexButton_ = function() {
  *
  * @private
  */
-MathEditor.prototype.insertMatrix_ = function() {
+ MathEditor.prototype.insertMatrix_ = function() {
     var latex = this.activeMatrix.prepend;
     latex += '\\begin{matrix}';
     for(var row = 0; row < this.form.rows.val(); row++) {
@@ -319,7 +331,7 @@ MathEditor.prototype.insertMatrix_ = function() {
  *
  * @private
  */
-MathEditor.prototype.matrixInputReset_ = function() {
+ MathEditor.prototype.matrixInputReset_ = function() {
     this.form.rows.val(2);
     this.form.cols.val(2);
 };
@@ -329,7 +341,7 @@ MathEditor.prototype.matrixInputReset_ = function() {
  *
  * @private
  */
-MathEditor.prototype.bindEvents_ = function() {
+ MathEditor.prototype.bindEvents_ = function() {
     var self = this;
     // Matrix Input Form Events
     $('html').click(function() {
@@ -358,32 +370,32 @@ MathEditor.prototype.bindEvents_ = function() {
                 return;
             }
             if(self.buttonMap && !self.buttonMap[button.name]
-                    && tab.name !== 'matheditor.variables') {
+                && tab.name !== 'matheditor.variables') {
                 return;
-            }
-            button.dom.click(function(e) {
-                console.log(button);
-                if (button.matrix) {
-                    e.stopPropagation();
-                    self.activeMatrix = button;
-                    self.matrixInputReset_();
-                    self.form.css({
-                        top: button.dom.offset().top + 15,
-                        left: button.dom.offset().left + 15
-                    });
-                    self.form.toggle();
+        }
+        button.dom.click(function(e) {
+            console.log(button);
+            if (button.matrix) {
+                e.stopPropagation();
+                self.activeMatrix = button;
+                self.matrixInputReset_();
+                self.form.css({
+                    top: button.dom.offset().top + 15,
+                    left: button.dom.offset().left + 15
+                });
+                self.form.toggle();
+            } else {
+                if (button.cmd != null) {
+                    self.equation.mathquill('cmd', button.cmd);
                 } else {
-                    if (button.cmd != null) {
-                        self.equation.mathquill('cmd', button.cmd);
-                    } else {
-                        self.equation.mathquill('write', button.latex);
-                    }
-                    self.updateLatex_();
+                    self.equation.mathquill('write', button.latex);
                 }
-                e.preventDefault();
-            });
+                self.updateLatex_();
+            }
+            e.preventDefault();
         });
     });
+});
 
     // Equation box events
     this.equation.bind('input propertychange keyup', function() {
@@ -448,7 +460,7 @@ MathEditor.prototype.bindEvents_ = function() {
  *
  * @private
  */
-MathEditor.prototype.updateLatex_ = function() {
+ MathEditor.prototype.updateLatex_ = function() {
     var latex = this.equation.mathquill('latex');
     this.latex.val('');
     this.latex.val(latex);
@@ -462,7 +474,7 @@ MathEditor.prototype.updateLatex_ = function() {
  *
  * @private
  */
-MathEditor.prototype.updateEquation_ = function() {
+ MathEditor.prototype.updateEquation_ = function() {
     var latex = this.latex.val();
     this.equation.mathquill('revert');
     this.equation.mathquill('editable');
@@ -477,7 +489,7 @@ MathEditor.prototype.updateEquation_ = function() {
  *
  * @private
  */
-MathEditor.prototype.hidePanes_ = function() {
+ MathEditor.prototype.hidePanes_ = function() {
     $(this.content).each(function(index, tab) {
         tab.dom.removeClass('matheditor-tabs-active');
         tab.pane.hide();
@@ -489,7 +501,7 @@ MathEditor.prototype.hidePanes_ = function() {
  *
  * @param latex the equation latex string
  */
-MathEditor.prototype.setLatex = function(latex) {
+ MathEditor.prototype.setLatex = function(latex) {
     if(latex != '') {
         this.equation.mathquill('write', latex);
         this.updateLatex_();
@@ -501,7 +513,7 @@ MathEditor.prototype.setLatex = function(latex) {
  *
  * @return string the latex for the current equation
  */
-MathEditor.prototype.getLatex = function() {
+ MathEditor.prototype.getLatex = function() {
     return this.latex.val();
 };
 
@@ -510,7 +522,7 @@ MathEditor.prototype.getLatex = function() {
  *
  * @param callback function with one argument which is the new latex code
  */
-MathEditor.prototype.onChange = function(callback) {
+ MathEditor.prototype.onChange = function(callback) {
     this.callback = callback;
 };
 
@@ -521,14 +533,18 @@ MathEditor.prototype.onChange = function(callback) {
  *          delimited list of button identifiers (see the content[] array defined at the bottom of
  *          this file for all the button names), a simple example would be "alpha,plus,cos"
  * @param redocorate the editor (true/false)
+ * @param singleTab show all buttons in a single tab
  */
-MathEditor.prototype.setButtonList = function(buttonList, redecorate) {
+ MathEditor.prototype.setButtonList = function(buttonList, redecorate, singleTab) {
+    this.singleTab = singleTab;
     buttonList = buttonList.split(',');
     this.buttonMap = [];
     var buttonMap = this.buttonMap;
     $(buttonList).each(function(index, name) {
         buttonMap['matheditor.' + name.trim()] = true;
     });
+    var singleTab = new MathEditor.T('asd', []);
+    this.content.push(singleTab);
     if(redecorate) {
         var latex = this.getLatex();
         this.undecorate_();
@@ -542,7 +558,7 @@ MathEditor.prototype.setButtonList = function(buttonList, redecorate) {
  *
  * @returns a comma delimited list of button names
  */
-MathEditor.prototype.getButtonList = function() {
+ MathEditor.prototype.getButtonList = function() {
     var allButtons = [];
     $(this.content).each(function(tabIndex, tab) {
         $(tab.buttons).each(function(buttonIndex, button) {
@@ -560,7 +576,7 @@ MathEditor.prototype.getButtonList = function() {
  *
  * @param variables a 
  */
-MathEditor.prototype.setVariables = function(variables) {
+ MathEditor.prototype.setVariables = function(variables) {
     var variableTab = new MathEditor.T('matheditor.variables', []);
     $(variables).each(function() {
         variableTab.buttons.push(new MathEditor.B('', '\\(' + this + '\\)', this));
@@ -577,7 +593,7 @@ MathEditor.prototype.setVariables = function(variables) {
  *
  * @private
  */
-MathEditor.prototype.getContent_ = function() {
+ MathEditor.prototype.getContent_ = function() {
     return [
     MathEditor.T('matheditor.general', [
         MathEditor.B('matheditor.comma', ',', ','),
@@ -599,46 +615,46 @@ MathEditor.prototype.getContent_ = function() {
         MathEditor.B('matheditor.sin', 'sin', '\\sin'),
         MathEditor.B('matheditor.cos', 'cos', '\\cos'),
         MathEditor.B('matheditor.tan', 'tan', '\\tan')
+        ]),
+MathEditor.T('matheditor.operators', [
+    MathEditor.B('matheditor.plus', '+', '+'),
+    MathEditor.B('matheditor.minus', '-', '-'),
+    MathEditor.B('matheditor.times', '×', '\\times'),
+    MathEditor.B('matheditor.division', '÷', '\\div'),
+    MathEditor.B('matheditor.bullet', '&#x2219', '\\bullet'),
+    MathEditor.B('matheditor.plus_minus', '±', '\\pm'),
+    MathEditor.B('matheditor.equal', '=', '='),
+    MathEditor.B('matheditor.definition', '&#x2255', '≔'),
+    MathEditor.B('matheditor.factorial', '!', '!'),
+    MathEditor.B('matheditor.minus_plus', '&#x2213', '\\mp'),
+    MathEditor.B('matheditor.not_equal', '&#x2260', '\\neq'),
+    MathEditor.B('matheditor.asymptotically_equal', '&#x2243', '\\simeq'),
+    MathEditor.B('matheditor.square_root', '&#x221A', '\\sqrt{}'),
+    MathEditor.B('matheditor.square_root_power', '<sup>&#x25A1</sup>&#x221A', '\\sqrt[{}]{}'),
+    MathEditor.B('matheditor.ceiling', '&#x2308&#x25A1&#x2309', '\\left\\lceil \\right\\rceil'),
+    MathEditor.B('matheditor.floor', '&#x230A&#x25A1&#x230B', '\\left\\lfloor \\right\\rfloor'),
+    new MathEditor.Break(),
+    MathEditor.B('matheditor.sum_limits', '&#x2211<sup>&#x25A1</sup>', '\\sum_{}^{}'),
+    MathEditor.B('matheditor.sum', '&#x2211', '\\sum'),
+    MathEditor.B('matheditor.product_limits', '&#x220F<sup>&#x25A1</sup>', '\\prod_{}^{}'),
+    MathEditor.B('matheditor.product', '&#x220F', '\\prod'),
+    MathEditor.B('matheditor.coproduct_limits', '&#x2210<sup>&#x25A1</sup>', '\\coprod_{}^{}'),
+    MathEditor.B('matheditor.coproduct', '&#x2210', '\\coprod'),
+    MathEditor.B('matheditor.less', '<', '<'),
+    MathEditor.B('matheditor.less_equal', '&#x2264', '\\le'),
+    MathEditor.B('matheditor.greater', '>', '>'),
+    MathEditor.B('matheditor.greater_equal', '&#x2265', '\\ge')
     ]),
-    MathEditor.T('matheditor.operators', [
-        MathEditor.B('matheditor.plus', '+', '+'),
-        MathEditor.B('matheditor.minus', '-', '-'),
-        MathEditor.B('matheditor.times', '×', '\\times'),
-        MathEditor.B('matheditor.division', '÷', '\\div'),
-        MathEditor.B('matheditor.bullet', '&#x2219', '\\bullet'),
-        MathEditor.B('matheditor.plus_minus', '±', '\\pm'),
-        MathEditor.B('matheditor.equal', '=', '='),
-        MathEditor.B('matheditor.definition', '&#x2255', '≔'),
-        MathEditor.B('matheditor.factorial', '!', '!'),
-        MathEditor.B('matheditor.minus_plus', '&#x2213', '\\mp'),
-        MathEditor.B('matheditor.not_equal', '&#x2260', '\\neq'),
-        MathEditor.B('matheditor.asymptotically_equal', '&#x2243', '\\simeq'),
-        MathEditor.B('matheditor.square_root', '&#x221A', '\\sqrt{}'),
-        MathEditor.B('matheditor.square_root_power', '<sup>&#x25A1</sup>&#x221A', '\\sqrt[{}]{}'),
-        MathEditor.B('matheditor.ceiling', '&#x2308&#x25A1&#x2309', '\\left\\lceil \\right\\rceil'),
-        MathEditor.B('matheditor.floor', '&#x230A&#x25A1&#x230B', '\\left\\lfloor \\right\\rfloor'),
-        new MathEditor.Break(),
-        MathEditor.B('matheditor.sum_limits', '&#x2211<sup>&#x25A1</sup>', '\\sum_{}^{}'),
-        MathEditor.B('matheditor.sum', '&#x2211', '\\sum'),
-        MathEditor.B('matheditor.product_limits', '&#x220F<sup>&#x25A1</sup>', '\\prod_{}^{}'),
-        MathEditor.B('matheditor.product', '&#x220F', '\\prod'),
-        MathEditor.B('matheditor.coproduct_limits', '&#x2210<sup>&#x25A1</sup>', '\\coprod_{}^{}'),
-        MathEditor.B('matheditor.coproduct', '&#x2210', '\\coprod'),
-        MathEditor.B('matheditor.less', '<', '<'),
-        MathEditor.B('matheditor.less_equal', '&#x2264', '\\le'),
-        MathEditor.B('matheditor.greater', '>', '>'),
-        MathEditor.B('matheditor.greater_equal', '&#x2265', '\\ge')
+MathEditor.T('matheditor.calculus', [
+    MathEditor.B('matheditor.limit', 'lim', '\\lim_{}'),
+    MathEditor.B('matheditor.integral_limits', '&#x222B<sup>&#x25A1</sup>', '\\int^{}_{}'),
+    MathEditor.B('matheditor.integral', '&#x222B', '\\int'),
+    MathEditor.B('matheditor.integral_contour_limits', '&#x222E<sup>&#x25A1</sup>', '\\oint^{}_{}'),
+    MathEditor.B('matheditor.integral_contour', '&#x222E', '\\oint'),
+    MathEditor.B('matheditor.partial', '&#x2202', '\\partial'),
+    MathEditor.B('matheditor.nabla', '&#x2207;', '\\nabla')
     ]),
-    MathEditor.T('matheditor.calculus', [
-        MathEditor.B('matheditor.limit', 'lim', '\\lim_{}'),
-        MathEditor.B('matheditor.integral_limits', '&#x222B<sup>&#x25A1</sup>', '\\int^{}_{}'),
-        MathEditor.B('matheditor.integral', '&#x222B', '\\int'),
-        MathEditor.B('matheditor.integral_contour_limits', '&#x222E<sup>&#x25A1</sup>', '\\oint^{}_{}'),
-        MathEditor.B('matheditor.integral_contour', '&#x222E', '\\oint'),
-        MathEditor.B('matheditor.partial', '&#x2202', '\\partial'),
-        MathEditor.B('matheditor.nabla', '&#x2207;', '\\nabla')
-    ]),
-    MathEditor.T('matheditor.greek', [
+MathEditor.T('matheditor.greek', [
         // Lower Case
         MathEditor.B('matheditor.alpha', '&#x03B1', '\\alpha'),
         MathEditor.B('matheditor.beta', '&#x03B2', '\\beta'),
@@ -690,64 +706,64 @@ MathEditor.prototype.getContent_ = function() {
         MathEditor.B('matheditor.chi_uppercase', '&#x03A7', 'X'),
         MathEditor.B('matheditor.psi_uppercase', '&#x03A8', '\\Psi'),
         MathEditor.B('matheditor.omega_uppercase', '&#x03A9', '\\Omega')
+        ]),
+MathEditor.T('matheditor.matrix', [
+    MathEditor.BM('matheditor.matrix', '&#x25A1 &#x25A1<br/>&#x25A1 &#x25A1', '', ''),
+    MathEditor.BM('matheditor.matrix_parenthesis', '&#x239B &#x25A1 &#x25A1 &#x239E<br/>'
+        + '&#x239D &#x25A1 &#x25A1 &#x23A0', '\\left(', '\\right)'),
+    MathEditor.BM('matheditor.matrix_bracket', '&#x23A1 &#x25A1 &#x25A1 &#x23A4<br/>'
+        + '&#x23A3 &#x25A1 &#x25A1 &#x23A6', '\\left[', '\\right]'),
+    MathEditor.BM('matheditor.matrix_bar', '&#x23A2 &#x25A1 &#x25A1 &#x23A5<br/>'
+        + '&#x23A2 &#x25A1 &#x25A1 &#x23A5', '\\left|', '\\right|')
     ]),
-    MathEditor.T('matheditor.matrix', [
-        MathEditor.BM('matheditor.matrix', '&#x25A1 &#x25A1<br/>&#x25A1 &#x25A1', '', ''),
-        MathEditor.BM('matheditor.matrix_parenthesis', '&#x239B &#x25A1 &#x25A1 &#x239E<br/>'
-            + '&#x239D &#x25A1 &#x25A1 &#x23A0', '\\left(', '\\right)'),
-        MathEditor.BM('matheditor.matrix_bracket', '&#x23A1 &#x25A1 &#x25A1 &#x23A4<br/>'
-            + '&#x23A3 &#x25A1 &#x25A1 &#x23A6', '\\left[', '\\right]'),
-        MathEditor.BM('matheditor.matrix_bar', '&#x23A2 &#x25A1 &#x25A1 &#x23A5<br/>'
-            + '&#x23A2 &#x25A1 &#x25A1 &#x23A5', '\\left|', '\\right|')
+MathEditor.T('matheditor.logicsets', [
+    MathEditor.B('matheditor.implication', '&#x21D2', '\\Rightarrow'),
+    MathEditor.B('matheditor.equivalence', '&#x21D4', '\\Leftrightarrow'),
+    MathEditor.B('matheditor.negation', '&#x00AC', '\\not'),
+    MathEditor.B('matheditor.negation_tilde', '&#x223C', '\\sim'),
+    MathEditor.B('matheditor.conjunction', '&#x2227', '\\land'),
+    MathEditor.B('matheditor.disjunction', '&#x2228', '\\lor'),
+    MathEditor.B('matheditor.forall', '&#x2200', '\\forall'),
+    MathEditor.B('matheditor.exists', '&#x2203', '\\exists'),
+    MathEditor.B('matheditor.not_exists', '&#x2204', '\\nexists'),
+    MathEditor.B('matheditor.set_minus', '\\', '\\setminus'),
+    new MathEditor.Break(),
+    MathEditor.B('matheditor.empty_set', '&#x2205', '\\varnothing'),
+    MathEditor.B('matheditor.union', '&#x222A', '\\cup'),
+    MathEditor.B('matheditor.intersection', '&#x2229', '\\cap'),
+    MathEditor.B('matheditor.subset_equal', '&#x2286','\\subseteq'),
+    MathEditor.B('matheditor.not_subset_equal', '&#x2288','\\notsubseteq'),
+    MathEditor.B('matheditor.subset', '&#x2282','\\subset'),
+    MathEditor.B('matheditor.not_subset', '&#x2284','\\notsubset'),
+    MathEditor.B('matheditor.superset_equal', '&#x2287','\\supseteq'),
+    MathEditor.B('matheditor.not_superset_equal', '&#x2289','\\notsupseteq'),
+    MathEditor.B('matheditor.superset', '&#x2283','\\supset'),
+    MathEditor.B('matheditor.not_superset', '&#x2285','\\notsupset'),
+    MathEditor.B('matheditor.in', '&#x2208', '\\in'),
+    MathEditor.B('matheditor.not_in', '&#x2209', '\\notin'),
+    MathEditor.B('matheditor.contains', '&#x220B', '\\ni'),
+    MathEditor.B('matheditor.not_contains', '&#x220C', '\\notni')
     ]),
-    MathEditor.T('matheditor.logicsets', [
-        MathEditor.B('matheditor.implication', '&#x21D2', '\\Rightarrow'),
-        MathEditor.B('matheditor.equivalence', '&#x21D4', '\\Leftrightarrow'),
-        MathEditor.B('matheditor.negation', '&#x00AC', '\\not'),
-        MathEditor.B('matheditor.negation_tilde', '&#x223C', '\\sim'),
-        MathEditor.B('matheditor.conjunction', '&#x2227', '\\land'),
-        MathEditor.B('matheditor.disjunction', '&#x2228', '\\lor'),
-        MathEditor.B('matheditor.forall', '&#x2200', '\\forall'),
-        MathEditor.B('matheditor.exists', '&#x2203', '\\exists'),
-        MathEditor.B('matheditor.not_exists', '&#x2204', '\\nexists'),
-        MathEditor.B('matheditor.set_minus', '\\', '\\setminus'),
-        new MathEditor.Break(),
-        MathEditor.B('matheditor.empty_set', '&#x2205', '\\varnothing'),
-        MathEditor.B('matheditor.union', '&#x222A', '\\cup'),
-        MathEditor.B('matheditor.intersection', '&#x2229', '\\cap'),
-        MathEditor.B('matheditor.subset_equal', '&#x2286','\\subseteq'),
-        MathEditor.B('matheditor.not_subset_equal', '&#x2288','\\notsubseteq'),
-        MathEditor.B('matheditor.subset', '&#x2282','\\subset'),
-        MathEditor.B('matheditor.not_subset', '&#x2284','\\notsubset'),
-        MathEditor.B('matheditor.superset_equal', '&#x2287','\\supseteq'),
-        MathEditor.B('matheditor.not_superset_equal', '&#x2289','\\notsupseteq'),
-        MathEditor.B('matheditor.superset', '&#x2283','\\supset'),
-        MathEditor.B('matheditor.not_superset', '&#x2285','\\notsupset'),
-        MathEditor.B('matheditor.in', '&#x2208', '\\in'),
-        MathEditor.B('matheditor.not_in', '&#x2209', '\\notin'),
-        MathEditor.B('matheditor.contains', '&#x220B', '\\ni'),
-        MathEditor.B('matheditor.not_contains', '&#x220C', '\\notni')
-    ]),
-    MathEditor.T('matheditor.miscellaneous', [
-        MathEditor.B('matheditor.infinity', '&#x221E', '\\infty'),
-        MathEditor.B('matheditor.primes', '&#x2119', '\\primes'),
-        MathEditor.B('matheditor.naturals', '&#x2115', '\\naturals'),
-        MathEditor.B('matheditor.integers', '&#x2124', '\\integers'),
-        MathEditor.B('matheditor.irrationals', '&#x1D540', '\\irrationals'),
-        MathEditor.B('matheditor.rationals', '&#x211A', '\\rationals'),
-        MathEditor.B('matheditor.reals', '&#x211D', '\\reals'),
-        MathEditor.B('matheditor.complex', '&#x2102', '\\complex'),
-        MathEditor.B('matheditor.perpendicular', '&#x22A5', '\\perp'),
-        MathEditor.B('matheditor.parallel', '&#x2225', '\\parallel'),
-        MathEditor.B('matheditor.therefore', '&#x2234', '\\therefore'),
-        MathEditor.B('matheditor.because', '&#x2235', '\\because'),
-        MathEditor.B('matheditor.dots_horizontal', '&#x22EF', '\\cdots'),
-        MathEditor.B('matheditor.dots_vertical', '&#x22EE', '\\vdots'),
-        MathEditor.B('matheditor.dots_diagonal', '&#x22F0', '\\ddots'),
-        MathEditor.B('matheditor.arrow_left', '&#x2190', '\\longleftarrow'),
-        MathEditor.B('matheditor.arrow_right', '&#x2192', '\\longrightarrow'),
-        MathEditor.B('matheditor.angle', '&#x2220', '\\angle'),
-        MathEditor.B('matheditor.hbar', '&#x210f', '\\hbar')
+MathEditor.T('matheditor.miscellaneous', [
+    MathEditor.B('matheditor.infinity', '&#x221E', '\\infty'),
+    MathEditor.B('matheditor.primes', '&#x2119', '\\primes'),
+    MathEditor.B('matheditor.naturals', '&#x2115', '\\naturals'),
+    MathEditor.B('matheditor.integers', '&#x2124', '\\integers'),
+    MathEditor.B('matheditor.irrationals', '&#x1D540', '\\irrationals'),
+    MathEditor.B('matheditor.rationals', '&#x211A', '\\rationals'),
+    MathEditor.B('matheditor.reals', '&#x211D', '\\reals'),
+    MathEditor.B('matheditor.complex', '&#x2102', '\\complex'),
+    MathEditor.B('matheditor.perpendicular', '&#x22A5', '\\perp'),
+    MathEditor.B('matheditor.parallel', '&#x2225', '\\parallel'),
+    MathEditor.B('matheditor.therefore', '&#x2234', '\\therefore'),
+    MathEditor.B('matheditor.because', '&#x2235', '\\because'),
+    MathEditor.B('matheditor.dots_horizontal', '&#x22EF', '\\cdots'),
+    MathEditor.B('matheditor.dots_vertical', '&#x22EE', '\\vdots'),
+    MathEditor.B('matheditor.dots_diagonal', '&#x22F0', '\\ddots'),
+    MathEditor.B('matheditor.arrow_left', '&#x2190', '\\longleftarrow'),
+    MathEditor.B('matheditor.arrow_right', '&#x2192', '\\longrightarrow'),
+    MathEditor.B('matheditor.angle', '&#x2220', '\\angle'),
+    MathEditor.B('matheditor.hbar', '&#x210f', '\\hbar')
     ])
 ];
 
@@ -758,14 +774,14 @@ MathEditor.prototype.getContent_ = function() {
  *
  * @private
  */
-MathEditor.prototype.getColours_ = function() {
+ MathEditor.prototype.getColours_ = function() {
     return [
-        MathEditor.C('matheditor.black', 'black'),
-        MathEditor.C('matheditor.red', 'red'),
-        MathEditor.C('matheditor.blue', 'blue'),
-        MathEditor.C('matheditor.magenta', 'magenta'),
-        MathEditor.C('matheditor.green', 'green'),
-        MathEditor.C('matheditor.purple', 'purple'),
-        MathEditor.C('matheditor.orange', 'orange')
+    MathEditor.C('matheditor.black', 'black'),
+    MathEditor.C('matheditor.red', 'red'),
+    MathEditor.C('matheditor.blue', 'blue'),
+    MathEditor.C('matheditor.magenta', 'magenta'),
+    MathEditor.C('matheditor.green', 'green'),
+    MathEditor.C('matheditor.purple', 'purple'),
+    MathEditor.C('matheditor.orange', 'orange')
     ];
 };
