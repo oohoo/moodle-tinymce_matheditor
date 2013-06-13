@@ -226,7 +226,6 @@ MathEditor.C = function(name, colour) {
 
     // Activate the first SHOWN tab
     var oneActive = false;
-    console.log(this.content);
     $(this.content).each(function(index, tab) {
         if(tab.hasContent && !oneActive) {
             oneActive = true;
@@ -539,6 +538,10 @@ MathEditor.prototype.generateColourPicker_ = function(element) {
  MathEditor.prototype.setButtonList = function(buttonList, redecorate, singleTab) {
     this.singleTab = singleTab;
     buttonList = buttonList.split(',');
+    // Only use single tab if there are less than 20 buttons
+    if(buttonList.length > 20) {
+        this.singleTab = false;
+    }
     this.buttonMap = [];
     var buttonMap = this.buttonMap;
     $(buttonList).each(function(index, name) {
