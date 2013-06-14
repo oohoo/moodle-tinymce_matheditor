@@ -374,14 +374,15 @@ MathEditor.prototype.generateColourPicker_ = function(element) {
                 return;
             }
             button.dom.click(function(e) {
-                console.log(button);
                 if (button.matrix) {
                     e.stopPropagation();
                     self.activeMatrix = button;
                     self.matrixInputReset_();
+                    var offsetTop = e.pageY - self.container.offset().top;
+                    var offsetLeft = e.pageX - self.container.offset().left;
                     self.form.css({
-                        top: button.dom.offset().top + 15,
-                        left: button.dom.offset().left + 15
+                        top: offsetTop + 15,
+                        left: offsetLeft
                     });
                     self.form.toggle();
                 } else {
