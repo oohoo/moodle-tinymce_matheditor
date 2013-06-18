@@ -27,7 +27,7 @@
             if(editor.getParam('matheditor_latexserver'))
                 var latexRenderer = editor.getParam('tinymce_matheditor/latexserver');
             else
-                var latexRenderer = 'http://www.tabuleiro.com/cgi-bin/mathtex.cgi?';
+                var latexRenderer = 'http://localhost/cgi-bin/mathtex.cgi?';
 
             var imageUrl = function(latex) {
                 return '<img class="matheditor" '

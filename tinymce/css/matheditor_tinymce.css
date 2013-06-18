@@ -16,8 +16,9 @@ html, body {
     overflow:hidden;
 }
 
-#page-content .region-content {
+#page-content #region-main .region-content {
     padding:0;
+    font-size: 12px;
 }
 
 .matheditor-container {
