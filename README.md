@@ -5,6 +5,8 @@ For [Moodle](https://moodle.org) and [TinyMCE](http://www.tinymce.com/)
 
 ## Installation
 
+**Editor**
+
 1. Get the zip file `matheditor.zip` ([DOWNLOAD](http://dl.bintray.com/raywainman/generic/matheditor.zip?direct))
 2. To install this file, upload the zip file in your Moodle plugin installation page as a **TinyMCE Plugin Type**
     `http://moodle_root/admin/tool/installaddon/index.php`
@@ -15,6 +17,12 @@ For [Moodle](https://moodle.org) and [TinyMCE](http://www.tinymce.com/)
 5. Add the MathEditor button to the editor by pasting the `matheditor` keyword within the "Editor Toolbar"
    field. Ensure buttons are separated by commas and groups separated by `|`s.
 6. The MathEditor button should now have appeared within the editor and is ready to use.
+
+**LaTeX Renderer**
+
+The following LaTeX server should be installed: http://www.forkosh.com/mathtex.html. Follow the instructions
+there. By default the editor looks for this script at `localhost/cgi-bin/mathtex.cgi`, to change this path,
+see the customisation section below.
 
 #### Customisation
 
