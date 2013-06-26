@@ -223,3 +223,7 @@ html, body {
 .matheditor-colour-orange {
     background-color: orange;
 }
+
+.supsub {position: absolute}
+.subscript {display:block; position:relative; left:2px; top: -5px}
+.superscript {display:block; position:relative; left:2px; top: -5px}
