@@ -115,8 +115,17 @@ html, body {
 .matheditor-pane button {
     background-color: transparent;
     border: 1px solid #F2F2F2;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
     cursor: pointer;
     min-width: 25px;
+    background-image: url('../img/icons.png');
+    min-height: 25px;
+    padding: 0;
+    margin: 0;
+    float: left;
+    margin-right: 3px;
+    margin-bottom: 3px;
 }
 
 .matheditor-pane-button {
@@ -223,7 +232,3 @@ html, body {
 .matheditor-colour-orange {
     background-color: orange;
 }
-
-.supsub {position: absolute}
-.subscript {display:block; position:relative; left:2px; top: -5px}
-.superscript {display:block; position:relative; left:2px; top: -5px}
