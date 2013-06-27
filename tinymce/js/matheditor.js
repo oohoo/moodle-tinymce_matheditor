@@ -213,7 +213,7 @@ MathEditor.C = function(name, colour) {
 
                 button.dom = $('<button ' + classValue + ' title="' +
                     self.editor.getLang(button.name) +'"></button>').appendTo(targetTab);
-                button.dom.html(button.display);
+                button.dom.html('\\(' + button.display + '\\)');
             }
         });
         if(!tabHasContent) {
@@ -680,6 +680,7 @@ MathEditor.prototype.generateColourPicker_ = function(element) {
         MathEditor.B('matheditor.integral', '&#x222B', '\\int'),
         MathEditor.B('matheditor.integral_contour_limits', '&#x222E<sub>&#x25A1</sub>', '\\oint_{}'),
         MathEditor.B('matheditor.integral_contour', '&#x222E', '\\oint'),
+        MathEditor.B('matheditor.differential', 'd', 'd'),
         MathEditor.B('matheditor.partial', '&#x2202', '\\partial'),
         MathEditor.B('matheditor.nabla', '&#x2207;', '\\nabla')
         ]),
@@ -747,7 +748,7 @@ MathEditor.prototype.generateColourPicker_ = function(element) {
         ]),
     MathEditor.T('matheditor.logicsets', [
         MathEditor.B('matheditor.implication', '&#x21D2', '\\Rightarrow'),
-        MathEditor.B('matheditor.implication_left', '&#x21D2', '\\Leftarrow'),
+        MathEditor.B('matheditor.implication_left', '&#x21D0', '\\Leftarrow'),
         MathEditor.B('matheditor.equivalence', '&#x21D4', '\\Leftrightarrow'),
         MathEditor.B('matheditor.negation', '&#x00AC', '\\not'),
         MathEditor.B('matheditor.negation_tilde', '&#x223C', '\\sim'),

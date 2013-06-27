@@ -55,6 +55,8 @@ echo $OUTPUT->header();
         var editor = new MathEditor('#editor', tinyMceEditor, insertHandler);
         var latex = tinyMCEPopup.getWindowArg('latex');
         editor.setLatex(latex);
+
+        console.log(MathJax);
     });
 })();
 </script>

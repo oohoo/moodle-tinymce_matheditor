@@ -57,6 +57,7 @@ $string['matheditor:delta_uppercase'] = 'Uppercase Delta';
 $string['matheditor:derivative'] = 'Derivative';
 $string['matheditor:desc'] = 'Math Editor';
 $string['matheditor:description'] = 'Math Editor';
+$string['matheditor:differential'] = 'Differential';
 $string['matheditor:disjunction'] = 'Disjunction';
 $string['matheditor:division'] = 'Division';
 $string['matheditor:dots_diagonal'] = 'Diagonal Dots';
