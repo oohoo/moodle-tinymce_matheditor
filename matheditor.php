@@ -35,12 +35,6 @@ $PAGE->requires->css(new moodle_url($plugin->get_tinymce_file_url('css/mathedito
 $PAGE->requires->css(new moodle_url($plugin->get_tinymce_file_url('css/matheditor_tinymce.css')));
 
 $PAGE->requires->js(new moodle_url($plugin->get_tinymce_file_url('js/matheditor.js')));
-$PAGE->requires->js(new moodle_url('/filter/mathjax/vendor/mathjax/MathJax.js', array(
-    'config' => 'TeX-AMS-MML_HTMLorMML',
-    'delayStartupUntil' => 'onload',
-    'showProcessingMessages' => 'false',
-    'messageStyle' => 'none'
-)));
 echo $OUTPUT->header();
 
 ?>
