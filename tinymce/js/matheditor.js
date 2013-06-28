@@ -48,8 +48,11 @@ MathEditor = function(container, editor, insertHandler, buttonList) {
  * to be inserted into the equation.
  *
  * @param name the name of the button, shown in the form of a tooltip
- * @param display the icon shown on the button itself
  * @param latex the latex command corresponding to the button
+ * @param xcoord the x position of the top-left corner of the icon within the sprite file
+ * @param ycoord the y position of the top-left corner of the icon within the sprite file
+ * @param width the width of the icon (by default it is 25)
+ * @param height the height of the icon (by default it is 25)
  */
  MathEditor.Button = function(name, latex, xcoord, ycoord, width, height) {
     this.name = name;
@@ -74,8 +77,11 @@ MathEditor = function(container, editor, insertHandler, buttonList) {
  * equation.
  *
  * @param name the name of the button, shown in the form of a tooltip
- * @param display the icon shown on the button itself
  * @param latex the latex command corresponding to the button
+ * @param xcoord the x position of the top-left corner of the icon within the sprite file
+ * @param ycoord the y position of the top-left corner of the icon within the sprite file
+ * @param width the width of the icon (by default it is 25)
+ * @param height the height of the icon (by default it is 25)
  */
  MathEditor.B = function(name, latex, xcoord, ycoord, width, height) {
     return new MathEditor.Button(name, latex, xcoord, ycoord, width, height);
@@ -86,9 +92,12 @@ MathEditor = function(container, editor, insertHandler, buttonList) {
  * first before making a call to the MathQuill API.
  *
  * @param name the name of the button, shown in the form of a tooltip
- * @param display the icon shown on the button itself
  * @param prepend the latex command prepend, this will usually be something like '\\left('
  * @param postpend the latex command postpend, this will usually be something like '\\right)'
+ * @param xcoord the x position of the top-left corner of the icon within the sprite file
+ * @param ycoord the y position of the top-left corner of the icon within the sprite file
+ * @param width the width of the icon (by default it is 25)
+ * @param height the height of the icon (by default it is 25)
 */
 MathEditor.BM = function(name, prepend, postpend, xcoord, ycoord, width, height) {
     var button = new MathEditor.Button(name, null, xcoord, ycoord, width, height);
