@@ -51,7 +51,7 @@ MathEditor = function(container, editor, insertHandler, buttonList) {
  * @param display the icon shown on the button itself
  * @param latex the latex command corresponding to the button
  */
- MathEditor.Button = function(name, latex, xcoord, ycoord, width) {
+ MathEditor.Button = function(name, latex, xcoord, ycoord, width, height) {
     this.name = name;
     this.latex = latex;
     this.xcoord = xcoord;
@@ -59,7 +59,12 @@ MathEditor = function(container, editor, insertHandler, buttonList) {
     if(width) {
         this.width = width;
     } else {
-        this.width = 27;
+        this.width = 25;
+    }
+    if(height) {
+        this.height = height;
+    } else {
+        this.height = 25;
     }
 };
 
@@ -72,8 +77,8 @@ MathEditor = function(container, editor, insertHandler, buttonList) {
  * @param display the icon shown on the button itself
  * @param latex the latex command corresponding to the button
  */
- MathEditor.B = function(name, latex, xcoord, ycoord, width) {
-    return new MathEditor.Button(name, latex, xcoord, ycoord, width);
+ MathEditor.B = function(name, latex, xcoord, ycoord, width, height) {
+    return new MathEditor.Button(name, latex, xcoord, ycoord, width, height);
 };
 
 /**
@@ -85,8 +90,8 @@ MathEditor = function(container, editor, insertHandler, buttonList) {
  * @param prepend the latex command prepend, this will usually be something like '\\left('
  * @param postpend the latex command postpend, this will usually be something like '\\right)'
 */
-MathEditor.BM = function(name, display, prepend, postpend) {
-    var button = new MathEditor.Button(name, display, null);
+MathEditor.BM = function(name, prepend, postpend, xcoord, ycoord, width, height) {
+    var button = new MathEditor.Button(name, null, xcoord, ycoord, width, height);
     button.matrix = true;
     button.prepend = prepend;
     button.postpend = postpend;
@@ -218,8 +223,8 @@ MathEditor.C = function(name, colour) {
                 }
                 if(button.xcoord != null) {
                     button.dom = $('<button ' + classValue + ' style="background-position:-' +
-                        button.xcoord + 'px -' + button.ycoord + 'px; width:' + this.width + 'px' +
-                        '" title="' + self.editor.getLang(button.name) +'"></button>').appendTo(targetTab);
+                        button.xcoord + 'px -' + button.ycoord + 'px; width:' + (this.width+2) + 'px;' +
+                        'height:' + (this.height+2) + 'px;" title="' + self.editor.getLang(button.name) +'"></button>').appendTo(targetTab);
                 }
                 //button.dom.html('\\(' + button.display + '\\)');
             }
@@ -676,10 +681,18 @@ MathEditor.prototype.generateColourPicker_ = function(element) {
         ]),
     MathEditor.T('matheditor.calculus', [
         MathEditor.B('matheditor.limit', '\\lim_{}{\\placeholder}', 0, 175),
-        MathEditor.B('matheditor.integral_limits', '\\int^{}_{}', 25, 175),
         MathEditor.B('matheditor.integral', '\\int', 50, 175),
-        MathEditor.B('matheditor.integral_contour_limits', '\\oint_{}', 75, 175),
+        MathEditor.B('matheditor.integral_limits', '\\int^{}_{}', 25, 175),
         MathEditor.B('matheditor.integral_contour', '\\oint', 100, 175),
+        MathEditor.B('matheditor.integral_contour_limits', '\\oint_{}', 75, 175),
+        MathEditor.B('matheditor.integral_double', '\\int\\int', 0, 500),
+        MathEditor.B('matheditor.integral_double_limits', '\\int\\int_{}', 150, 475),
+        MathEditor.B('matheditor.integral_surface', '\\oint\\oint', 50, 500),
+        MathEditor.B('matheditor.integral_surface_limits', '\\oint\\oint_{}', 75, 500),
+        MathEditor.B('matheditor.integral_triple', '\\int\\int\\int', 25, 500),
+        MathEditor.B('matheditor.integral_triple_limits', '\\int\\int\\int_{}', 175, 475),
+        MathEditor.B('matheditor.integral_volume', '\\oint\\oint\\oint', 100, 500),
+        MathEditor.B('matheditor.integral_volume_limits', '\\oint\\oint\\oint_{}', 125, 500),
         MathEditor.B('matheditor.differential', 'd', 125, 175),
         MathEditor.B('matheditor.partial', '\\partial', 150, 175),
         MathEditor.B('matheditor.nabla', '\\nabla', 175, 175)
@@ -738,63 +751,62 @@ MathEditor.prototype.generateColourPicker_ = function(element) {
         MathEditor.B('matheditor.omega_uppercase', '\\Omega', 175, 325)
         ]),
     MathEditor.T('matheditor.matrix', [
-        MathEditor.BM('matheditor.matrix', '&#x25A1 &#x25A1<br/>&#x25A1 &#x25A1', '', ''),
-        MathEditor.BM('matheditor.matrix_parenthesis', '&#x239B &#x25A1 &#x25A1 &#x239E<br/>'
-            + '&#x239D &#x25A1 &#x25A1 &#x23A0', '\\left(', '\\right)'),
-        MathEditor.BM('matheditor.matrix_bracket', '&#x23A1 &#x25A1 &#x25A1 &#x23A4<br/>'
-            + '&#x23A3 &#x25A1 &#x25A1 &#x23A6', '\\left[', '\\right]'),
-        MathEditor.BM('matheditor.matrix_bar', '&#x23A2 &#x25A1 &#x25A1 &#x23A5<br/>'
-            + '&#x23A2 &#x25A1 &#x25A1 &#x23A5', '\\left|', '\\right|')
+        MathEditor.BM('matheditor.matrix', '', '', 230, 0, 50, 50),
+        MathEditor.BM('matheditor.matrix_parenthesis', '\\left(', '\\right)', 230, 50, 50, 50),
+        MathEditor.BM('matheditor.matrix_bracket', '\\left[', '\\right]', 230, 100, 50, 50),
+        MathEditor.BM('matheditor.matrix_bar', '\\left|', '\\right|', 230, 150, 50, 50)
         ]),
     MathEditor.T('matheditor.logicsets', [
-        MathEditor.B('matheditor.implication', '&#x21D2', '\\Rightarrow'),
-        MathEditor.B('matheditor.implication_left', '&#x21D0', '\\Leftarrow'),
-        MathEditor.B('matheditor.equivalence', '&#x21D4', '\\Leftrightarrow'),
-        MathEditor.B('matheditor.negation', '&#x00AC', '\\not'),
-        MathEditor.B('matheditor.negation_tilde', '&#x223C', '\\sim'),
-        MathEditor.B('matheditor.conjunction', '&#x2227', '\\land'),
-        MathEditor.B('matheditor.disjunction', '&#x2228', '\\lor'),
-        MathEditor.B('matheditor.forall', '&#x2200', '\\forall'),
-        MathEditor.B('matheditor.exists', '&#x2203', '\\exists'),
-        MathEditor.B('matheditor.not_exists', '&#x2204', '\\nexists'),
-        MathEditor.B('matheditor.set_minus', '\\', '\\setminus'),
-        new MathEditor.Break(),
-        MathEditor.B('matheditor.empty_set', '&#x2205', '\\varnothing'),
-        MathEditor.B('matheditor.union', '&#x222A', '\\cup'),
-        MathEditor.B('matheditor.intersection', '&#x2229', '\\cap'),
-        MathEditor.B('matheditor.subset_equal', '&#x2286','\\subseteq'),
-        MathEditor.B('matheditor.not_subset_equal', '&#x2288','\\notsubseteq'),
-        MathEditor.B('matheditor.subset', '&#x2282','\\subset'),
-        MathEditor.B('matheditor.not_subset', '&#x2284','\\notsubset'),
-        MathEditor.B('matheditor.superset_equal', '&#x2287','\\supseteq'),
-        MathEditor.B('matheditor.not_superset_equal', '&#x2289','\\notsupseteq'),
-        MathEditor.B('matheditor.superset', '&#x2283','\\supset'),
-        MathEditor.B('matheditor.not_superset', '&#x2285','\\notsupset'),
-        MathEditor.B('matheditor.in', '&#x2208', '\\in'),
-        MathEditor.B('matheditor.not_in', '&#x2209', '\\notin'),
-        MathEditor.B('matheditor.contains', '&#x220B', '\\ni'),
-        MathEditor.B('matheditor.not_contains', '&#x220C', '\\notni')
+        MathEditor.B('matheditor.implication', '\\Rightarrow', 0, 350),
+        MathEditor.B('matheditor.implication_left', '\\Leftarrow', 25, 350),
+        MathEditor.B('matheditor.equivalence', '\\Leftrightarrow', 50, 350),
+        MathEditor.B('matheditor.negation', '\\not', 75, 350),
+        MathEditor.B('matheditor.negation_tilde', '\\sim', 100, 350),
+        MathEditor.B('matheditor.conjunction', '\\land', 125, 350),
+        MathEditor.B('matheditor.disjunction', '\\lor', 150, 350),
+        MathEditor.B('matheditor.forall', '\\forall', 175, 350),
+        MathEditor.B('matheditor.exists', '\\exists', 0, 375),
+        MathEditor.B('matheditor.not_exists', '\\nexists', 25, 375),
+        MathEditor.B('matheditor.set_minus', '\\setminus', 50, 375),
+        MathEditor.B('matheditor.empty_set', '\\varnothing', 75, 375),
+        MathEditor.B('matheditor.union', '\\cup', 100, 375),
+        MathEditor.B('matheditor.intersection', '\\cap', 125, 375),
+        MathEditor.B('matheditor.subset_equal', '\\subseteq', 150, 375),
+        MathEditor.B('matheditor.not_subset_equal', '\\notsubseteq', 175, 375),
+        MathEditor.B('matheditor.subset', '\\subset', 0, 400),
+        MathEditor.B('matheditor.not_subset', '\\notsubset', 25, 400),
+        MathEditor.B('matheditor.superset_equal', '\\supseteq', 50, 400),
+        MathEditor.B('matheditor.not_superset_equal', '\\notsupseteq', 75, 400),
+        MathEditor.B('matheditor.superset', '\\supset', 100, 400),
+        MathEditor.B('matheditor.not_superset', '\\notsupset', 125, 400),
+        MathEditor.B('matheditor.in', '\\in', 150, 400),
+        MathEditor.B('matheditor.not_in', '\\notin', 175, 400),
+        MathEditor.B('matheditor.contains', '\\ni', 0, 425),
+        MathEditor.B('matheditor.not_contains', '\\notni', 25, 425)
         ]),
     MathEditor.T('matheditor.miscellaneous', [
-        MathEditor.B('matheditor.infinity', '&#x221E', '\\infty'),
-        MathEditor.B('matheditor.primes', '&#x2119', '\\primes'),
-        MathEditor.B('matheditor.naturals', '&#x2115', '\\naturals'),
-        MathEditor.B('matheditor.integers', '&#x2124', '\\integers'),
-        MathEditor.B('matheditor.irrationals', '&#x1D540', '\\irrationals'),
-        MathEditor.B('matheditor.rationals', '&#x211A', '\\rationals'),
-        MathEditor.B('matheditor.reals', '&#x211D', '\\reals'),
-        MathEditor.B('matheditor.complex', '&#x2102', '\\complex'),
-        MathEditor.B('matheditor.perpendicular', '&#x22A5', '\\perp'),
-        MathEditor.B('matheditor.parallel', '&#x2225', '\\parallel'),
-        MathEditor.B('matheditor.therefore', '&#x2234', '\\therefore'),
-        MathEditor.B('matheditor.because', '&#x2235', '\\because'),
-        MathEditor.B('matheditor.dots_horizontal', '&#x22EF', '\\cdots'),
-        MathEditor.B('matheditor.dots_vertical', '&#x22EE', '\\vdots'),
-        MathEditor.B('matheditor.dots_diagonal', '&#x22F0', '\\ddots'),
-        MathEditor.B('matheditor.arrow_left', '&#x2190', '\\longleftarrow'),
-        MathEditor.B('matheditor.arrow_right', '&#x2192', '\\longrightarrow'),
-        MathEditor.B('matheditor.angle', '&#x2220', '\\angle'),
-        MathEditor.B('matheditor.hbar', '&#x210f', '\\hbar')
+        MathEditor.B('matheditor.infinity', '\\infty', 50, 425),
+        MathEditor.B('matheditor.primes', '\\primes', 75, 425),
+        MathEditor.B('matheditor.naturals', '\\naturals', 100, 425),
+        MathEditor.B('matheditor.integers', '\\integers', 125, 425),
+        MathEditor.B('matheditor.irrationals', '\\irrationals', 150, 425),
+        MathEditor.B('matheditor.rationals', '\\rationals', 175, 425),
+        MathEditor.B('matheditor.reals', '\\reals', 0, 450),
+        MathEditor.B('matheditor.complex', '\\complex', 25, 450),
+        MathEditor.B('matheditor.perpendicular', '\\perp', 50, 450),
+        MathEditor.B('matheditor.parallel', '\\parallel', 75, 450),
+        MathEditor.B('matheditor.therefore', '\\therefore', 100, 450),
+        MathEditor.B('matheditor.because', '\\because', 125, 450),
+        MathEditor.B('matheditor.dots_horizontal', '\\cdots', 150, 450),
+        MathEditor.B('matheditor.dots_vertical', '\\vdots', 175, 450),
+        MathEditor.B('matheditor.dots_diagonal', '\\ddots', 0, 475),
+        MathEditor.B('matheditor.arrow_left_long', '\\longleftarrow', 25, 475),
+        MathEditor.B('matheditor.arrow_right_long', '\\longrightarrow', 50, 475),
+        MathEditor.B('matheditor.arrow_left', '\\leftarrow', 150, 500),
+        MathEditor.B('matheditor.arrow_right', '\\rightarrow', 175, 500),
+        MathEditor.B('matheditor.angle', '\\angle', 75, 475),
+        MathEditor.B('matheditor.hbar', '\\hbar', 100, 475),
+        MathEditor.B('matheditor.alef', '\\aleph', 125, 475)
         ])
     ];
 };
