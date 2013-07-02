@@ -24,7 +24,7 @@ The following LaTeX server should be installed: http://www.forkosh.com/mathtex.h
 there. By default the editor looks for this script at `localhost/cgi-bin/mathtex.cgi`, to change this path,
 see the customisation section below.
 
-#### Customisation
+**Customisation**
 
 To define your own LaTeX rendering server (used to render the equation preview image within the TinyMCE editor
 itself) go to the Moodle settings page for TinyMCE and in the `Custom Configuration` field, add the following
